@@ -77,4 +77,75 @@
             </div>
         </div>
     </section>
+
+    <!-- Directory Section -->
+    <section class="py-12 px-4">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-3xl font-bold text-center mb-10">Emergency Directory</h2>
+
+            <div class="space-y-6">
+                @php
+                    $directory = [
+                        '1. Local Police Station' => "Moriones Tondo Police Station<br>
+                            Contact Numbers: (+632) 245-4551, (+632) 772-5973, (+63917) 847-5757, (02) 722-0650, (02) 8722-0650<br>
+                            Emergency: 911 or (02) 925-9111",
+
+                        '2. Fire Department' => "Landline: (8245-3403), Mobile: 0946-727-0166<br>
+                            Special Rescue Force: (8523-2850), Mobile: 0920-527-3346<br>
+                            COMMEL MANILA: (5336-5138 / 5336-5139), Mobile: 0969-398-9700",
+
+                        '3. Ambulance / Health Center' => "Philippine Red Cross: Dial 143<br><br>
+                            <b>Hospitals Near Tondo:</b><br>
+                            - Tondo Medical Center: (02) 8865 9000, dpo-foi@tmrc.doh.gov.ph<br>
+                            - Metropolitan Medical Center: (02) 8863 2500<br>
+                            - Mary Johnston Hospital: (02) 5318 6600 / (02) 8245 4024<br><br>
+                            <b>Health Centers:</b><br>
+                            - Tondo Foreshore Health Center: (22545760)<br>
+                            - Fugoso Health Center: 0928-673-1715, bofugosohealthcenter@gmail.com",
+
+                        '4. City / Municipal DRRMC Hotline' => "Dial 911 or (02) 8568-6909<br>
+                            Manila DRRM Office: 0950-700-3710 / 0932-662-2322, officialmaniladrrmo@gmail.com<br>
+                            MMDA: Dial 136 (Traffic)<br>
+                            NDRRMC: (02) 8911-5061 to 65 local 100, (02) 8911-1406, (02) 8912-2665",
+
+                        '5. DSWD / CSWD' => '<a href="http://dswd.gov.ph" target="_blank" class="text-blue-600 underline">http://dswd.gov.ph</a>',
+
+                        '6. Barangay Officials' => "Chairman: Erwin Lapaz<br>
+                            Kagawad: Richard Flores, Edilberto De Jesus, Shiela Halili, Jomar Bonifacio, Francisco Vibar Jr., Daryl Garcia, Aselmo Pablo<br>
+                            Secretary: Rosemary Lupango<br>
+                            Treasurer: Arjhun Padasas<br>
+                            EX-O: Ronald Peres<br>
+                            Tanod: Arnold Lapaz, Joey Baldisimo, Benegno Baldisimo, Dennise Cunanan, Darwin Cunanan, Debbie De Jesus, Nelson Salvatiera, Rony Pollarcio, Caesar Isip, Armicko Diego, Manny Santos, Arman Cacho, Rodolfo Catapang, Roberto Geronemo, Lorenzo Meneses, Ammy Peres, Jasmyn Maryn, Arlyn Quirante<br>
+                            SK Chairman: Joshua Tolentino",
+
+                        '7. Barangay Hall Contact' => "Email: barangay41zone3@gmail.com",
+
+                        '8. Utilities' => "Water: Maynilad Water Services, Inc — Dial 1626<br>
+                            Electricity: Meralco — (0920-9716211 / 0917-5516211) or Hotline: (02) 16211",
+                    ];
+                @endphp
+
+                @foreach($directory as $title => $content)
+                    <div x-data="{ open: false }" class="border rounded-lg shadow-md">
+                        <!-- Header -->
+                        <button @click="open = !open"
+                            class="w-full flex justify-between items-center px-4 py-3 bg-gray-100 hover:bg-gray-200 rounded-t-lg">
+                            <span class="font-semibold text-lg">{{ $title }}</span>
+                            <svg x-show="!open" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                            </svg>
+                            <svg x-show="open" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" />
+                            </svg>
+                        </button>
+
+                        <!-- Content -->
+                        <div x-show="open" x-collapse class="px-4 py-3 text-gray-700">
+                            {!! $content !!}
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+    </section>
 @endsection
