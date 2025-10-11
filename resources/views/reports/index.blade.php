@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="max-w-3xl mx-auto bg-white p-8 rounded-lg shadow-md">
-    <h2 class="text-2xl font-bold text-gray-800 mb-6">Submit a Report</h2>
+<div class="max-w-3xl bg-white p-8 rounded-lg shadow-md m-8">
+    <h2 class="text-2xl font-bold text-gray-800 p-4">Submit a Report</h2>
 
     @if(session('success'))
     <div 
@@ -10,16 +10,16 @@
         x-show="show"
         x-transition 
         x-init="setTimeout(() => show = false, 3000)" 
-        class="fixed top-24 left-1/2 transform -translate-x-1/2 bg-green-600 text-white px-6 py-3 rounded-lg shadow-lg z-50"
+        class="fixed p-4 left-1/2 transform -translate-x-1/2 bg-green-600 text-white px-6 rounded-lg shadow-lg z-50"
     >
         {{ session('success') }}
     </div>
     @endif
 
-    <form action="{{ route('reports.store') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
+    <form action="{{ route('reports.store') }}" method="POST" enctype="multipart/form-data" class="space-y-6 p-4">
         @csrf
 
-<div x-data="{ anonymous: {{ old('anonymous', 0) == 1 ? 'true' : 'false' }} }" class="space-y-4">
+<div x-data="{ anonymous: {{ old('anonymous', 0) == 1 ? 'true' : 'false' }} }">
 
     <div 
         x-show="!anonymous"
@@ -31,7 +31,7 @@
         x-transition:leave-end="opacity-0 scale-95"
     >
         @guest
-        <div x-data="{ anonymous: false }" class="space-y-4">
+        <div x-data="{ anonymous: false }">
 
             <!-- Guest-only Fields -->
             <div x-show="!anonymous"
@@ -67,12 +67,12 @@
         </div>
 </div>
 <!-- Checkbox -->
-            <div class="flex items-center mt-2">
+            <div class="flex items-center">
                 <input type="hidden" name="anonymous" value="0">
                 <input type="checkbox" name="anonymous" id="anonymous" value="1"
                     x-model="anonymous"
                     class="mr-2 rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500">
-                <label for="anonymous" class="text-sm text-gray-700">Submit anonymously</label>
+                <label for="anonymous" class="text-sm text-gray-700 p-2">Submit anonymously</label>
             </div>
 
         <div>
@@ -148,8 +148,8 @@
                     Remove Image
                 </button>
             </div>
-        <div class="mb-5">
-            <label for="image" class="mt-4 block text-gray-700 font-medium leading-tight mb-1">Urgency Level</label>
+        <div class="m-5">
+            <label for="image" class="m-4 block text-gray-700 font-medium leading-tight mb-1">Urgency Level</label>
             <select name="urgency" required class="mt-2 w-full border-gray-300 rounded-lg shadow-sm">
                 <option value="">Select urgency</option>
                 <option value="Low">Low</option>
@@ -158,7 +158,7 @@
             </select>
         </div>
 
-        <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg shadow">
+        <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-black px-6 py-2 m-8 rounded-lg shadow">
             Submit Report
         </button>
     </form>

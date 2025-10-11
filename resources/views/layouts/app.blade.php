@@ -19,12 +19,59 @@
             </a>
 
             <!-- Navigation Links -->
-            <div class="hidden md:flex items-center space-x-6">
-                <a href="{{ route('home') }}" class="text-base font-semibold text-gray-800 hover:text-indigo-600 transition">Home</a>
-                <a href="{{ route('reports.index') }}" class="text-base font-semibold text-gray-800 hover:text-indigo-600 transition">Reports</a>
-                <a href="{{ route('resident.announcements') }}" class="text-base font-semibold text-gray-800 hover:text-indigo-600 transition">Announcements</a>
-                <a href="{{ route('resident.services') }}" class="text-base font-semibold text-gray-800 hover:text-indigo-600 transition">Services</a>
-                <a href="{{ route('resident.about') }}" class="text-base font-semibold text-gray-800 hover:text-indigo-600 transition">About</a>
+            <div class="hidden md:flex items-center">
+                <a href="{{ route('home') }}" class="p-2 text-base font-semibold text-gray-800 hover:text-indigo-600 transition">Home</a>
+                <a href="{{ route('reports.index') }}" class="p-2 text-base font-semibold text-gray-800 hover:text-indigo-600 transition">Reports</a>
+                <a href="{{ route('resident.announcements') }}" class="p-2 text-base font-semibold text-gray-800 hover:text-indigo-600 transition">Announcements</a>
+                <a href="{{ route('resident.services') }}" class="p-2 text-base font-semibold text-gray-800 hover:text-indigo-600 transition">Services</a>
+                <a href="{{ route('resident.about') }}" class="p-2 text-base font-semibold text-gray-800 hover:text-indigo-600 transition">About</a>
+
+               <!-- Notification Bell -->
+                <div x-data="{ open: false }" class="p-2 relative">
+                    <button @click="open = !open" class="relative text-gray-600 hover:text-indigo-600 focus:outline-none">
+                        <!-- Bell icon -->
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 
+                                    6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 
+                                    6.165 6 8.388 6 11v3.159c0 .538-.214 
+                                    1.055-.595 1.436L4 17h5m6 0v1a3 3 
+                                    0 11-6 0v-1m6 0H9" />
+                        </svg>
+
+                        <!-- Unread count badge -->
+                        @php
+                            $unreadCount = Auth::check() ? Auth::user()->unreadNotifications()->count() : 0;
+                        @endphp
+                        @if($unreadCount > 0)
+                            <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold rounded-full px-1.5">
+                                {{ $unreadCount }}
+                            </span>
+                        @endif
+                    </button>
+
+                    <!-- Dropdown -->
+                    <div x-show="open" @click.away="open = false" x-transition
+                        class="absolute right-0 mt-2 min-w-[20rem] bg-white border border-gray-200 rounded-lg shadow-lg z-50 max-h-80 overflow-y-auto">
+
+                        @if(Auth::check() && Auth::user()->notifications->count())
+                            <div class="flex justify-between items-center px-4 py-2">
+                                <span class="text-sm font-semibold">Notifications</span>
+                            </div>
+
+                            @foreach(Auth::user()->notifications as $notification)
+                                <a href="{{ route('reports.index') }}"
+                                    class="block px-4 py-2 text-sm border-b hover:bg-gray-50 
+                                    {{ $notification->read_at ? 'text-gray-600' : 'font-bold text-gray-800' }}">
+                                    {{ $notification->data['message'] ?? 'New Notification' }}
+                                </a>
+                            @endforeach
+                        @else
+                            <div class="px-4 py-2 text-sm text-gray-500">No notifications</div>
+                        @endif
+                    </div>
+                </div>
 
                 @auth
                 <div x-data="{ open: false }" class="relative">

@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\AdminUserController;
@@ -26,6 +27,15 @@ Route::get('/resident/announcements/{id}', [ResidentAnnouncementController::clas
 // Reports (public submission)
 Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
 Route::post('/reports', [ReportController::class, 'store'])->name('reports.store');
+Route::get('/reports/{report}', [ReportController::class, 'show'])->name('reports.show');
+
+// Notification
+Route::post('/notifications/mark-all-read', function () {
+    if (Auth::check()) {
+        Auth::user()->unreadNotifications->markAsRead();
+    }
+    return back();
+})->name('notifications.markAllRead');
 
 // Authenticated users
 Route::middleware(['auth'])->group(function () {
