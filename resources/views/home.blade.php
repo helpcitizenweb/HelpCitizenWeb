@@ -15,8 +15,8 @@
 
                     <!-- Track Report Status -->
                     @auth
-                    <a href="{{ route('reports.index') }}" class="bg-white text-gray-700 px-6 py-3 rounded-md border hover:bg-gray-100 transition">
-                        Track Report Status
+                    <a href="{{ route('report.process') }}" class="bg-white text-gray-700 px-6 py-3 rounded-md border hover:bg-gray-100 transition">
+                    Track Report Status
                     </a>
                     @else
                     <button @click="openModal = true" class="bg-white text-gray-700 px-6 py-3 rounded-md border hover:bg-gray-100 transition">
@@ -24,6 +24,7 @@
                     </button>
                     @endauth
                 </div>
+
             </div>
 
             <div class="md:w-1/2">

@@ -1,11 +1,9 @@
 @extends('layouts.admin')  
 
 @section('content')
-    <div class="container mx-auto mt-10 px-4">
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-            <!-- Main Dashboard Content -->
-            <div class="col-span-3">
-                <div class="bg-white shadow-xl rounded-xl p-8 border border-gray-100">
+    <div class="container mx-auto mt-10 px-4 flex justify-center">
+    <div class="w-full max-w-5xl">
+        <div class="bg-white shadow-xl rounded-xl p-8 border border-gray-100">
                     <h3 class="text-3xl font-bold mb-4 text-primary">Welcome, Admin</h3>
                     <p class="text-gray-600 mb-6 text-lg">Oversee reports, users, announcements, and community updates.</p>
 
