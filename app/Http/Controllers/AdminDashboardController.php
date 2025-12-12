@@ -11,7 +11,7 @@ class AdminDashboardController extends Controller
 {
     public function index()
     {
-        // Get the count of users, reports, announcements, and services
+        // Get the count of users, reports, announcements, and services hello there
         $userCount = User::count();
         $reportCount = Report::count();
         $announcementCount = Announcement::count();
