@@ -11,6 +11,9 @@ use App\Http\Controllers\AdminServiceController;
 use App\Http\Controllers\ResidentServiceController;
 use App\Http\Controllers\ResidentAnnouncementController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\ReportHistoryController; // we added this
+use App\Http\Controllers\ReportProcessController;// we added this
+use App\Http\Controllers\ResponseController;
 
 Route::get('/', function () {
     return view('home'); 
@@ -27,6 +30,14 @@ Route::get('/resident/announcements/{id}', [ResidentAnnouncementController::clas
 // Reports (public submission)
 Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
 Route::post('/reports', [ReportController::class, 'store'])->name('reports.store');
+//we added this 
+Route::delete('/reports/{report}', [ReportController::class, 'destroy'])->name('reports.destroy');
+Route::get('/reports/{report}/full', [ReportController::class, 'fullReport'])->name('reports.full');
+
+Route::post('/reports/{report}/update-status',
+    [App\Http\Controllers\ReportController::class, 'updateStatus']
+)->name('reports.updateStatus')->middleware('auth');
+
 Route::get('/reports/{report}', [ReportController::class, 'show'])->name('reports.show');
 
 // Notification
@@ -45,6 +56,15 @@ Route::middleware(['auth'])->group(function () {
 
     // Shared Profile (Fallback route if needed)
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    // 📌 Report History & Processing Available to ALL logged-in users
+    Route::get('/report-history', [ReportHistoryController::class, 'index'])->name('report.history');
+
+      Route::get('/report-process', [ReportProcessController::class, 'index'])
+    ->name('report.process');
+
+Route::delete('/report-process/{report}', [ReportProcessController::class, 'destroy'])
+    ->name('report.process.destroy');
+
 
     // 🔒 Admin Profile
     Route::middleware(['role:admin'])->group(function () {
@@ -65,6 +85,21 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/admin/reports/{report}', [AdminReportController::class, 'show'])->name('admin.reports.show');
         Route::put('/admin/reports/{report}/status', [AdminReportController::class, 'updateStatus'])->name('admin.reports.updateStatus');
         Route::put('/admin/reports/{report}/resolution', [AdminReportController::class, 'updateResolution'])->name('admin.reports.updateResolution');
+       Route::get('/admin/reports/{report}/viewreport',
+    [ResponseController::class, 'showViewReport']
+)->name('admin.reports.viewreport');
+Route::get('/admin/reports/{report}/response',
+    [ResponseController::class, 'createResponseForm']
+)->name('admin.reports.response');
+Route::post('/admin/reports/{report}/response/save',
+    [ResponseController::class, 'storeResponse']
+)->name('admin.reports.storeResponse');
+Route::put('/admin/reports/{report}/update-status',
+    [App\Http\Controllers\ResponseController::class, 'updateStatus'])
+    ->name('admin.reports.updateStatus');
+
+
+
 
         // Announcements
         Route::get('/admin/announcements', [AdminAnnouncementsController::class, 'index'])->name('admin.announcements.index');
