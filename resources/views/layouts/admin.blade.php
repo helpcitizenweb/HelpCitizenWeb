@@ -21,12 +21,12 @@
 
 <body class="bg-gray-100">
 
+    <!-- Top Navigation -->
     @include('layouts.navigation')
 
-    <div class="flex min-h-screen space-x-4 px-6 pt-6">
-        @include('admin.admin-sidebar')
-
-        <main class="flex-1">
+    <!-- CONTENT AREA (NO SIDEBAR ANYMORE) -->
+    <div class="px-6 pt-6">
+        <main>
             @yield('content')
         </main>
     </div>
@@ -34,15 +34,14 @@
     <!-- SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    <!-- Lucide Icons (if needed) -->
-    <script src="https://unpkg.com/lucide@latest" defer></script>
+    <!-- Lucide Icons -->
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', () => {
             lucide.createIcons();
         });
     </script>
 
     @stack('scripts')
-</body>
 
+</body>
 </html>

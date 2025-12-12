@@ -12,37 +12,74 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden sm:flex items-center space-x-8 sm:ml-10">
-                <a href="{{ route('admin.dashboard') }}"
-                    class="inline-flex items-center px-1 pt-3 pb-2 border-b-2 text-sm font-medium leading-5
-                        {{ request()->routeIs('dashboard') ? 'border-indigo-500 text-gray-900' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }}">
-                    {{ __('Dashboard') }}
-                </a>
 
-                </div>
+    {{-- Dashboard --}}
+    <a href="{{ route('admin.dashboard') }}"
+        class="inline-flex items-center px-1 pt-3 pb-2 border-b-2 text-sm font-medium leading-5
+               {{ request()->routeIs('admin.dashboard') ? 'border-indigo-500 text-gray-900'
+                                                        : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }}">
+        Dashboard
+    </a>
+
+    {{-- Manage Users --}}
+    <a href="{{ route('admin.users') }}"
+        class="inline-flex items-center px-1 pt-3 pb-2 border-b-2 text-sm font-medium leading-5
+               {{ request()->routeIs('admin.users') ? 'border-indigo-500 text-gray-900'
+                                                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }}">
+        Manage Users
+    </a>
+
+    {{-- Manage Reports --}}
+    <a href="{{ route('admin.reports') }}"
+        class="inline-flex items-center px-1 pt-3 pb-2 border-b-2 text-sm font-medium leading-5
+               {{ request()->routeIs('admin.reports') ? 'border-indigo-500 text-gray-900'
+                                                      : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }}">
+        Manage Reports
+    </a>
+
+    {{-- Announcements --}}
+    <a href="{{ route('admin.announcements.index') }}"
+        class="inline-flex items-center px-1 pt-3 pb-2 border-b-2 text-sm font-medium leading-5
+               {{ request()->routeIs('admin.announcements.index') ? 'border-indigo-500 text-gray-900'
+                                                                   : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }}">
+        Announcements
+    </a>
+
+    {{-- Services --}}
+    <a href="{{ route('admin.services.index') }}"
+        class="inline-flex items-center px-1 pt-3 pb-2 border-b-2 text-sm font-medium leading-5
+               {{ request()->routeIs('admin.services.index') ? 'border-indigo-500 text-gray-900'
+                                                             : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }}">
+        Services
+    </a>
+
+</div>
+
             </div>
 
             <!-- Settings Dropdown -->
             <div class="hidden sm:flex sm:items-center sm:ml-6">
-                
+
                 <!-- Notifications -->
                 <div x-data="{ open: false }" class="relative">
-                    <button @click="open = !open" class="mt-2 text-gray-600 hover:text-indigo-600 focus:outline-none relative">
+                    <button @click="open = !open"
+                        class="mt-2 text-gray-600 hover:text-indigo-600 focus:outline-none relative">
                         <!-- Bell Icon -->
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none"
-                            viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 
-                                6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 
-                                6.165 6 8.388 6 11v3.159c0 .538-.214 
-                                1.055-.595 1.436L4 17h5m6 0v1a3 3 
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002
+                                6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67
+                                6.165 6 8.388 6 11v3.159c0 .538-.214
+                                1.055-.595 1.436L4 17h5m6 0v1a3 3
                                 0 11-6 0v-1m6 0H9" />
                         </svg>
                         <!-- Badge -->
                         @php
                             $unreadCount = Auth::check() ? Auth::user()->unreadNotifications()->count() : 0;
                         @endphp
-                        @if($unreadCount > 0)
-                            <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold rounded-full px-1.5">
+                        @if ($unreadCount > 0)
+                            <span
+                                class="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold rounded-full px-1.5">
                                 {{ $unreadCount }}
                             </span>
                         @endif
@@ -52,18 +89,18 @@
                     <div x-show="open" @click.away="open = false"
                         class="absolute right-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg z-50 w-80 max-h-80 overflow-y-auto">
 
-                        @if(Auth::check() && Auth::user()->notifications->count())
+                        @if (Auth::check() && Auth::user()->notifications->count())
                             <div class="flex justify-between items-center px-4 py-2 border-b">
                                 <span class="text-sm font-semibold">Notifications</span>
                             </div>
 
-                            @foreach(Auth::user()->notifications as $notification)
+                            @foreach (Auth::user()->notifications as $notification)
                                 @php
                                     $reportId = $notification->data['report_id'] ?? null;
                                     $url = $reportId ? url('/admin/reports/' . $reportId) : '#';
                                 @endphp
                                 <a href="{{ $url }}"
-                                class="block px-4 py-2 text-sm border-b hover:bg-gray-50 transition 
+                                    class="block px-4 py-2 text-sm border-b hover:bg-gray-50 transition 
                                 {{ $notification->read_at ? 'text-gray-600' : 'font-bold text-gray-800' }}">
                                     {{ $notification->data['message'] ?? 'New Notification' }}
                                 </a>
@@ -76,11 +113,15 @@
 
                 <x-dropdown width="48">
                     <x-slot name="trigger">
-                        <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
+                        <button
+                            class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
                             <div>{{ Auth::user()->name }}</div>
                             <div class="ml-1">
-                                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
+                                    viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd"
+                                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                        clip-rule="evenodd" />
                                 </svg>
                             </div>
                         </button>
@@ -96,7 +137,7 @@
                             @csrf
 
                             <x-dropdown-link :href="route('logout')"
-                                    onclick="event.preventDefault();
+                                onclick="event.preventDefault();
                                                 this.closest('form').submit();">
                                 {{ __('Log Out') }}
                             </x-dropdown-link>
@@ -107,10 +148,14 @@
 
             <!-- Hamburger Menu -->
             <div class="-mr-2 flex items-center sm:hidden">
-                <button @click="open = ! open" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out">
+                <button @click="open = ! open"
+                    class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out">
                     <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
-                        <path :class="{'hidden': open, 'inline-flex': ! open }" class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                        <path :class="{'hidden': ! open, 'inline-flex': open }" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        <path :class="{ 'hidden': open, 'inline-flex': !open }" class="inline-flex"
+                            stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 6h16M4 12h16M4 18h16" />
+                        <path :class="{ 'hidden': !open, 'inline-flex': open }" class="hidden" stroke-linecap="round"
+                            stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                     </svg>
                 </button>
             </div>
@@ -118,7 +163,7 @@
     </div>
 
     <!-- Responsive Navigation Menu -->
-    <div :class="{'block': open, 'hidden': ! open}" class="sm:hidden">
+    <div :class="{ 'block': open, 'hidden': !open }" class="sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
@@ -142,7 +187,7 @@
                     @csrf
 
                     <x-responsive-nav-link :href="route('logout')"
-                            onclick="event.preventDefault();
+                        onclick="event.preventDefault();
                                         this.closest('form').submit();">
                         {{ __('Log Out') }}
                     </x-responsive-nav-link>

@@ -22,6 +22,8 @@
             <div class="hidden md:flex items-center">
                 <a href="{{ route('home') }}" class="p-2 text-base font-semibold text-gray-800 hover:text-indigo-600 transition">Home</a>
                 <a href="{{ route('reports.index') }}" class="p-2 text-base font-semibold text-gray-800 hover:text-indigo-600 transition">Reports</a>
+                <a href="{{ route('report.history') }}" class="p-2 text-base font-semibold text-gray-800 hover:text-indigo-600 transition">Report Logs</a>
+
                 <a href="{{ route('resident.announcements') }}" class="p-2 text-base font-semibold text-gray-800 hover:text-indigo-600 transition">Announcements</a>
                 <a href="{{ route('resident.services') }}" class="p-2 text-base font-semibold text-gray-800 hover:text-indigo-600 transition">Services</a>
                 <a href="{{ route('resident.about') }}" class="p-2 text-base font-semibold text-gray-800 hover:text-indigo-600 transition">About</a>
@@ -127,6 +129,11 @@
         <div x-data="{ open: false }" x-show="open" class="md:hidden px-4 pb-4">
             <a href="{{ route('home') }}" class="block py-2 text-gray-700 hover:text-indigo-600">Home</a>
             <a href="{{ route('reports.index') }}" class="block py-2 text-gray-700 hover:text-indigo-600">Reports</a>
+            <a href="{{ route('report.history') }}" 
+   class="block py-2 text-gray-700 hover:text-indigo-600">
+   Report Logs
+</a>
+
             <a href="{{ route('resident.services') }}" class="block py-2 text-gray-700 hover:text-indigo-600">Services</a>
             <a href="{{ route('resident.about') }}" class="block py-2 text-gray-700 hover:text-indigo-600">About</a>
 
