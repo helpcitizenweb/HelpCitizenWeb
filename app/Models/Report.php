@@ -91,4 +91,9 @@ class Report extends Model
 {
     return $this->hasOne(Response::class, 'report_id');
 }
+public function feedback()
+{
+    return $this->hasOne(Feedback::class);
+}
+
 }

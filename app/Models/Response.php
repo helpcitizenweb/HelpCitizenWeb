@@ -59,4 +59,9 @@ class Response extends Model
     {
         return $this->belongsTo(Report::class, 'report_id');
     }
+    public function feedback()
+{
+    return $this->hasOne(Feedback::class, 'response_id', 'response_id');
+}
+
 }
