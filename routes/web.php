@@ -14,6 +14,7 @@ use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ReportHistoryController; // we added this
 use App\Http\Controllers\ReportProcessController;// we added this
 use App\Http\Controllers\ResponseController;
+use App\Http\Controllers\FeedbackController; // this is new
 
 Route::get('/', function () {
     return view('home'); 
@@ -59,6 +60,32 @@ Route::middleware(['auth'])->group(function () {
     // 📌 Report History & Processing Available to ALL logged-in users
     Route::get('/report-history', [ReportHistoryController::class, 'index'])->name('report.history');
 
+    // ✅ Feedback (Resident Rating)
+Route::get(
+    '/reports/{report}/feedback',
+    [FeedbackController::class, 'create']
+)->name('feedback.create');
+   // this is where we store the feedback
+Route::post(
+    '/reports/{report}/feedback',
+    [FeedbackController::class, 'store']
+)->name('feedback.store');
+// Admin submits response to feedback
+
+Route::get(
+    '/admin/reports/{report}/feedback',
+    [FeedbackController::class, 'feedbackReview']
+)->name('admin.reports.feedback');
+
+// Admin responds to resident feedback
+Route::post(
+    '/admin/feedback/{feedback}/respond',
+    [FeedbackController::class, 'adminRespond']
+)->name('admin.feedback.respond');
+
+
+/////////////////////////////////////////////////////////////
+
       Route::get('/report-process', [ReportProcessController::class, 'index'])
     ->name('report.process');
 
@@ -88,16 +115,18 @@ Route::delete('/report-process/{report}', [ReportProcessController::class, 'dest
        Route::get('/admin/reports/{report}/viewreport',
     [ResponseController::class, 'showViewReport']
 )->name('admin.reports.viewreport');
+
 Route::get('/admin/reports/{report}/response',
     [ResponseController::class, 'createResponseForm']
 )->name('admin.reports.response');
+
 Route::post('/admin/reports/{report}/response/save',
     [ResponseController::class, 'storeResponse']
 )->name('admin.reports.storeResponse');
+
 Route::put('/admin/reports/{report}/update-status',
     [App\Http\Controllers\ResponseController::class, 'updateStatus'])
     ->name('admin.reports.updateStatus');
-
 
 
 

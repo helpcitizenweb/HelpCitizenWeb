@@ -22,11 +22,11 @@
             </button>
 
             <button 
-    @click="tab = 'viewresponse'"
-    :class="tab === 'viewresponse' ? 'bg-green-700 text-white' : 'bg-gray-200'"
-    class="px-4 py-2 rounded-lg font-semibold">
-    ⚙️ View Response
-</button>
+                @click="tab = 'viewresponse'"
+                :class="tab === 'viewresponse' ? 'bg-green-700 text-white' : 'bg-gray-200'"
+                class="px-4 py-2 rounded-lg font-semibold">
+                ⚙️ View Response
+           </button>
 
 
 
@@ -66,11 +66,12 @@
 
         <!-- ================= TAB 4: FEEDBACK ================= -->
         <div x-show="tab === 'feedback'" x-cloak>
-            <div class="bg-white p-6 rounded-xl shadow">
-                <h2 class="text-xl font-bold">⭐ Feedback</h2>
-                <p class="text-gray-600 mt-2">No feedback available yet.</p>
-            </div>
-        </div>
+    @include('admin.reports.partials.feedback_review', [
+        'report' => $report,
+        'feedback' => $feedback
+    ])
+</div>
+
 
     </div>
 </div>
