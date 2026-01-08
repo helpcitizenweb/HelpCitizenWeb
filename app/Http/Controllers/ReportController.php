@@ -70,7 +70,9 @@ class ReportController extends Controller
             //->route('reports.index')
             ->route('report.process')
             ->with('success', "Report {$report->id} created successfully.");
-    } // end on this line
+    } 
+    
+    // end on this line
 
     public function show(Report $report)
     {

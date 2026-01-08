@@ -25,7 +25,7 @@ class AdminReportController extends Controller
     public function show(Report $report)
     {
         return view('admin.reports.show', compact('report'));
-    }
+    } 
 
     // -------------------------------------------------------------------
     // UPDATED updateStatus() — saves BASIC + FULL resolution datag

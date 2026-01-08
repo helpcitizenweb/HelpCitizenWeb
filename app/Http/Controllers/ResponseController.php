@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Report;
 use App\Models\Response;
+use App\Models\Feedback;
 use Illuminate\Http\Request;
 
 class ResponseController extends Controller
@@ -11,8 +12,10 @@ class ResponseController extends Controller
     public function showViewReport(Report $report)
     {
          $response = $report->response; // this part has been added
-        //return view('admin.reports.viewreport', compact('report'));
-        return view('admin.reports.viewreport', compact('report', 'response'));
+       // $feedback = Feedback::where('report_id', $report->id)->first();
+        $feedback = $report->feedback;
+       // return view('admin.reports.viewreport', compact('report'));
+        return view('admin.reports.viewreport', compact('report', 'response','feedback'));
     }
 
     public function createResponseForm(Report $report)
@@ -257,7 +260,7 @@ public function updateStatus(Request $request, Report $report)
 
     return redirect()
         ->route('admin.reports.viewreport', $report->id)
-        ->with('success', 'Response saved successfully.');
+        ->with('success', value: 'Response saved successfully.');
 }
 
 }
