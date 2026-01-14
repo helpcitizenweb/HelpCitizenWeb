@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Notifications\AdminRespondedNotification;
+use App\Notifications\ReportStatusUpdatedNotification;
+
 use App\Models\Report;
 use App\Models\Response;
 use App\Models\Feedback;
@@ -37,6 +40,14 @@ public function updateStatus(Request $request, Report $report)
 
     $report->status = $validated['status'];
     $report->save();
+     // 🔔 Notify ONLY the report owner
+    $resident = $report->user;
+
+    if ($resident) {
+        $resident->notify(
+            new ReportStatusUpdatedNotification($report, $validated['status'])
+        );
+    }
 
     return redirect()->back()->with('success', 'Status updated successfully.');
 }
@@ -253,6 +264,12 @@ public function updateStatus(Request $request, Report $report)
     }
 
     $response->save();
+
+    $resident = $report->user;
+
+if ($resident) {
+    $resident->notify(new AdminRespondedNotification($report));
+}
 
     // Update report status
     $report->status = 'Action';

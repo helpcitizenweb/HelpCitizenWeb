@@ -63,7 +63,7 @@
                             </div>
 
                             @foreach(Auth::user()->notifications as $notification)
-                                <a href="{{ route('reports.index') }}"
+                                <a href="{{ $notification->data['url'] ?? route('reports.index') }}"
                                     class="block px-4 py-2 text-sm border-b hover:bg-gray-50 
                                     {{ $notification->read_at ? 'text-gray-600' : 'font-bold text-gray-800' }}">
                                     {{ $notification->data['message'] ?? 'New Notification' }}

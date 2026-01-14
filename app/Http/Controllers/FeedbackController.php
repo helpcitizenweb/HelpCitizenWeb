@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Feedback;
 use App\Models\Report;
+use App\Notifications\ResidentRatedReportNotification;
+use App\Notifications\AdminRepliedToFeedbackNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -73,10 +75,28 @@ class FeedbackController extends Controller
             'feedback_time' => now()->toTimeString(),
         ]);
 
+        // 🔔 Notify admins that a resident submitted feedback
+$admins = \App\Models\User::where('role', 'admin')->get();
+$residentName = Auth::user()->name;
+
+foreach ($admins as $admin) {
+    $admin->notify(
+        new \App\Notifications\ResidentRatedReportNotification(
+            $report,
+            $residentName
+        )
+    );
+}
+
+
+
         return redirect()
             ->route('report.history')
             ->with('success', 'Thank you! Your feedback has been submitted.');
     }
+
+
+    ///next line
     public function adminRespond(Request $request, Feedback $feedback)
 {
     // Prevent double response
@@ -94,11 +114,25 @@ class FeedbackController extends Controller
         'admin_responded_at' => now(),
     ]);
 
+    // 🔔 Notify the resident who submitted the feedback
+    $resident = $feedback->user;
+
+    if ($resident) {
+        $resident->notify(
+            new AdminRepliedToFeedbackNotification($feedback)
+        );
+    }
+
     return back()->with('success', 'Admin response submitted successfully.');
 }
 public function feedbackReview(Report $report)
 {
-    return view('admin.reports.feedback_review', compact('report'));
+    // get the feedback related to this report
+    $feedback = $report->feedback; // or Feedback::where('report_id', $report->id)->first();
+
+   // return view('admin.reports.feedback_review', compact('report'));
+    return view('admin.reports.partials.feedback_review', compact('report', 'feedback'));
+
 }
 
 }

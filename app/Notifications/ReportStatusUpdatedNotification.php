@@ -6,17 +6,17 @@ use App\Models\Report;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 
-class ReportStatusNotification extends Notification
+class ReportStatusUpdatedNotification extends Notification
 {
     use Queueable;
 
     protected $report;
-    protected $message;
+    protected $newStatus;
 
-    public function __construct(Report $report, $message)
+    public function __construct(Report $report, string $newStatus)
     {
         $this->report = $report;
-        $this->message = $message;
+        $this->newStatus = $newStatus;
     }
 
     public function via($notifiable)
@@ -28,10 +28,8 @@ class ReportStatusNotification extends Notification
     {
         return [
             'report_id' => $this->report->id,
-            'message'   => $this->message,
-           // 'url'       => url("/admin/reports/{$this->report->id}"),
-            'url' => route('admin.reports.viewreport', $this->report->id),
-
+            'message'   => "Your report (ID #{$this->report->id}) status has been updated to {$this->newStatus}.",
+            'url'       => route('reports.full', $this->report->id),
         ];
     }
 }

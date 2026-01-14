@@ -222,10 +222,40 @@
             @csrf
 
             <label class="inline-flex items-center space-x-2">
-                <input type="checkbox" name="status" value="Resolved" onchange="this.form.submit()">
+                <input type="checkbox"
+       name="status"
+       value="Resolved"
+       onchange="
+           if(confirm('Are you sure this issue has been fully resolved?')) {
+               this.form.submit();
+           } else {
+               this.checked = false;
+           }
+       ">
+
                 <span class="font-medium text-gray-700">Yes, this issue has been resolved.</span>
             </label>
         </form>
+
+    </div>
+@endif
+{{-- Resident Feedback Button --}}
+@if ($report->status === 'Resolved')
+    <div class="mt-6 p-4 border rounded bg-green-50 text-center">
+
+        <h3 class="text-lg font-semibold text-green-700 mb-2">
+            ⭐ Case Resolved
+        </h3>
+
+        <p class="text-gray-600 mb-4">
+            Your report has been successfully resolved.  
+            We’d appreciate your feedback to help us improve our services.
+        </p>
+
+        <a href="{{ route('feedback.create', $report->id) }}"
+           class="inline-block px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-md text-sm transition">
+            Rate This Service
+        </a>
 
     </div>
 @endif

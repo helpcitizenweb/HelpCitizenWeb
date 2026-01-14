@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Report;
 use App\Models\User;
 use App\Notifications\ReportStatusNotification;
+use App\Notifications\ResolvedNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -117,8 +118,22 @@ public function updateStatus(Request $request, Report $report)
         'status' => 'required|string'
     ]);
 
+    // Prevent duplicate notifications
+    $oldStatus = $report->status;
+
     $report->status = $request->status;
     $report->save();
+
+    // 🔔 Notify admins ONLY when resolved
+    if ($oldStatus !== 'Resolved' && $request->status === 'Resolved') {
+
+        $admins = User::where('role', 'admin')->get();
+
+        foreach ($admins as $admin) {
+            $admin->notify(new ResolvedNotification($report));
+        }
+    }
+
 
     return back()->with('success', 'Report status updated successfully.');
 }

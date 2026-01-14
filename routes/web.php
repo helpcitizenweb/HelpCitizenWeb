@@ -34,7 +34,7 @@ Route::post('/reports', [ReportController::class, 'store'])->name('reports.store
 //we added this 
 Route::delete('/reports/{report}', [ReportController::class, 'destroy'])->name('reports.destroy');
 Route::get('/reports/{report}/full', [ReportController::class, 'fullReport'])->name('reports.full');
-
+//bellow this is respobsible for changing the status on the fullreport.blade.php
 Route::post('/reports/{report}/update-status',
     [App\Http\Controllers\ReportController::class, 'updateStatus']
 )->name('reports.updateStatus')->middleware('auth');

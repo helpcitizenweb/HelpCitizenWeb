@@ -96,8 +96,7 @@
 
                             @foreach (Auth::user()->notifications as $notification)
                                 @php
-                                    $reportId = $notification->data['report_id'] ?? null;
-                                    $url = $reportId ? url('/admin/reports/' . $reportId) : '#';
+                                   $url = $notification->data['url'] ?? '#';
                                 @endphp
                                 <a href="{{ $url }}"
                                     class="block px-4 py-2 text-sm border-b hover:bg-gray-50 transition 

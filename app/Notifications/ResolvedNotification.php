@@ -5,18 +5,17 @@ namespace App\Notifications;
 use App\Models\Report;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
+use Illuminate\Notifications\Messages\DatabaseMessage;
 
-class ReportStatusNotification extends Notification
+class ResolvedNotification extends Notification
 {
     use Queueable;
 
     protected $report;
-    protected $message;
 
-    public function __construct(Report $report, $message)
+    public function __construct(Report $report)
     {
         $this->report = $report;
-        $this->message = $message;
     }
 
     public function via($notifiable)
@@ -27,11 +26,10 @@ class ReportStatusNotification extends Notification
     public function toDatabase($notifiable)
     {
         return [
+            'title'   => 'Case Resolved',
+            'message' => "Report ID {$this->report->id} has been confirmed resolved by the resident.",
+            'url'     => route('admin.reports.viewreport', $this->report->id),
             'report_id' => $this->report->id,
-            'message'   => $this->message,
-           // 'url'       => url("/admin/reports/{$this->report->id}"),
-            'url' => route('admin.reports.viewreport', $this->report->id),
-
         ];
     }
 }

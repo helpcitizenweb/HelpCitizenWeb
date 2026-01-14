@@ -3,7 +3,13 @@
 @section('content')
 <div class="max-w-5xl mx-auto p-6">
 
-    <div x-data="{ tab: 'full' }" class="space-y-6">
+   <div 
+    x-data="{ 
+        tab: new URLSearchParams(window.location.search).get('tab') || 'full' 
+    }" 
+    class="space-y-6"
+>
+
 
         <!-- TAB BUTTONS -->
         <div class="flex space-x-4 border-b pb-2">

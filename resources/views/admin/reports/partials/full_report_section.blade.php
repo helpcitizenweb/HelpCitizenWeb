@@ -9,22 +9,33 @@
     </p>
 
     <!-- Update Status Form -->
-    <form action="{{ route('admin.reports.updateStatus', $report->id) }}" method="POST" class="flex items-center space-x-3">
-    @csrf
-    @method('PUT')
+@if ($report->status !== 'Resolved')
+    <form action="{{ route('admin.reports.updateStatus', $report->id) }}"
+          method="POST"
+          class="flex items-center space-x-3">
+        @csrf
+        @method('PUT')
 
-    <select name="status" class="border border-gray-300 rounded px-3 py-1">
-        <option value="Pending"      {{ $report->status === 'Pending' ? 'selected' : '' }}>Pending</option>
-        <option value="In Progress"  {{ $report->status === 'In Progress' ? 'selected' : '' }}>In Progress</option>
-        <option value="Action"       {{ $report->status === 'Action' ? 'selected' : '' }}>Action</option>
-        <option value="Cancel"       {{ $report->status === 'Cancel' ? 'selected' : '' }}>Cancel</option>
-    </select>
+        <select name="status" class="border border-gray-300 rounded px-3 py-1">
+            <option value="Pending"      {{ $report->status === 'Pending' ? 'selected' : '' }}>Pending</option>
+            <option value="In Progress"  {{ $report->status === 'In Progress' ? 'selected' : '' }}>In Progress</option>
+            <option value="Action"       {{ $report->status === 'Action' ? 'selected' : '' }}>Action</option>
+            <option value="Cancel"       {{ $report->status === 'Cancel' ? 'selected' : '' }}>Cancel</option>
+        </select>
 
-    <button type="submit"
-            class="bg-blue-600 text-white px-4 py-1 rounded hover:bg-blue-700 transition">
-        Update
-    </button>
-</form>
+        <button type="submit"
+                class="bg-blue-600 text-white px-4 py-1 rounded hover:bg-blue-700 transition">
+            Update
+        </button>
+    </form>
+@else
+    <div class="p-3 bg-green-50 border border-green-200 rounded">
+        <p class="text-green-700 font-medium">
+            ✅ This report has been resolved and can no longer be updated.
+        </p>
+    </div>
+@endif
+
 
 </div>
 
