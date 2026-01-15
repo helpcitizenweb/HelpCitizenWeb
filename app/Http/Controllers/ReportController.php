@@ -29,11 +29,10 @@ class ReportController extends Controller
             'subtype'     => 'required|string',
 
             'location'    => 'nullable|string',
-            'urgency'     => 'nullable|string',
             'casualties'  => 'nullable|integer|min:0',
             'gender'      => 'nullable|string',
-            'image'       => 'nullable|image|max:2048',
-            'video' => 'nullable|mimetypes:video/mp4,video/avi,video/mpeg,video/quicktime|max:20480',
+            'image'       => 'nullable|image|max:2048|required_without:video',
+            'video' => 'nullable|mimetypes:video/mp4,video/avi,video/mpeg,video/quicktime|max:20480|required_without:image',
         ]);
 
         $validated['user_id'] = Auth::id();

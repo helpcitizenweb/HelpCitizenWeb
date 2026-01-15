@@ -146,7 +146,7 @@ public function updateStatus(Request $request, Report $report)
             'evacuation_transport'      => $pick('evacuation_transport'),
             'evacuation_transport_unit' => $pickNum('evacuation_transport_unit'),
             'water_rescue_response_unit' => $pick('water_rescue_response_unit'),
-            'rubber_boat_units'          => $pickNum('rubber_boat_units'),
+            //'rubber_boat_units'          => $pickNum('rubber_boat_units'),
             'lifeguard_rescue_personnel' => $pick('lifeguard_rescue_personnel'),
             'search_rescue_team'        => $pick('search_rescue_team'),
             'safety_and_security'       => $pick('safety_and_security'),
