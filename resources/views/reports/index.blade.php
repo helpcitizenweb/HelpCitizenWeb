@@ -1,8 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="max-w-3xl bg-white p-8 rounded-lg shadow-md m-8">
-        <h2 class="text-2xl font-bold text-gray-800 p-4">Submit a Reports</h2>
+    <div class="max-w-3xl bg-white p-8 rounded-lg shadow-md mx-auto my-8">
+
+        <h2 class="text-2xl font-bold text-gray-800 p-4">Submit a Report</h2>
 
         @if (session('success'))
             <div x-data="{ show: true }" x-show="show" x-transition x-init="setTimeout(() => show = false, 3000)"
@@ -62,12 +63,12 @@
 
                 <div>
                     <label class="block text-gray-700 font-medium mb-2 focus:ring-indigo-500">Type of Report</label>
-                    <select id="type" name="type" class="border border-gray-300 rounded-lg p-2 w-full">
+                    <select id="type" name="type" class="border border-gray-300 rounded-lg p-2 w-full" required>
                         <option value="">Select type</option>
                         <option value="Emergencies">Emergencies</option>
                         <option value="Accidents">Accidents</option>
                         <option value="Complaints">Complaints</option>
-                        <option value="Suggestions">Suggestions</option>
+                        <option value="Services">Services</option>
                         <option value="Others">Others</option>
                     </select>
                 </div>
@@ -112,20 +113,30 @@
 
                 <div>
                     <label for="location" class="block text-gray-700 font-medium mb-1">Location / Address</label>
-                    <textarea name="location" id="location" rows="2" class="w-full border-gray-300 rounded-lg shadow-sm"
-                        placeholder="e.g. Purok 1, near barangay hall"></textarea>
+                    <textarea name="location" id="location" rows="2"
+    class="w-full border-gray-300 rounded-lg shadow-sm"
+    placeholder="e.g. Purok 1, near barangay hall"
+    required></textarea>
+
                 </div>
 
                 <div>
-                    <label for="image" class="block text-gray-700 font-medium mb-1">Upload Image (Optional)</label>
-                    <input type="file" name="image" id="image" accept="image/*"
-                        class="block w-full text-sm text-gray-700
-                    file:mr-4 file:py-2 file:px-4
-                    file:rounded-lg file:border-0
-                    file:text-sm file:font-semibold
-                    file:bg-blue-50 file:text-blue-700
-                    hover:file:bg-blue-100 transition duration-150"
-                        onchange="previewImage(event)">
+                    <label for="image" class="block text-gray-700 font-medium mb-1">Upload Image (Required)</label>
+                    <input type="file"
+    name="image"
+    id="image"
+    accept="image/*"
+    required
+    oninvalid="this.setCustomValidity('Please upload an image before submitting')"
+    oninput="this.setCustomValidity('')"
+    onchange="previewImage(event)"
+    class="block w-full text-sm text-gray-700
+    file:mr-4 file:py-2 file:px-4
+    file:rounded-lg file:border-0
+    file:text-sm file:font-semibold
+    file:bg-blue-50 file:text-blue-700
+    hover:file:bg-blue-100 transition duration-150">
+
 
                     <div id="image-preview" class="mt-4 hidden">
                         <p class="text-sm text-gray-600 mb-2">Image Preview:</p>
@@ -136,19 +147,28 @@
                         </button>
                     </div>
                 </div>
+
+
                 <div class="mt-6">
                     <label for="video" class="block text-gray-700 font-medium mb-1">
-                        Upload Video (Optional)
+                        Upload Video (Required)
                     </label>
 
-                    <input type="file" name="video" id="video" accept="video/*"
-                        class="block w-full text-sm text-gray-700
-        file:mr-4 file:py-2 file:px-4
-        file:rounded-lg file:border-0
-        file:text-sm file:font-semibold
-        file:bg-purple-50 file:text-purple-700
-        hover:file:bg-purple-100 transition duration-150"
-                        onchange="previewVideo(event)">
+                    <input type="file"
+    name="video"
+    id="video"
+    accept="video/*"
+    required
+    oninvalid="this.setCustomValidity('Please upload a video before submitting')"
+    oninput="this.setCustomValidity('')"
+    onchange="previewVideo(event)"
+    class="block w-full text-sm text-gray-700
+    file:mr-4 file:py-2 file:px-4
+    file:rounded-lg file:border-0
+    file:text-sm file:font-semibold
+    file:bg-purple-50 file:text-purple-700
+    hover:file:bg-purple-100 transition duration-150">
+
 
                     <!-- Video Preview -->
                     <div id="video-preview" class="mt-4 hidden">
@@ -161,20 +181,6 @@
                         </button>
                     </div>
                 </div>
-
-
-                <div class="m-5">
-                    <label for="urgency" class="m-4 block text-gray-700 font-medium leading-tight mb-1">Urgency
-                        Level</label>
-                    <select name="urgency" required class="mt-2 w-full border-gray-300 rounded-lg shadow-sm">
-                        <option value="">Select urgency</option>
-                        <option value="Low">Low</option>
-                        <option value="Medium">Medium</option>
-                        <option value="High">High</option>
-                    </select>
-                </div>
-
-
 
                 <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-black px-6 py-2 m-8 rounded-lg shadow">
                     Submit Report
@@ -191,115 +197,69 @@
         @endif
 
 
-        @auth
-            <hr class="my-10">
-
-            <h3 class="text-xl font-semibold text-gray-700 mb-4">My Submitted Reports</h3>
-            <!-- ✅ Full Report Button -->
-            <ul class="space-y-4">
-                @forelse($reports as $report)
-                    <li class="p-4 border rounded shadow-sm bg-gray-50">
-                        <!-- Report Title & Description -->
-                        <h4 class="font-bold text-lg">{{ $report->title }}</h4>
-                        <p class="text-sm text-gray-600 mt-1">{{ $report->description }}</p>
-
-                        <!-- Submission Info -->
-                        <p class="text-xs text-gray-500 mt-1">Submitted on: {{ $report->created_at->format('F j, Y g:i A') }}
-                        </p>
-
-                        <!-- Current Status -->
-                        <p class="text-sm mt-2">
-                            Status:
-                            <span
-                                class="inline-block px-2 py-1 rounded text-white text-xs
-                        {{ $report->status == 'Pending' ? 'bg-yellow-500' : ($report->status == 'In Progress' ? 'bg-blue-500' : 'bg-green-500') }}">
-                                {{ $report->status }}
-                            </span>
-                        </p>
-
-                        <!-- Resolution Details (only if Resolved) -->
-                        @if ($report->status === 'Resolved')
-                            <div class="mt-2 p-2 border-l-4 border-green-500 bg-green-50 rounded">
-                                @if ($report->evacuation_site)
-                                    <p><strong>Evacuation Site:</strong> {{ $report->evacuation_site }}</p>
-                                @endif
-                                <p><strong>Dispatch Unit:</strong> {{ $report->dispatch_unit }}</p>
-                                <p><strong>Contact Person:</strong> {{ $report->contact_person }}</p>
-                                <p><strong>Contact Number:</strong> {{ $report->contact_number }}</p>
-                            </div>
-                        @endif
-
-                        <a href="{{ route('reports.full', ['report' => $report->id]) }}"
-                            class="inline-block mb-6 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
-                            Full Report
-                        </a>
-
-                        <!-- DELETE BUTTON (Cancel Report) -->
-                        <form action="{{ route('reports.destroy', $report->id) }}" method="POST"
-                            class="inline-block delete-report-form">
-                            @csrf
-                            @method('DELETE')
-
-                            <button type="button"
-                                class="inline-block mb-6 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 delete-report-btn"
-                                data-title="{{ $report->title }}">
-                                Cancel
-                            </button>
-                        </form>
-                        <!--add the delete button here -->
-
-
-                    </li>
-                @empty
-                    <li class="text-gray-600">You haven't submitted any reports yet.</li>
-                @endforelse
-            </ul>
-        @endauth
+        
     </div>
 
     <script>
         const allowedTypes = {
-            'Emergencies': ['Fire', 'Flood', 'Earthquake', 'Medical', 'Others'],
+            'Emergencies': ['Fire', 'Flood', 'Earthquake', 'Typhoon', 'Medical', 'Others'],
             'Accidents': ['Traffic', 'Workplace', 'Home', 'Others'],
             'Complaints': ['Noise', 'Garbage', 'Harassment'],
-            'Suggestions': ['Public Safety', 'Infrastructure', 'Services'],
+            'Services': ['Public Safety', 'Infrastructure', 'suggestions'],
             'Others': ['Miscellaneous']
         };
 
-        document.getElementById('type').addEventListener('change', function() {
-            const subtypeDiv = document.getElementById('subtype-container');
-            const subtypeSelect = document.getElementById('subtype');
-            const demographicsDiv = document.getElementById('demographics-container');
-            const selectedType = this.value;
+        document.getElementById('type').addEventListener('change', function () {
+    const subtypeDiv = document.getElementById('subtype-container');
+    const subtypeSelect = document.getElementById('subtype');
+    const demographicsDiv = document.getElementById('demographics-container');
 
-            if (selectedType === 'Emergencies' || selectedType === 'Accidents') {
-                demographicsDiv.classList.remove('hidden');
-            } else {
-                demographicsDiv.classList.add('hidden');
-            }
+    // ✅ MISSING VARIABLES (this is what you forgot)
+    const casualtiesInput = document.getElementById('casualties');
+    const genderSelect = document.getElementById('gender');
 
-            subtypeSelect.innerHTML = '';
+    const selectedType = this.value;
 
-            if (allowedTypes[selectedType]) {
-                subtypeDiv.classList.remove('hidden');
+    // Reset subtype
+    subtypeSelect.innerHTML = '';
+    subtypeSelect.required = false;
 
-                let placeholder = document.createElement('option');
-                placeholder.value = '';
-                placeholder.textContent = 'Select subtype';
-                placeholder.disabled = true;
-                placeholder.selected = true;
-                subtypeSelect.appendChild(placeholder);
+    // Reset demographics requirements
+    casualtiesInput.required = false;
+    genderSelect.required = false;
 
-                allowedTypes[selectedType].forEach(sub => {
-                    let opt = document.createElement('option');
-                    opt.value = sub;
-                    opt.textContent = sub;
-                    subtypeSelect.appendChild(opt);
-                });
-            } else {
-                subtypeDiv.classList.add('hidden');
-            }
+    if (allowedTypes[selectedType]) {
+        subtypeDiv.classList.remove('hidden');
+        subtypeSelect.required = true;
+
+        let placeholder = document.createElement('option');
+        placeholder.value = '';
+        placeholder.textContent = 'Select subtype';
+        placeholder.disabled = true;
+        placeholder.selected = true;
+        subtypeSelect.appendChild(placeholder);
+
+        allowedTypes[selectedType].forEach(sub => {
+            let opt = document.createElement('option');
+            opt.value = sub;
+            opt.textContent = sub;
+            subtypeSelect.appendChild(opt);
         });
+    } else {
+        subtypeDiv.classList.add('hidden');
+    }
+
+    // ✅ Demographics required ONLY when visible
+    if (selectedType === 'Emergencies' || selectedType === 'Accidents') {
+        demographicsDiv.classList.remove('hidden');
+        casualtiesInput.required = true;
+        genderSelect.required = true;
+    } else {
+        demographicsDiv.classList.add('hidden');
+    }
+});
+
+
 
         function previewImage(event) {
             const input = event.target;
@@ -336,36 +296,6 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-
-            const deleteButtons = document.querySelectorAll('.delete-report-btn');
-
-            deleteButtons.forEach(button => {
-                button.addEventListener('click', function() {
-
-                    const form = button.closest('form');
-                    const title = button.getAttribute('data-title');
-
-                    Swal.fire({
-                        title: `Cancel report "${title}"?`,
-                        text: "This action cannot be undone.",
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonColor: '#e3342f',
-                        cancelButtonColor: '#6c757d',
-                        confirmButtonText: 'Yes, delete it',
-                        cancelButtonText: 'No, keep it'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            form.submit();
-                        }
-                    });
-
-                });
-            });
-
-        });
-
         function previewVideo(event) {
             const input = event.target;
             const previewContainer = document.getElementById('video-preview');
