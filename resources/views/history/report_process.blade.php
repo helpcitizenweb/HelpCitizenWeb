@@ -7,7 +7,7 @@
     <div class="max-w-screen-xl mx-auto p-5">
 
         <h2 class="text-2xl font-bold mb-6 text-center">
-            ⚙️ Report Processing (Pending & In Progress)
+            ⚙️ Report Processing
         </h2>
 
         <!-- GRID -->
@@ -114,12 +114,16 @@
 
 
                                 <span
-                                    class="px-3 py-1 text-xs font-semibold text-white rounded-full
-                            @if ($report->status == 'Pending') bg-yellow-500
-                            @elseif($report->status == 'In Progress') bg-blue-600
-                            @else bg-gray-700 @endif">
-                                    {{ $report->status }}
-                                </span>
+    class="px-3 py-1 text-xs font-semibold text-white rounded-full
+    @if ($report->status === 'Pending') bg-yellow-500
+    @elseif ($report->status === 'In Progress') bg-blue-600
+    @elseif ($report->status === 'Action') bg-indigo-600
+    @elseif ($report->status === 'Resolved') bg-green-600
+    @elseif ($report->status === 'Cancel') bg-red-600
+    @else bg-gray-600
+    @endif">
+    {{ $report->status }}
+</span>
 
                                 <div class="flex gap-2 shrink-0">
 
@@ -130,16 +134,27 @@
 
 
 
-                                    <form action="{{ route('report.process.destroy', $report->id) }}" method="POST">
-                                        @csrf
-                                        @method('DELETE')
+                                    @if (!in_array($report->status, ['Action', 'Resolved', 'Cancel']))
+    <form action="{{ route('report.process.destroy', $report->id) }}" method="POST">
+        @csrf
+        @method('DELETE')
 
-                                        <button type="button"
-                                            class="delete-report-btn px-3 py-1 text-xs bg-red-600 hover:bg-red-700 text-white rounded-md"
-                                            onclick="if(confirm('Are you sure you want to cancel this report?')) this.closest('form').submit();">
-                                            Cancel
-                                        </button>
-                                    </form>
+        <button type="button"
+            class="delete-report-btn px-3 py-1 text-xs bg-red-600 hover:bg-red-700 text-white rounded-md"
+            data-title="{{ $report->title }}"
+            data-status="{{ $report->status }}">
+            Cancel 142
+        </button>
+    </form>
+@else
+    <span
+        class="px-3 py-1 text-xs bg-gray-300 text-gray-500 rounded-md cursor-not-allowed"
+        title="This report can no longer be canceled">
+        Cancel 149
+    </span>
+@endif
+
+
                                 </div>
 
                             </div>
@@ -245,12 +260,16 @@
                         <div class="px-6 py-3 flex justify-between items-center bg-gray-50">
 
                             <span
-                                class="px-3 py-1 text-xs font-semibold text-white rounded-full
-                        @if ($report->status == 'Pending') bg-yellow-500
-                        @elseif($report->status == 'In Progress') bg-blue-600
-                        @else bg-gray-700 @endif">
-                                {{ $report->status }}
-                            </span>
+    class="px-3 py-1 text-xs font-semibold text-white rounded-full
+    @if ($report->status === 'Pending') bg-yellow-500
+    @elseif ($report->status === 'In Progress') bg-blue-600
+    @elseif ($report->status === 'Action') bg-indigo-600
+    @elseif ($report->status === 'Resolved') bg-green-600
+    @elseif ($report->status === 'Cancel') bg-red-600
+    @else bg-gray-600
+    @endif">
+    {{ $report->status }}
+</span>
 
                             <div class="flex gap-2">
                                 <a href="{{ route('reports.full', $report->id) }}"
@@ -260,15 +279,26 @@
 
 
 
-                                <form action="{{ route('report.process.destroy', $report->id) }}" method="POST">
-                                    @csrf
-                                    @method('DELETE')
+                                @if (!in_array($report->status, ['Action', 'Resolved', 'Cancel']))
+    <form action="{{ route('report.process.destroy', $report->id) }}" method="POST">
+        @csrf
+        @method('DELETE')
 
-                                    <button type="button"
-                                        class="delete-report-btn px-3 py-1 text-xs bg-red-600 hover:bg-red-700 text-white rounded-md"
-                                        onclick="if(confirm('Are you sure you want to cancel this report?')) this.closest('form').submit();">
-                                        Cancel
-                                    </button>
+        <button type="button"
+            class="delete-report-btn px-3 py-1 text-xs bg-red-600 hover:bg-red-700 text-white rounded-md"
+            data-title="{{ $report->title }}"
+            data-status="{{ $report->status }}">
+            Cancel
+        </button>
+    </form>
+@else
+    <span
+        class="px-3 py-1 text-xs bg-gray-300 text-gray-500 rounded-md cursor-not-allowed">
+        Cancel 282
+    </span>
+@endif
+
+
                                 </form>
                             </div>
 
@@ -290,16 +320,27 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const deleteButtons = document.querySelectorAll('.delete-report-btn');
-
-            deleteButtons.forEach(button => {
+            document.querySelectorAll('.delete-report-btn').forEach(button => {
                 button.addEventListener('click', function() {
+
                     const form = button.closest('form');
-                    const title = button.getAttribute('data-title');
+                    const status = button.dataset.status;
+
+                    // 🚫 HARD BLOCK for Action
+                    if (status === 'Action') {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Action in Progress',
+                            text: 'This report can no longer be canceled because action has already started.'
+                        });
+                        return;
+                    }
+
+                    const title = button.dataset.title ?? 'this report';
 
                     Swal.fire({
                         title: `Cancel report "${title}"?`,
-                        text: "This action cannot be undone.",
+                        text: 'This action cannot be undone.',
                         icon: 'warning',
                         showCancelButton: true,
                         confirmButtonColor: '#e3342f',
@@ -315,4 +356,5 @@
             });
         });
     </script>
+
 @endsection

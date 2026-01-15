@@ -30,29 +30,7 @@
                value="{{ !in_array($response->evacuation_address, ['Barangay 41 Barangay Hall','Nearby School / Gym','Open Grounds','High Ground Area','Evacuation Center']) ? $response->evacuation_address : '' }}">
     </div>
 
-    {{-- Medical Response --}}
-    <div x-data="{ showOther: !['Philippine Red Cross','Tondo Medical Center','Metropolitan Medical Center','Mary Johnston Hospital','Tondo Foreshore Health Center','Fugoso Health Center','NONE',''].includes('{{ $response->medical_response }}') }">
-        <label class="block text-sm font-medium text-gray-700">Medical Response</label>
 
-        <select name="medical_response" class="w-full border rounded p-2"
-                x-on:change="showOther = ($event.target.value === 'Other')">
-
-            <option value="">-- Select Medical Response --</option>
-
-            @foreach(['Philippine Red Cross','Tondo Medical Center','Metropolitan Medical Center','Mary Johnston Hospital','Tondo Foreshore Health Center','Fugoso Health Center','NONE'] as $opt)
-                <option value="{{ $opt }}" @selected($response->medical_response == $opt)>{{ $opt }}</option>
-            @endforeach
-
-            <option value="Other" @selected(!in_array($response->medical_response, ['Philippine Red Cross','Tondo Medical Center','Metropolitan Medical Center','Mary Johnston Hospital','Tondo Foreshore Health Center','Fugoso Health Center','NONE']))>
-                Other
-            </option>
-        </select>
-
-        <input type="text" name="medical_response_other" x-show="showOther"
-               class="w-full border rounded p-2 mt-2"
-               placeholder="Specify medical response"
-               value="{{ !in_array($response->medical_response, ['Philippine Red Cross','Tondo Medical Center','Metropolitan Medical Center','Mary Johnston Hospital','Tondo Foreshore Health Center','Fugoso Health Center','NONE']) ? $response->medical_response : '' }}">
-    </div>
 
     <!-- 🩺 MEDICAL RESPONSE -->
 <div x-data="{
@@ -194,7 +172,7 @@
            ]) ? '' : $response->designated_hospitals }}">
 </div>
 
-    {{-- Hospital Address --}}
+    {{-- Hospital Address  --}}
     <div>
         <label class="block text-sm font-medium text-gray-700">Hospital Address</label>
         <input type="text" name="hospital_address" class="w-full border rounded p-2"
@@ -259,11 +237,7 @@
     </div>
 
     {{-- Rubber Boat Units --}}
-    <div>
-        <label class="block text-sm font-medium text-gray-700">Rubber Boat Units</label>
-        <input type="number" name="rubber_boat_units" class="w-full border rounded p-2"
-               value="{{ $response->rubber_boat_units }}">
-    </div>
+  
 
     {{-- Lifeguard Rescue Personnel --}}
     <div x-data="{ showOther: !['Barangay Lifeguard Team','MMDA Lifeguard Team','Volunteer Lifeguard Team','NONE',''].includes('{{ $response->lifeguard_rescue_personnel }}') }">

@@ -6,6 +6,7 @@
     $step = match($report->status) {
         'Pending' => 1,
         'In Progress' => 2,
+        'Cancel' => 2.5,
         'Action' => 3,
         'Resolved' => 4,
         default => 1
@@ -47,6 +48,16 @@
                     {{ $step >= 2 ? 'bg-green-600 text-white pulse' : 'bg-gray-300 text-gray-600' }}">2</div>
                     <p class="text-xs mt-2">In Progress</p>
                 </div>
+
+                @if ($report->status === 'Cancel')
+    <div class="flex flex-col items-center">
+        <div class="w-10 h-10 rounded-full flex items-center justify-center bg-red-600 text-white pulse">
+            ✖
+        </div>
+        <p class="text-xs mt-2 text-red-600">Canceled</p>
+    </div>
+@endif
+
 
                 <div class="flex flex-col items-center">
                     <div class="w-10 h-10 rounded-full flex items-center justify-center 
@@ -223,15 +234,9 @@
 
             <label class="inline-flex items-center space-x-2">
                 <input type="checkbox"
-       name="status"
-       value="Resolved"
-       onchange="
-           if(confirm('Are you sure this issue has been fully resolved?')) {
-               this.form.submit();
-           } else {
-               this.checked = false;
-           }
-       ">
+    id="resolveCheckbox"
+    name="status"
+    value="Resolved">
 
                 <span class="font-medium text-gray-700">Yes, this issue has been resolved.</span>
             </label>
@@ -260,6 +265,68 @@
     </div>
 @endif
 
+{{-- Report Canceled Notice --}}
+@if ($report->status === 'Cancel')
+    <div class="mt-6 p-4 border rounded bg-red-50 text-center">
+
+        <h3 class="text-lg font-semibold text-red-700 mb-2">
+            ❌ Report Canceled
+        </h3>
+
+        <p class="text-gray-700">
+            Your report has been canceled. This may be due to insufficient details,
+            lack of supporting evidence, or other factors identified during review.
+        </p>
+
+    </div>
+@endif
+
 </div>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const checkbox = document.getElementById('resolveCheckbox');
+
+    if (!checkbox) return;
+
+    checkbox.addEventListener('change', function () {
+
+        if (!this.checked) return;
+
+        Swal.fire({
+            title: 'Confirm Resolution',
+            html: `
+                <p class="text-gray-600 text-sm">
+                    Are you sure this issue has been fully resolved?
+                </p>
+                <p class="text-xs text-green-600 mt-2">
+                    This will mark the report as <strong>Resolved</strong>.
+                </p>
+            `,
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, resolve it',
+            cancelButtonText: 'Not yet',
+            buttonsStyling: false,
+            customClass: {
+                popup: 'rounded-2xl p-6',
+                title: 'text-lg font-semibold',
+                confirmButton:
+                    'px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700',
+                cancelButton:
+                    'px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 ml-3'
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                checkbox.closest('form').submit();
+            } else {
+                checkbox.checked = false;
+            }
+        });
+    });
+});
+</script>
+
+
 
 @endsection

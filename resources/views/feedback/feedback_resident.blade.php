@@ -88,50 +88,75 @@
                 placeholder="Share your experience or feedback...">{{ old('feedback', $existingFeedback->feedback ?? '') }}</textarea>
         </div>
 
-        <!-- PHOTO -->
-        <div class="mb-5">
-            <label class="block text-sm font-medium mb-1">
-                Upload Photo <span class="text-red-500">*</span>
-            </label>
+       <!-- PHOTO -->
+<div class="mb-5">
+    <label class="block text-sm font-medium mb-1">
+        Upload Photo <span class="text-red-500">*</span>
+    </label>
 
-            @if (!$alreadyRated)
-                <input type="file" name="photo" required accept="image/*"
-                    onchange="previewPhoto(event)"
-                    class="block w-full text-sm text-gray-600">
+    @if (!$alreadyRated)
+        <input type="file"
+            name="photo"
+            id="photoInput"
+            required
+            accept="image/*"
+            onchange="previewPhoto(event)"
+            class="block w-full text-sm text-gray-600">
 
-                <div class="mt-3">
-                    <img id="photoPreview" class="hidden max-h-60 rounded border">
-                </div>
-            @else
-                <div class="mt-3">
-                    <img src="{{ asset('storage/' . $existingFeedback->photo) }}"
-                        class="max-h-60 rounded border">
-                </div>
-            @endif
+        <div id="photoContainer" class="mt-3 hidden">
+            <img id="photoPreview" class="max-h-60 rounded border mb-2">
+
+            <button type="button"
+                onclick="removePhoto()"
+                class="px-3 py-1 bg-red-500 text-white text-sm rounded hover:bg-red-600">
+                ❌ Remove Photo
+            </button>
         </div>
+    @else
+        <div class="mt-3">
+            <img src="{{ asset('storage/' . $existingFeedback->photo) }}"
+                class="max-h-60 rounded border">
+        </div>
+    @endif
+</div>
+
 
         <!-- VIDEO -->
-        <div class="mb-6">
-            <label class="block text-sm font-medium mb-1">
-                Upload Video <span class="text-red-500">*</span>
-            </label>
+<div class="mb-6">
+    <label class="block text-sm font-medium mb-1">
+        Upload Video <span class="text-red-500">*</span>
+    </label>
 
-            @if (!$alreadyRated)
-                <input type="file" name="video" required accept="video/*"
-                    onchange="previewVideo(event)"
-                    class="block w-full text-sm text-gray-600">
+    @if (!$alreadyRated)
+        <input type="file"
+            name="video"
+            id="videoInput"
+            required
+            accept="video/*"
+            onchange="previewVideo(event)"
+            class="block w-full text-sm text-gray-600">
 
-                <div class="mt-3">
-                    <video id="videoPreview" class="hidden w-full max-h-64 rounded border" controls></video>
-                </div>
-            @else
-                <div class="mt-3">
-                    <video controls class="w-full max-h-64 rounded border">
-                        <source src="{{ asset('storage/' . $existingFeedback->video) }}">
-                    </video>
-                </div>
-            @endif
+        <div id="videoContainer" class="mt-3 hidden">
+            <video id="videoPreview"
+                class="w-full max-h-64 rounded border mb-2"
+                controls>
+            </video>
+
+            <button type="button"
+                onclick="removeVideo()"
+                class="px-3 py-1 bg-red-500 text-white text-sm rounded hover:bg-red-600">
+                ❌ Remove Video
+            </button>
         </div>
+    @else
+        <div class="mt-3">
+            <video controls class="w-full max-h-64 rounded border">
+                <source src="{{ asset('storage/' . $existingFeedback->video) }}">
+            </video>
+        </div>
+    @endif
+</div>
+
 
         <!-- SUBMIT -->
         <div class="flex justify-end">
@@ -185,19 +210,51 @@
 
 <script>
 function previewPhoto(event) {
+    const input = document.getElementById('photoInput');
     const preview = document.getElementById('photoPreview');
+    const container = document.getElementById('photoContainer');
+
+    if (!input.files.length) return;
+
     const reader = new FileReader();
     reader.onload = e => {
         preview.src = e.target.result;
-        preview.classList.remove('hidden');
+        container.classList.remove('hidden');
     };
-    reader.readAsDataURL(event.target.files[0]);
+    reader.readAsDataURL(input.files[0]);
+}
+
+function removePhoto() {
+    const input = document.getElementById('photoInput');
+    const preview = document.getElementById('photoPreview');
+    const container = document.getElementById('photoContainer');
+
+    input.value = '';
+    preview.src = '';
+    container.classList.add('hidden');
 }
 
 function previewVideo(event) {
+    const input = document.getElementById('videoInput');
     const preview = document.getElementById('videoPreview');
-    preview.src = URL.createObjectURL(event.target.files[0]);
-    preview.classList.remove('hidden');
+    const container = document.getElementById('videoContainer');
+
+    if (!input.files.length) return;
+
+    preview.src = URL.createObjectURL(input.files[0]);
+    container.classList.remove('hidden');
+}
+
+function removeVideo() {
+    const input = document.getElementById('videoInput');
+    const preview = document.getElementById('videoPreview');
+    const container = document.getElementById('videoContainer');
+
+    preview.pause();
+    preview.src = '';
+    input.value = '';
+    container.classList.add('hidden');
 }
 </script>
+
 @endsection

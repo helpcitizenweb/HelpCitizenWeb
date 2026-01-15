@@ -151,14 +151,17 @@
 
                                 <!-- Status -->
                                 <span
-                                    class="text-xs px-3 py-1 rounded-full text-white
-        @if ($report->status == 'Pending') bg-yellow-500
-        @elseif ($report->status == 'In Progress') bg-blue-600
-        @elseif ($report->status == 'Resolved') bg-green-600
-         @elseif ($report->status == 'Action') bg-red-600
-        @else bg-gray-700 @endif">
-                                    {{ $report->status }}
-                                </span>
+    class="text-xs px-3 py-1 rounded-full text-white
+    @if ($report->status === 'Pending') bg-yellow-500
+    @elseif ($report->status === 'In Progress') bg-blue-600
+    @elseif ($report->status === 'Action') bg-indigo-600
+    @elseif ($report->status === 'Resolved') bg-green-600
+    @elseif ($report->status === 'Cancel') bg-red-600
+    @else bg-gray-700
+    @endif">
+    {{ $report->status }}
+</span>
+
 
                                 <!-- Buttons -->
                                 <div class="flex gap-2">
@@ -169,10 +172,19 @@
 
                                     
 
+    @if ($report->status === 'Resolved')
     <a href="{{ route('feedback.create', $report->id) }}"
        class="px-4 py-1 bg-green-600 hover:bg-green-700 text-white rounded-md text-xs">
         Rate
     </a>
+@else
+    <span
+        class="px-4 py-1 bg-gray-300 text-gray-500 rounded-md text-xs cursor-not-allowed"
+        title="You can rate this report once it is resolved">
+        Rate
+    </span>
+@endif
+
                                 </div>
 
                             </div>
