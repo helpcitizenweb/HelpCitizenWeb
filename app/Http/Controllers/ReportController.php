@@ -37,6 +37,8 @@ class ReportController extends Controller
 
         $validated['user_id'] = Auth::id();
         $validated['status']  = 'Pending';
+        $validated['anonymous'] = $request->boolean('anonymous');
+
 
         // Handle Image Upload
    if ($request->hasFile('image')) {

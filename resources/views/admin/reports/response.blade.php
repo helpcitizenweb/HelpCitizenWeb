@@ -45,17 +45,14 @@
                 <select name="overseer" class="w-full border rounded p-2">
                     <option value="">-- Select Overseer --</option>
 
-                    <option value="Barangay Chairman Erwin Lapaz">Barangay Chairman Erwin Lapaz</option>
                     <option value="Barangay Kapitan">Barangay Kapitan</option>
                     <option value="Barangay Kagawad">Barangay Kagawad</option>
                     <option value="Barangay Tanod">Barangay Tanod</option>
                     <option value="Barangay Secretary">Barangay Secretary</option>
-                    <option value="Barangay Treasurer">Barangay Treasurer</option>
                     <option value="Barangay Administrator">Barangay Administrator</option>
                     <option value="Barangay Health Worker (BHW)">Barangay Health Worker (BHW)</option>
                     <option value="Barangay Rescue Team Leader">Barangay Rescue Team Leader</option>
                     <option value="BDRRM Officer">BDRRM Officer</option>
-                    <option value="PNP Officer">PNP Officer</option>
                     <option value="Fire Officer">Fire Officer</option>
                 </select>
             </div>

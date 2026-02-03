@@ -100,11 +100,60 @@
                             <p class="text-gray-600 mt-1 text-sm">
                                 <strong>SubType:</strong> {{ $report->subtype }}
                             </p>
+                            
 
                             <!-- DATE -->
                             <p class="text-gray-600 mt-1 text-sm"></p>
                             <strong>Date:</strong>{{ $report->created_at->format('M d, Y') }}
                             </p>
+
+                        <!-- location -->
+                            <!-- Location Modal -->
+<div x-data="{ openLocation: false }">
+    <p class="text-gray-600 mt-1 text-sm cursor-pointer hover:text-indigo-600"
+        @click="openLocation = true">
+        <strong>Location:</strong>
+        {{ Str::limit($report->location, 50) }}
+        <span class="text-indigo-500 underline text-xs">view</span>
+    </p>
+
+    <div x-show="openLocation" x-cloak
+        class="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm 
+            flex items-center justify-center z-50">
+
+        <div class="bg-white w-[900px] max-h-[60vh] rounded-lg shadow-xl overflow-hidden">
+
+            <!-- Header -->
+            <div class="flex justify-between items-center px-6 py-4 border-b">
+                <h3 class="text-xl font-semibold">Full Location</h3>
+                <button @click="openLocation = false"
+                    class="text-gray-600 hover:text-gray-900 text-2xl leading-none">
+                    &times;
+                </button>
+            </div>
+
+            <!-- Body -->
+            <div class="p-6 space-y-4 overflow-y-auto max-h-[50vh]">
+                <label class="font-semibold text-gray-700">Location:</label>
+
+                <textarea
+                    class="w-full h-40 p-3 border border-gray-300 rounded-md text-sm resize-none 
+                        bg-gray-50 text-gray-800 leading-relaxed"
+                    readonly>{{ $report->location }}</textarea>
+            </div>
+
+            <!-- Footer -->
+            <div class="px-6 py-4 border-t flex justify-end">
+                <button @click="openLocation = false"
+                    class="px-4 py-2 bg-indigo-600 text-white text-sm rounded-lg hover:bg-indigo-700">
+                    Close
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
 
                             <!-- Description Modal -->
                             <div x-data="{ openDesc: false }">
