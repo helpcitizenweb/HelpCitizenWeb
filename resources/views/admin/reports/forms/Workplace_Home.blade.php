@@ -21,13 +21,13 @@
             ].includes('{{ $response->medical_response }}')
     }">
 
-        <label class="block text-sm font-medium text-gray-700">Medical Response</label>
+        <label class="block text-sm font-medium text-gray-700">Responding Medical Authority</label>
 
         <select name="medical_response"
                 class="w-full border rounded p-2"
                 x-on:change="showOtherWHMedical = ($event.target.value === 'Other')">
 
-            <option value="">-- Select Medical Response --</option>
+            <option value="">-- Select Responding Medical team --</option>
 
             @foreach ([
                 'Philippine Red Cross',

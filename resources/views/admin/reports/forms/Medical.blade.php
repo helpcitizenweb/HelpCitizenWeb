@@ -4,7 +4,7 @@
 @endphp
 <div x-show="dispatchUnit === 'Medical'" x-cloak class="space-y-4">
 
-    <h4 class="text-lg font-semibold text-gray-700 mb-3">🩺 Medical Response Details</h4>
+    <h4 class="text-lg font-semibold text-gray-700 mb-3">🩺 Responding Medical Authority</h4>
 
     <!-- Medical Response -->
     <div x-data="{
@@ -20,12 +20,12 @@
             ].includes('{{ $response->medical_response }}')
     }">
 
-        <label class="block text-sm font-medium text-gray-700">Medical Response Team</label>
+        <label class="block text-sm font-medium text-gray-700">Responding Medical Authority</label>
 
         <select name="medical_response" class="w-full border rounded p-2"
                 x-on:change="showOtherMedResponse = ($event.target.value === 'Other')">
 
-            <option value="">-- Select Medical Response --</option>
+            <option value="">-- Select Responding Medical team --</option>
 
             @foreach ([
                 'Philippine Red Cross',
