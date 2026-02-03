@@ -11,6 +11,15 @@ class Response extends Model
 
     protected $primaryKey = 'response_id';
 
+    public $incrementing = true;
+    protected $keyType = 'int';
+
+    public $timestamps = true;
+
+    protected $casts = [
+        'response_datetime' => 'datetime',
+    ];
+
     protected $fillable = [
         'report_id',
         'reference_ID',
