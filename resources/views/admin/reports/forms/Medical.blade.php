@@ -66,49 +66,82 @@
 
     <!-- Designated Hospitals -->
     <div x-data="{
-        showOtherMedHosp:
-            '{{ $response->designated_hospitals }}' !== '' &&
-            ![
-                'Tondo Medical Center',
-                'Metropolitan Medical Center',
-                'Mary Johnston Hospital',
-                'NONE'
-            ].includes('{{ $response->designated_hospitals }}')
-    }">
+    showOtherHosp:
+        '{{ $response->designated_hospitals }}' &&
+        ![
+            'Tondo Medical Center',
+            'Mary Johnston Hospital',
+            'Metropolitan Medical Center',
+            'Seaman’s Hospital Manila',
+            'Justice Jose Abad Santos General Hospital',
+            'San Lazaro Hospital',
+            'Chinese General Hospital',
+            'Jose Reyes Memorial Medical Center',
+            'NONE'
+        ].includes('{{ $response->designated_hospitals }}')
+}">
 
-        <label class="block text-sm font-medium text-gray-700">Designated Hospital</label>
+    <label class="block text-sm font-medium text-gray-700">Designated Hospital</label>
 
-        <select name="designated_hospitals" class="w-full border rounded p-2"
-                x-on:change="showOtherMedHosp = ($event.target.value === 'Other')">
+    <select name="designated_hospitals"
+            class="w-full border rounded p-2"
+            x-on:change="showOtherHosp = ($event.target.value === 'Other')">
 
-            <option value="">-- Select Hospital --</option>
+        <option value="">-- Select Hospital --</option>
 
-            @foreach ([
-                'Tondo Medical Center',
-                'Metropolitan Medical Center',
-                'Mary Johnston Hospital',
-                'NONE'
-            ] as $opt)
-                <option value="{{ $opt }}" @selected($response->designated_hospitals == $opt)>{{ $opt }}</option>
-            @endforeach
-
-            <option value="Other"
-                    @selected(!in_array($response->designated_hospitals, [
-                        'Tondo Medical Center','Metropolitan Medical Center','Mary Johnston Hospital','NONE'
-                    ]) && $response->designated_hospitals)>
-                Other
+        @foreach ([
+            'Tondo Medical Center',
+            'Mary Johnston Hospital',
+            'Metropolitan Medical Center',
+            'Seaman’s Hospital Manila',
+            'Justice Jose Abad Santos General Hospital',
+            'San Lazaro Hospital',
+            'Chinese General Hospital',
+            'Jose Reyes Memorial Medical Center',
+            'NONE'
+        ] as $opt)
+            <option value="{{ $opt }}" @selected($response->designated_hospitals == $opt)>
+                {{ $opt }}
             </option>
+        @endforeach
 
-        </select>
+        <option value="Other"
+                @selected(
+                    $response->designated_hospitals &&
+                    !in_array($response->designated_hospitals, [
+                        'Tondo Medical Center',
+                        'Mary Johnston Hospital',
+                        'Metropolitan Medical Center',
+                        'Seaman’s Hospital Manila',
+                        'Justice Jose Abad Santos General Hospital',
+                        'San Lazaro Hospital',
+                        'Chinese General Hospital',
+                        'Jose Reyes Memorial Medical Center',
+                        'NONE'
+                    ])
+                )>
+            Other
+        </option>
 
-        <input type="text" name="designated_hospitals_other"
-               x-show="showOtherMedHosp"
-               class="w-full border rounded p-2 mt-2"
-               placeholder="Specify hospital"
-               value="{{ in_array($response->designated_hospitals, [
-                    'Tondo Medical Center','Metropolitan Medical Center','Mary Johnston Hospital','NONE'
-               ]) ? '' : $response->designated_hospitals }}">
-    </div>
+    </select>
+
+    <input type="text"
+           name="designated_hospitals_other"
+           x-show="showOtherHosp"
+           class="w-full border rounded p-2 mt-2"
+           placeholder="Specify hospital"
+           value="{{ in_array($response->designated_hospitals, [
+                'Tondo Medical Center',
+                'Mary Johnston Hospital',
+                'Metropolitan Medical Center',
+                'Seaman’s Hospital Manila',
+                'Justice Jose Abad Santos General Hospital',
+                'San Lazaro Hospital',
+                'Chinese General Hospital',
+                'Jose Reyes Memorial Medical Center',
+                'NONE'
+           ]) ? '' : $response->designated_hospitals }}">
+</div>
 
     <!-- Hospital Address -->
     <div>

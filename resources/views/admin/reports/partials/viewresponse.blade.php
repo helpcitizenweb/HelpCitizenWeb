@@ -28,7 +28,7 @@
                 <h4 class="text-lg font-semibold text-red-600 mb-2">🔥 Fire Response</h4>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
                     <p><strong>Evacuation Address:</strong> {{ $response->evacuation_address ?? '—' }}</p>
-                    <p><strong>Medical Response:</strong> {{ $response->medical_response ?? '—' }}</p>
+                    <p><strong>Responding Medical Authority:</strong> {{ $response->medical_response ?? '—' }}</p>
                     <p><strong>Designated Hospitals:</strong> {{ $response->designated_hospitals ?? '—' }}</p>
                     <p><strong>Hospital Address:</strong> {{ $response->hospital_address ?? '—' }}</p>
                     <p><strong>Vehicle Transport:</strong> {{ $response->evacuation_transport ?? '—' }}</p>
@@ -51,7 +51,7 @@
                 <h4 class="text-lg font-semibold text-blue-600 mb-2">🌊 Flood Response</h4>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
                     <p><strong>Evacuation Address:</strong> {{ $response->evacuation_address ?? '—' }}</p>
-                    <p><strong>Medical Response:</strong> {{ $response->medical_response ?? '—' }}</p>
+                    <p><strong>Responding Medical Authority:</strong> {{ $response->medical_response ?? '—' }}</p>
                     <p><strong>Designated Hospitals:</strong> {{ $response->designated_hospitals ?? '—' }}</p>
                     <p><strong>Hospital Address:</strong> {{ $response->hospital_address ?? '—' }}</p>
                     <p><strong>Transport:</strong> {{ $response->evacuation_transport ?? '—' }}</p>
@@ -90,9 +90,9 @@
         <!--Medical Response -->
         @if ($response->dispatch_unit === 'Medical')
             <div class="p-4 bg-green-50 rounded-lg shadow-sm space-y-2">
-                <h4 class="text-lg font-semibold text-green-600 mb-2">🩺 Medical Response</h4>
+                <h4 class="text-lg font-semibold text-green-600 mb-2">🩺 Responding Medical Authority</h4>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
-                    <p><strong>Medical Response:</strong> {{ $response->medical_response ?? '—' }}</p>
+                    <p><strong>Responding Medical Authority:</strong> {{ $response->medical_response ?? '—' }}</p>
                     <p><strong>Designated Hospitals:</strong> {{ $response->designated_hospitals ?? '—' }}</p>
                     <p><strong>Hospital Address:</strong> {{ $response->hospital_address ?? '—' }}</p>
                     <p><strong>First Aid Station:</strong> {{ $response->first_aid_station ?? '—' }}</p>
@@ -106,7 +106,7 @@
             <div class="p-4 bg-orange-50 rounded-lg shadow-sm space-y-2">
                 <h4 class="text-lg font-semibold text-orange-600 mb-2">🚦 Traffic Response</h4>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
-                    <p><strong>Medical Response:</strong> {{ $response->medical_response ?? '—' }}</p>
+                    <p><strong> Responding Medical Authority:</strong> {{ $response->medical_response ?? '—' }}</p>
                     <p><strong>Hospitals:</strong> {{ $response->designated_hospitals ?? '—' }}</p>
                     <p><strong>Hospital Address:</strong> {{ $response->hospital_address ?? '—' }}</p>
                     <p><strong>Ambulance Units:</strong> {{ $response->ambulance_units ?? '—' }}</p>
@@ -124,7 +124,7 @@
             <div class="p-4 bg-blue-50 rounded-lg shadow-sm space-y-2">
                 <h4 class="text-lg font-semibold text-blue-700 mb-2">🏠 Workplace/Home Response</h4>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
-                    <p><strong>Medical Response:</strong> {{ $response->medical_response ?? '—' }}</p>
+                    <p><strong>Responding Medical Authority:</strong> {{ $response->medical_response ?? '—' }}</p>
                     <p><strong>Hospitals:</strong> {{ $response->designated_hospitals ?? '—' }}</p>
                     <p><strong>Hospital Address:</strong> {{ $response->hospital_address ?? '—' }}</p>
                     <p><strong>Ambulance Units:</strong> {{ $response->ambulance_units ?? '—' }}</p>

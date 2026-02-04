@@ -62,10 +62,15 @@ class ReportController extends Controller
         // // Notify admins
         $admins = User::where('role', 'admin')->get();
         foreach ($admins as $admin) {
-            $admin->notify(new ReportStatusNotification(
-                $report,
-                "A new report (ID {$report->id}) has been submitted by {$user->name}."
-            ));
+            $reporterIdentity = $report->anonymous
+    ? 'Anonymous'
+    : ($user->email ?? 'Unknown User');
+
+$admin->notify(new ReportStatusNotification(
+    $report,
+    "A new report (ID {$report->id}) has been submitted by {$reporterIdentity}."
+));
+
         }
 
         return redirect()
@@ -108,7 +113,7 @@ public function destroy(Report $report)
 
 
 
-public function updateStatus(Request $request, Report $report)
+public function updateStatus(Request $request, Report $report) 
 {
     // Only allow the report owner to update
     if ($report->user_id !== Auth::id()) {
@@ -128,16 +133,26 @@ public function updateStatus(Request $request, Report $report)
     // 🔔 Notify admins ONLY when resolved
     if ($oldStatus !== 'Resolved' && $request->status === 'Resolved') {
 
-        $admins = User::where('role', 'admin')->get();
+    $admins = User::where('role', 'admin')->get();
 
-        foreach ($admins as $admin) {
-            $admin->notify(new ResolvedNotification($report));
-        }
+    $residentEmail = $report->anonymous
+        ? 'Anonymous'
+        : Auth::user()->email;
+
+    foreach ($admins as $admin) {
+        $admin->notify(
+            new ResolvedNotification(
+                $report,
+                $residentEmail
+            )
+        );
     }
+}
 
 
     return back()->with('success', 'Report status updated successfully.');
 }
+
 
 
 

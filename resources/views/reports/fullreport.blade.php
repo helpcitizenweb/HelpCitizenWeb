@@ -60,7 +60,8 @@
 
         <h2 class="text-2xl font-bold mb-4">📋 Full Report Details</h2>
         <p><strong>Title:</strong> {{ $report->title }}</p>
-        <p><strong>Status:</strong> {{ $report->status }}</p>
+        <p><strong>Report ID:</strong> {{ $report->id }}</p>
+        <p><strong>Reference ID:</strong> {{ $report->ref_id }}</p>
         <p><strong>Submitted On:</strong> {{ $report->created_at->format('F j, Y g:i A') }}</p>
         <p><strong>Description:</strong> {{ $report->description }}</p>
         <p><strong>Location:</strong> {{ $report->location }}</p>
@@ -99,7 +100,7 @@
             @if ($response->dispatch_unit === 'Fire')
                 <h4 class="text-lg font-semibold text-red-600">🔥 Fire Response</h4>
                 <p><strong>Evacuation Address:</strong> {{ $response->evacuation_address }}</p>
-                <p><strong>Medical Response:</strong> {{ $response->medical_response }}</p>
+                <p><strong>Responding Medical Authority:</strong> {{ $response->medical_response }}</p>
                 <p><strong>Designated Hospitals:</strong> {{ $response->designated_hospitals }}</p>
                 <p><strong>Hospital Address:</strong> {{ $response->hospital_address }}</p>
                 <p><strong>Vehicle Transport:</strong> {{ $response->evacuation_transport }}</p>
@@ -118,7 +119,7 @@
             @if ($response->dispatch_unit === 'Flood_typhoon')
                 <h4 class="text-lg font-semibold text-blue-600">🌊 Flood Response</h4>
                 <p><strong>Evacuation Address:</strong> {{ $response->evacuation_address }}</p>
-                <p><strong>Medical Response:</strong> {{ $response->medical_response }}</p>
+                <p><strong>Responding Medical Authority:</strong> {{ $response->medical_response }}</p>
                 <p><strong>Designated Hospitals:</strong> {{ $response->designated_hospitals }}</p>
                 <p><strong>Hospital Address:</strong> {{ $response->hospital_address }}</p>
                 <p><strong>Transport:</strong> {{ $response->evacuation_transport }}</p>
@@ -150,8 +151,8 @@
 
             {{-- 🩺 MEDICAL --}}
             @if ($response->dispatch_unit === 'Medical')
-                <h4 class="text-lg font-semibold text-green-600">🩺 Medical Response</h4>
-                <p><strong>Medical Response:</strong> {{ $response->medical_response }}</p>
+                <h4 class="text-lg font-semibold text-green-600">🩺 Responding Medical Authority</h4>
+                <p><strong>Responding Medical Authority:</strong> {{ $response->medical_response }}</p>
                 <p><strong>Designated Hospitals:</strong> {{ $response->designated_hospitals }}</p>
                 <p><strong>Hospital Address:</strong> {{ $response->hospital_address }}</p>
                 <p><strong>First Aid Station:</strong> {{ $response->first_aid_station }}</p>
@@ -161,7 +162,7 @@
             {{-- 🚦 TRAFFIC --}}
             @if ($response->dispatch_unit === 'Traffic')
                 <h4 class="text-lg font-semibold text-orange-600">🚦 Traffic Response</h4>
-                <p><strong>Medical Response:</strong> {{ $response->medical_response }}</p>
+                <p><strong>Responding Medical Authority:</strong> {{ $response->medical_response }}</p>
                 <p><strong>Hospitals:</strong> {{ $response->designated_hospitals }}</p>
                 <p><strong>Hospital Address:</strong> {{ $response->hospital_address }}</p>
                 <p><strong>Ambulance Units:</strong> {{ $response->ambulance_units }}</p>
@@ -175,7 +176,7 @@
             {{-- 🏠 WORKPLACE / HOME --}}
             @if ($response->dispatch_unit === 'Workplace_Home')
                 <h4 class="text-lg font-semibold text-blue-700">🏠 Workplace / Home Response</h4>
-                <p><strong>Medical Response:</strong> {{ $response->medical_response }}</p>
+                <p><strong>Responding Medical Authority:</strong> {{ $response->medical_response }}</p>
                 <p><strong>Hospitals:</strong> {{ $response->designated_hospitals }}</p>
                 <p><strong>Hospital Address:</strong> {{ $response->hospital_address }}</p>
                 <p><strong>Ambulance Units:</strong> {{ $response->ambulance_units }}</p>

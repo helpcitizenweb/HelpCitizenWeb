@@ -61,6 +61,7 @@
                                 </div>
 
                                 <p class="text-gray-700 text-sm">
+                                    <strong>Reference ID:</strong> {{ $report->ref_id }} <br>
                                     <strong>Type:</strong> {{ $report->type }} <br>
                                     <strong>Subtype:</strong> {{ $report->subtype }} <br>
                                     <strong>Date:</strong> {{ $report->created_at->format('M d, Y') }} <br>
@@ -208,6 +209,7 @@
                             </div>
 
                             <p class="text-gray-700 text-sm">
+                                <strong>Reference ID:</strong> {{ $report->ref_id }} <br>
                                 <strong>Type:</strong> {{ $report->type }} <br>
                                 <strong>Subtype:</strong> {{ $report->subtype }} <br>
                                 <strong>Date:</strong> {{ $report->created_at->format('M d, Y') }} <br>

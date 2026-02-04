@@ -32,6 +32,7 @@
         <select id="statusFilter" class="px-4 py-2 border border-gray-300 rounded-lg focus:ring focus:border-indigo-500">
             <option value="">Status</option>
             <option value="Pending">Pending</option>
+            <option value="Action">Action</option>
             <option value="In Progress">In Progress</option>
             <option value="Resolved">Resolved</option>
         </select>
@@ -90,7 +91,9 @@
                             <h3 class="text-lg font-bold text-gray-900 capitalize">
                                 {{ Str::limit($report->title, 20) }}
                             </h3>
-
+                            <p class="text-gray-600 mt-2 text-sm">
+                            <strong>Reference ID:</strong> {{ $report->ref_id }}
+                            </p>
                             <!-- TYPE -->
                             <p class="text-gray-600 mt-2 text-sm">
                                 <strong>Type:</strong> {{ $report->type }}

@@ -77,16 +77,20 @@ class FeedbackController extends Controller
 
         // 🔔 Notify admins that a resident submitted feedback
 $admins = \App\Models\User::where('role', 'admin')->get();
-$residentName = Auth::user()->name;
+
+$residentEmail = $report->anonymous
+    ? 'Anonymous'
+    : Auth::user()->email;
 
 foreach ($admins as $admin) {
     $admin->notify(
         new \App\Notifications\ResidentRatedReportNotification(
             $report,
-            $residentName
+            $residentEmail
         )
     );
 }
+
 
 
 

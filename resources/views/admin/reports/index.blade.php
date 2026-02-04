@@ -40,10 +40,12 @@
         <div class="bg-white p-6 rounded-lg shadow-lg w-96">
             <h3 class="text-xl font-semibold mb-4">Advanced Filters</h3>
 
-            <input type="text" id="filterId" placeholder="Filter by ID" class="w-full mb-3 px-3 py-2 border border-gray-300 rounded-lg">
-            <input type="text" id="filterReporter" placeholder="Filter by Reporter" class="w-full mb-3 px-3 py-2 border border-gray-300 rounded-lg">
-            <input type="text" id="filterDescription" placeholder="Filter by Description" class="w-full mb-3 px-3 py-2 border border-gray-300 rounded-lg">
-
+            <input type="text" id="filterRefId" placeholder="Filter by Reference ID" class="w-full mb-3 px-3 py-2 border border-gray-300 rounded-lg">
+            <input type="text" id="filterReportId" placeholder="Filter by Report ID" class="w-full mb-3 px-3 py-2 border border-gray-300 rounded-lg">
+            <input type="text" id="filterReporter"
+       placeholder="Filter by Reporter Email or 'anonymous'"
+       class="w-full mb-3 px-3 py-2 border border-gray-300 rounded-lg">
+       
             <select id="filterStatus" class="w-full mb-3 px-3 py-2 border border-gray-300 rounded-lg">
                 <option value="">Select Status</option>
                 <option value="Pending">Pending</option>
@@ -68,8 +70,14 @@
 @foreach($reports as $report)
 <div
     class="bg-white shadow rounded-lg p-4 flex gap-4 items-start report-item"
-    data-id="{{ $report->id }}"
-    data-reporter="{{ strtolower($report->user?->name ?? '') }}"
+    
+    data-report-id="{{ $report->id }}"
+    data-ref-id="{{ strtolower($report->ref_id) }}"
+    data-reporter="{{ 
+    $report->anonymous 
+        ? 'anonymous' 
+        : strtolower($report->user?->email ?? '') 
+}}"
     data-type="{{ strtolower($report->type) }}"
     data-subtype="{{ strtolower($report->subtype) }}"
     data-status="{{ strtolower($report->status) }}"
@@ -97,8 +105,13 @@
     <p class="font-semibold text-base">
         Report #{{ $report->id }}
     </p>
+    <p>
+       <span class="font-semibold"> Reference ID#</span>
+       {{ $report->ref_id }}
+    </p>
 
-    <p><span class="font-semibold">Date:</span> {{ $report->created_at->format('Y-m-d') }}</p>
+
+    
     @if($report->anonymous)
     <p>
         <span class="font-semibold">Reporter:</span>
@@ -137,6 +150,7 @@
         <p><span class="font-semibold">Title: </span>{{ $report->title }}</p>
         <p><span class="font-semibold">Type:</span> {{ $report->type }}</p>
         <p><span class="font-semibold">Subtype:</span> {{ $report->subtype }}</p>
+        <p><span class="font-semibold">Date:</span> {{ $report->created_at->format('Y-m-d') }}</p>
     </div>
 
    
@@ -210,7 +224,8 @@ const tableRows = document.querySelectorAll(".report-item");
 
 
 // Filter modal elements
-const filterId = document.getElementById('filterId');
+const filterRefId = document.getElementById('filterRefId');
+const filterReportId = document.getElementById('filterReportId');
 const filterReporter = document.getElementById('filterReporter');
 const filterStatus = document.getElementById('filterStatus');
 const filterDate = document.getElementById('filterDate');
@@ -252,9 +267,10 @@ function filterTypeAndSubtype() {
 function applyAdvancedFilters() {
     const typeVal = typeFilter.value.toLowerCase();
     const subtypeVal = subtypeFilter.value.toLowerCase();
-    const idVal = filterId.value.toLowerCase();
+    const refIdVal = filterRefId.value.toLowerCase();
     const reporterVal = filterReporter.value.toLowerCase();
-    const descriptionVal = filterDescription.value.toLowerCase();
+    const reportIdVal = filterReportId.value.toLowerCase();
+
     const statusVal = filterStatus.value.toLowerCase();
     const dateVal = filterDate.value;
 
@@ -262,7 +278,8 @@ function applyAdvancedFilters() {
         const matches =
             (!typeVal || row.dataset.type === typeVal) &&
             (!subtypeVal || row.dataset.subtype === subtypeVal) &&
-            (!idVal || row.dataset.id.includes(idVal)) &&
+            (!refIdVal || row.dataset.refId.includes(refIdVal)) &&
+            (!reportIdVal || row.dataset.reportId.includes(reportIdVal)) &&
             (!reporterVal || row.dataset.reporter.includes(reporterVal)) &&
             (!statusVal || row.dataset.status === statusVal) &&
             (!dateVal || row.dataset.date === dateVal);
@@ -283,11 +300,11 @@ document.getElementById('resetFilters').addEventListener('click', () => {
     typeFilter.value = '';
     subtypeFilter.value = '';
     subtypeFilter.classList.add('hidden');
-    filterId.value = '';
-    filterReporter.value = '';
-    filterDescription.value = '';
-    filterStatus.value = '';
-    filterDate.value = '';
+    filterRefId.value = '';
+filterReportId.value = '';
+filterReporter.value = '';
+filterStatus.value = '';
+filterDate.value = '';
     tableRows.forEach(row => row.style.display = '');
 });
 

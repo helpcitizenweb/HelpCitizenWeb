@@ -11,6 +11,7 @@ class Report extends Model
 
     protected $fillable = [
     'user_id',
+    'ref_id',
     'name',
     'email',
     'phone',
@@ -81,6 +82,25 @@ class Report extends Model
 
 
 ];
+protected static function booted()
+{
+    static::creating(function ($report) {
+        if (empty($report->ref_id)) {
+            $report->ref_id = self::generateRefId();
+        }
+    });
+}
+
+private static function generateRefId()
+{
+    return 'HC-' . now()->year . '-' . str_pad(
+        random_int(0, 99999999),
+        8,
+        '0',
+        STR_PAD_LEFT
+    );
+}
+
 
 
     public function user()

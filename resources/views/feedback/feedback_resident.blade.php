@@ -29,6 +29,14 @@
     <!-- REPORT CONTEXT -->
     <div class="mb-6 p-4 bg-gray-50 rounded border">
         <p class="text-sm">
+            <span class="font-semibold">Report ID:</span>
+            {{ $report->id ?? 'N/A' }}
+        </p>
+        <p class="text-sm">
+            <span class="font-semibold">Reference ID:</span>
+            {{ $report->ref_id ?? 'N/A' }}
+        </p>
+        <p class="text-sm">
             <span class="font-semibold">Report Title:</span>
             {{ $report->title ?? 'N/A' }}
         </p>

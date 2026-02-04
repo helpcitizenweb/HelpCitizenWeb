@@ -6,6 +6,8 @@
     <!-- ================= TITLE ================= -->
     <div>
         <h3 class="text-2xl font-semibold text-gray-900">{{ $report->title }}</h3>
+        <p class="mt-1 text-sm text-gray-500">Reference ID: {{ $report->id }}</p>
+        <p class="mt-1 text-sm text-gray-500">Reference ID: {{ $report->ref_id }}</p>
         <p class="mt-1 text-sm text-gray-500">
             Submitted on {{ $report->created_at->format('F j, Y g:i A') }}
         </p>

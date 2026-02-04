@@ -11,12 +11,12 @@ class ResidentRatedReportNotification extends Notification
     use Queueable;
 
     protected $report;
-    protected $residentName;
+    protected $residentEmail;
 
-    public function __construct(Report $report, string $residentName)
+    public function __construct(Report $report, string $residentEmail)
     {
         $this->report = $report;
-        $this->residentName = $residentName;
+        $this->residentEmail = $residentEmail;
     }
 
     public function via($notifiable)
@@ -28,11 +28,8 @@ class ResidentRatedReportNotification extends Notification
     {
         return [
             'report_id' => $this->report->id,
-            'message'   => "Resident {$this->residentName} has submitted a rating for Report ID #{$this->report->id}.",
-            //'url' => route('admin.reports.feedback', $this->report->id),
-            'url' => route('admin.reports.viewreport', $this->report->id) . '?tab=feedback',
-
-
+            'message'   => "Resident ({$this->residentEmail}) has submitted a rating for Report ID #{$this->report->id}.",
+            'url'       => route('admin.reports.viewreport', $this->report->id) . '?tab=feedback',
         ];
     }
 }

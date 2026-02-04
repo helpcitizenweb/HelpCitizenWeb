@@ -62,14 +62,6 @@
                ]) ? '' : $response->medical_response }}">
     </div>
 
-    <!-- 🚫 AMBULANCE UNITS REMOVED -->
-    <div>
-        <label class="block text-sm font-medium text-gray-700">Ambulance Units</label>
-        <input type="number"
-               name="ambulance_units"
-               class="w-full border rounded p-2"
-               value="{{ old('ambulance_units', $response->ambulance_units ?? '') }}">
-    </div>
 
     <!-- Designated Hospitals -->
     <div x-data="{
@@ -135,6 +127,15 @@
                name="hospital_address"
                value="{{ old('hospital_address', $response->hospital_address ?? '') }}"
                class="w-full border rounded p-2">
+    </div>
+
+    <!-- 🚫 AMBULANCE UNITS REMOVED -->
+    <div>
+        <label class="block text-sm font-medium text-gray-700">Ambulance Units</label>
+        <input type="number"
+               name="ambulance_units"
+               class="w-full border rounded p-2"
+               value="{{ old('ambulance_units', $response->ambulance_units ?? '') }}">
     </div>
 
 
