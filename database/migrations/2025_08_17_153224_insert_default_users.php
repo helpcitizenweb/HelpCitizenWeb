@@ -26,18 +26,19 @@ return new class extends Migration
             DB::table('users')->insert($admin);
         }
 
-        if (!DB::table('users')->where('role', 'user')->exists()) {
-            DB::table('users')->insert([
-                'name' => 'default user',
-                'email' => 'user@example.com',
-                'role' => 'resident',
-                'password' => '$2y$12$Gto4aW1MRF3ooHFzPXbt/uet40MTvqrYVD5Hrqr4TGVMcoYCJwP.O',
-                'remember_token' => '',
-                'status' => 'active',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]);
-        }
+        if (!DB::table('users')->where('email', 'user@example.com')->exists()) {
+    DB::table('users')->insert([
+        'name' => 'default user',
+        'email' => 'user@example.com',
+        'role' => 'resident',
+        'password' => '$2y$12$Gto4aW1MRF3ooHFzPXbt/uet40MTvqrYVD5Hrqr4TGVMcoYCJwP.O',
+        'remember_token' => '',
+        'status' => 'active',
+        'created_at' => now(),
+        'updated_at' => now(),
+    ]);
+}
+
     }
 
     public function down(): void
