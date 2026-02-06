@@ -344,7 +344,7 @@
 @else
     <span
         class="px-3 py-1 text-xs bg-gray-300 text-gray-500 rounded-md cursor-not-allowed">
-        Cancel 282
+        Cancel 
     </span>
 @endif
 
