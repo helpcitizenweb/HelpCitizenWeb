@@ -46,9 +46,9 @@ class ReportController extends Controller
      //   $validated['image'] = $request->file('image')->store('reports', 'public');
     //}
 
-    if ($request->hasFile('image')) {
-    $path = $request->file('image')->store('reports', 'spaces');
-    $validated['image'] = Storage::disk('spaces')->url($path);
+   if ($request->hasFile('image')) {
+    $path = $request->file('image')->store('reports', 's3');
+    $validated['image'] = Storage::disk('s3')->url($path);
 }
 
     
