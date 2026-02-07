@@ -25,7 +25,6 @@
 
                             <!-- IMAGE + MODAL -->
                             <div x-data="{ showImage: false }">
-
                                 <!-- CLICKABLE IMAGE -->
                                 <img @click="showImage = true"
                                     class="w-full h-48 object-cover cursor-pointer hover:opacity-90 transition"
@@ -173,6 +172,7 @@
                 @foreach ($reports as $report)
                     <div class="rounded-lg overflow-hidden shadow-md bg-white border border-gray-200">
 
+                              <!-- remove -->  <p class="text-xs text-red-500">{{ $report->image }}</p>
                         <!-- IMAGE + MODAL -->
                         <div x-data="{ showImage: false }">
 
