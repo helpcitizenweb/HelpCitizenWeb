@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Notifications\ReportStatusNotification;
 use App\Notifications\ResolvedNotification;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 
 class ReportController extends Controller
@@ -41,9 +42,18 @@ class ReportController extends Controller
 
 
         // Handle Image Upload
-   if ($request->hasFile('image')) {
-        $validated['image'] = $request->file('image')->store('reports', 'public');
-    }
+   //if ($request->hasFile('image')) {
+     //   $validated['image'] = $request->file('image')->store('reports', 'public');
+    //}
+
+    if ($request->hasFile('image')) {
+    $path = $request->file('image')->store('reports', 'spaces');
+    $validated['image'] = Storage::disk('spaces')->url($path);
+}
+
+    
+
+
     // ✅ Handle Video Upload (THIS IS WHAT YOU NEED)
     if ($request->hasFile('video')) {
         $validated['video'] = $request->file('video')->store('reports/videos', 'public');
