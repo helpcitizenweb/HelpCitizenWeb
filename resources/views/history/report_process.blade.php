@@ -145,7 +145,7 @@
             class="delete-report-btn px-3 py-1 text-xs bg-red-600 hover:bg-red-700 text-white rounded-md"
             data-title="{{ $report->title }}"
             data-status="{{ $report->status }}">
-            Cancel 142
+            Cancel 
         </button>
     </form>
 @else
