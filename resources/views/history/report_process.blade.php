@@ -1,8 +1,3 @@
-@extends('layouts.app')
-@push('scripts')
-    <script src="https://unpkg.com/alpinejs" defer></script>
-@endpush
-
 @php
                                     use Illuminate\Support\Str;
 
@@ -21,6 +16,11 @@
                                         return asset('storage/' . $image);
                                     }
                                 @endphp
+@extends('layouts.app')
+@push('scripts')
+    <script src="https://unpkg.com/alpinejs" defer></script>
+@endpush
+
 
 @section('content')
     <div class="max-w-screen-xl mx-auto p-5">
