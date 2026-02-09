@@ -47,19 +47,19 @@ class ReportController extends Controller
      //   $validated['image'] = $request->file('image')->store('reports', 'public');
     //}
 
-   if ($request->hasFile('image')) {
+   // Handle Image Upload (DigitalOcean Spaces)
+if ($request->hasFile('image')) {
 
-    $path = $request->file('image')->store(
+    $path = $request->file('image')->storePublicly(
         'reports',
         'spaces'
     );
 
-    // Save FULL public URL
     $imageUrl = Storage::disk('spaces')->url($path);
 
-    // ✅ IMPORTANT: put it into $validated
     $validated['image'] = $imageUrl;
 }
+
 
 
     // ✅ Handle Video Upload (THIS IS WHAT YOU NEED)
