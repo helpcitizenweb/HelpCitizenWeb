@@ -62,10 +62,20 @@ if ($request->hasFile('image')) {
 
 
 
-    // ✅ Handle Video Upload (THIS IS WHAT YOU NEED)
-    if ($request->hasFile('video')) {
-        $validated['video'] = $request->file('video')->store('reports/videos', 'public');
-    }
+    // Handle Video Upload (DigitalOcean Spaces)
+if ($request->hasFile('video')) {
+
+    $path = $request->file('video')->storePublicly(
+        'reports/videos',
+        'spaces'
+    );
+
+    // Save FULL public URL
+    $videoUrl = Storage::disk('spaces')->url($path);
+
+    $validated['video'] = $videoUrl;
+}
+
 
         // Save report
         $report = Report::create($validated);
