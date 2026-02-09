@@ -1,21 +1,22 @@
 @php
-                                    use Illuminate\Support\Str;
+    use Illuminate\Support\Str;
 
-                                    function reportImageUrl($image)
-                                    {
-                                        if (!$image) {
-                                            return null;
-                                        }
+    function reportImageUrl($image)
+    {
+        if (!$image) {
+            return null;
+        }
 
-                                        // If already a full URL (DigitalOcean Spaces)
-                                        if (Str::startsWith($image, 'http')) {
-                                            return $image;
-                                        }
+        // Only allow DigitalOcean Spaces images in production
+        if (Str::startsWith($image, 'http')) {
+            return $image;
+        }
 
-                                        // Otherwise assume local storage path
-                                        return asset('storage/' . $image);
-                                    }
-                                @endphp
+        // Ignore old local images
+        return null;
+    }
+@endphp
+
 @extends('layouts.app')
 @push('scripts')
     <script src="https://unpkg.com/alpinejs" defer></script>

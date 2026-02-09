@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 
+
 class ReportController extends Controller
 {
     public function index()
@@ -47,11 +48,18 @@ class ReportController extends Controller
     //}
 
    if ($request->hasFile('image')) {
-    $path = $request->file('image')->store('reports', 's3');
-    $validated['image'] = Storage::disk('s3')->url($path);
-}
 
-    
+    $path = $request->file('image')->store(
+        'reports',
+        'spaces'
+    );
+
+    // Save FULL public URL
+    $imageUrl = Storage::disk('spaces')->url($path);
+
+    // ✅ IMPORTANT: put it into $validated
+    $validated['image'] = $imageUrl;
+}
 
 
     // ✅ Handle Video Upload (THIS IS WHAT YOU NEED)
