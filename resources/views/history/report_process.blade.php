@@ -3,6 +3,25 @@
     <script src="https://unpkg.com/alpinejs" defer></script>
 @endpush
 
+@php
+                                    use Illuminate\Support\Str;
+
+                                    function reportImageUrl($image)
+                                    {
+                                        if (!$image) {
+                                            return null;
+                                        }
+
+                                        // If already a full URL (DigitalOcean Spaces)
+                                        if (Str::startsWith($image, 'http')) {
+                                            return $image;
+                                        }
+
+                                        // Otherwise assume local storage path
+                                        return asset('storage/' . $image);
+                                    }
+                                @endphp
+
 @section('content')
     <div class="max-w-screen-xl mx-auto p-5">
 
@@ -26,10 +45,11 @@
                             <!-- IMAGE + MODAL -->
                             <div x-data="{ showImage: false }">
                                 <!-- CLICKABLE IMAGE -->
-                                <img @click="showImage = true"
-                                    class="w-full h-48 object-cover cursor-pointer hover:opacity-90 transition"
-                                    src="{{ $report->image ? asset('storage/' . $report->image) : 'https://via.placeholder.com/400' }}"
-                                    alt="Report Image">
+                                {{-- LINE 33–36 FIX --}}
+                                @if (reportImageUrl($report->image))
+                                    <img src="{{ reportImageUrl($report->image) }}" alt="Report Image"
+                                        class="w-full h-48 object-cover rounded-t">
+                                @endif
 
                                 <!-- FULL IMAGE MODAL -->
                                 <div x-show="showImage" x-cloak
@@ -42,9 +62,11 @@
                                                 class="text-gray-600 hover:text-gray-900 text-2xl font-bold">&times;</button>
                                         </div>
 
-                                        <!-- IMAGE PREVIEW -->
-                                        <img src="{{ $report->image ? asset('storage/' . $report->image) : 'https://via.placeholder.com/400' }}"
-                                            class="max-h-[70vh] mx-auto rounded-lg" alt="Full Image Preview">
+                                        <!-- IMAGE PREVIEW 50-51 -->
+                                        {{-- LINE 50–51 FIX --}}
+                                        @if (reportImageUrl($report->image))
+                                            <img src="{{ reportImageUrl($report->image) }}" class="preview-image">
+                                        @endif
 
                                     </div>
                                 </div>
@@ -115,16 +137,15 @@
 
 
                                 <span
-    class="px-3 py-1 text-xs font-semibold text-white rounded-full
+                                    class="px-3 py-1 text-xs font-semibold text-white rounded-full
     @if ($report->status === 'Pending') bg-yellow-500
     @elseif ($report->status === 'In Progress') bg-blue-600
     @elseif ($report->status === 'Action') bg-indigo-600
     @elseif ($report->status === 'Resolved') bg-green-600
     @elseif ($report->status === 'Cancel') bg-red-600
-    @else bg-gray-600
-    @endif">
-    {{ $report->status }}
-</span>
+    @else bg-gray-600 @endif">
+                                    {{ $report->status }}
+                                </span>
 
                                 <div class="flex gap-2 shrink-0">
 
@@ -136,24 +157,23 @@
 
 
                                     @if (!in_array($report->status, ['Action', 'Resolved', 'Cancel']))
-    <form action="{{ route('report.process.destroy', $report->id) }}" method="POST">
-        @csrf
-        @method('DELETE')
+                                        <form action="{{ route('report.process.destroy', $report->id) }}" method="POST">
+                                            @csrf
+                                            @method('DELETE')
 
-        <button type="button"
-            class="delete-report-btn px-3 py-1 text-xs bg-red-600 hover:bg-red-700 text-white rounded-md"
-            data-title="{{ $report->title }}"
-            data-status="{{ $report->status }}">
-            Cancel 
-        </button>
-    </form>
-@else
-    <span
-        class="px-3 py-1 text-xs bg-gray-300 text-gray-500 rounded-md cursor-not-allowed"
-        title="This report can no longer be canceled">
-        Cancel 149
-    </span>
-@endif
+                                            <button type="button"
+                                                class="delete-report-btn px-3 py-1 text-xs bg-red-600 hover:bg-red-700 text-white rounded-md"
+                                                data-title="{{ $report->title }}" data-status="{{ $report->status }}">
+                                                Cancel
+                                            </button>
+                                        </form>
+                                    @else
+                                        <span
+                                            class="px-3 py-1 text-xs bg-gray-300 text-gray-500 rounded-md cursor-not-allowed"
+                                            title="This report can no longer be canceled">
+                                            Cancel 149
+                                        </span>
+                                    @endif
 
 
                                 </div>
@@ -172,15 +192,21 @@
                 @foreach ($reports as $report)
                     <div class="rounded-lg overflow-hidden shadow-md bg-white border border-gray-200">
 
-                              <!-- remove -->  <p class="text-xs text-red-500">{{ $report->image }}</p>
+                        <!-- remove -->
+                        <p class="text-xs text-red-500">{{ $report->image }}</p>
                         <!-- IMAGE + MODAL -->
                         <div x-data="{ showImage: false }">
 
                             <!-- CLICKABLE IMAGE -->
-                            <img @click="showImage = true"
-                                class="w-full h-48 object-cover cursor-pointer hover:opacity-90 transition"
-                                src="{{ $report->image ? asset('storage/' . $report->image) : 'https://via.placeholder.com/400' }}"
-                                alt="Report Image">
+                            {{-- LINE 184–187 FIX --}}
+@if(reportImageUrl($report->image))
+    <a href="{{ reportImageUrl($report->image) }}" target="_blank">
+        <img
+            src="{{ reportImageUrl($report->image) }}"
+            class="w-full rounded"
+        >
+    </a>
+@endif
 
                             <!-- FULL IMAGE MODAL -->
                             <div x-show="showImage" x-cloak
@@ -194,8 +220,13 @@
                                     </div>
 
                                     <!-- IMAGE PREVIEW -->
-                                    <img src="{{ $report->image ? asset('storage/' . $report->image) : 'https://via.placeholder.com/400' }}"
-                                        class="max-h-[70vh] mx-auto rounded-lg" alt="Full Image Preview">
+                                    {{-- LINE 201–202 FIX --}}
+@if(reportImageUrl($report->image))
+    <img
+        src="{{ reportImageUrl($report->image) }}"
+        class="w-full rounded"
+    >
+@endif
                                 </div>
                             </div>
 
@@ -213,53 +244,53 @@
                                 <strong>Type:</strong> {{ $report->type }} <br>
                                 <strong>Subtype:</strong> {{ $report->subtype }} <br>
                                 <strong>Date:</strong> {{ $report->created_at->format('M d, Y') }} <br>
-                               
-                            </p>
-                        <!-- Location Modal -->
-<div x-data="{ openLocation: false }">
-    <p class="text-gray-700 text-sm cursor-pointer hover:text-indigo-600"
-        @click="openLocation = true">
-        <strong>Location:</strong>
-        {{ Str::limit($report->location, 50) }}
-        <span class="text-indigo-500 underline text-xs">view</span>
-    </p>
 
-    <div x-show="openLocation" x-cloak
-        class="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm 
+                            </p>
+                            <!-- Location Modal -->
+                            <div x-data="{ openLocation: false }">
+                                <p class="text-gray-700 text-sm cursor-pointer hover:text-indigo-600"
+                                    @click="openLocation = true">
+                                    <strong>Location:</strong>
+                                    {{ Str::limit($report->location, 50) }}
+                                    <span class="text-indigo-500 underline text-xs">view</span>
+                                </p>
+
+                                <div x-show="openLocation" x-cloak
+                                    class="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm 
         flex items-center justify-center z-50">
 
-        <div class="bg-white w-[900px] max-h-[60vh] rounded-lg shadow-xl overflow-hidden">
+                                    <div class="bg-white w-[900px] max-h-[60vh] rounded-lg shadow-xl overflow-hidden">
 
-            <!-- Header -->
-            <div class="flex justify-between items-center px-6 py-4 border-b">
-                <h3 class="text-xl font-semibold">Full Location</h3>
-                <button @click="openLocation = false"
-                    class="text-gray-600 hover:text-gray-900 text-2xl leading-none">
-                    &times;
-                </button>
-            </div>
+                                        <!-- Header -->
+                                        <div class="flex justify-between items-center px-6 py-4 border-b">
+                                            <h3 class="text-xl font-semibold">Full Location</h3>
+                                            <button @click="openLocation = false"
+                                                class="text-gray-600 hover:text-gray-900 text-2xl leading-none">
+                                                &times;
+                                            </button>
+                                        </div>
 
-            <!-- Body -->
-            <div class="p-6 space-y-4 overflow-y-auto max-h-[50vh]">
-                <label class="font-semibold text-gray-700">Location:</label>
+                                        <!-- Body -->
+                                        <div class="p-6 space-y-4 overflow-y-auto max-h-[50vh]">
+                                            <label class="font-semibold text-gray-700">Location:</label>
 
-                <textarea
-                    class="w-full h-40 p-3 border border-gray-300 rounded-md text-sm resize-none 
+                                            <textarea
+                                                class="w-full h-40 p-3 border border-gray-300 rounded-md text-sm resize-none 
                     bg-gray-50 text-gray-800 leading-relaxed"
-                    readonly>{{ $report->location }}</textarea>
-            </div>
+                                                readonly>{{ $report->location }}</textarea>
+                                        </div>
 
-            <!-- Footer -->
-            <div class="px-6 py-4 border-t flex justify-end">
-                <button @click="openLocation = false"
-                    class="px-4 py-2 bg-indigo-600 text-white text-sm rounded-lg hover:bg-indigo-700">
-                    Close
-                </button>
-            </div>
+                                        <!-- Footer -->
+                                        <div class="px-6 py-4 border-t flex justify-end">
+                                            <button @click="openLocation = false"
+                                                class="px-4 py-2 bg-indigo-600 text-white text-sm rounded-lg hover:bg-indigo-700">
+                                                Close
+                                            </button>
+                                        </div>
 
-        </div>
-    </div>
-</div>
+                                    </div>
+                                </div>
+                            </div>
 
 
                             <!-- Description Modal -->
@@ -310,16 +341,15 @@
                         <div class="px-6 py-3 flex justify-between items-center bg-gray-50">
 
                             <span
-    class="px-3 py-1 text-xs font-semibold text-white rounded-full
+                                class="px-3 py-1 text-xs font-semibold text-white rounded-full
     @if ($report->status === 'Pending') bg-yellow-500
     @elseif ($report->status === 'In Progress') bg-blue-600
     @elseif ($report->status === 'Action') bg-indigo-600
     @elseif ($report->status === 'Resolved') bg-green-600
     @elseif ($report->status === 'Cancel') bg-red-600
-    @else bg-gray-600
-    @endif">
-    {{ $report->status }}
-</span>
+    @else bg-gray-600 @endif">
+                                {{ $report->status }}
+                            </span>
 
                             <div class="flex gap-2">
                                 <a href="{{ route('reports.full', $report->id) }}"
@@ -330,23 +360,22 @@
 
 
                                 @if (!in_array($report->status, ['Action', 'Resolved', 'Cancel']))
-    <form action="{{ route('report.process.destroy', $report->id) }}" method="POST">
-        @csrf
-        @method('DELETE')
+                                    <form action="{{ route('report.process.destroy', $report->id) }}" method="POST">
+                                        @csrf
+                                        @method('DELETE')
 
-        <button type="button"
-            class="delete-report-btn px-3 py-1 text-xs bg-red-600 hover:bg-red-700 text-white rounded-md"
-            data-title="{{ $report->title }}"
-            data-status="{{ $report->status }}">
-            Cancel
-        </button>
-    </form>
-@else
-    <span
-        class="px-3 py-1 text-xs bg-gray-300 text-gray-500 rounded-md cursor-not-allowed">
-        Cancel 
-    </span>
-@endif
+                                        <button type="button"
+                                            class="delete-report-btn px-3 py-1 text-xs bg-red-600 hover:bg-red-700 text-white rounded-md"
+                                            data-title="{{ $report->title }}" data-status="{{ $report->status }}">
+                                            Cancel
+                                        </button>
+                                    </form>
+                                @else
+                                    <span
+                                        class="px-3 py-1 text-xs bg-gray-300 text-gray-500 rounded-md cursor-not-allowed">
+                                        Cancel
+                                    </span>
+                                @endif
 
 
                                 </form>
