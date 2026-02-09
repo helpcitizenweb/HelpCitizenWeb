@@ -55,7 +55,7 @@ if ($request->hasFile('image')) {
         'spaces'
     );
 
-    $imageUrl = Storage::disk('spaces')->url($path);
+    $imageUrl = Storage::disk('spaces')->url($path);// do not mind the url problem
 
     $validated['image'] = $imageUrl;
 }
