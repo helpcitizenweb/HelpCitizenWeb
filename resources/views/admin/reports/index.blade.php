@@ -1,3 +1,22 @@
+@php
+    use Illuminate\Support\Str;
+
+    function reportImageUrl($image)
+    {
+        if (!$image) {
+            return null;
+        }
+
+        // DigitalOcean Spaces (full URL)
+        if (Str::startsWith($image, 'http')) {
+            return $image;
+        }
+
+        // Ignore old local images in production
+        return null;
+    }
+@endphp
+
 @extends('layouts.admin')
 
 @section('content')
@@ -84,15 +103,16 @@
     data-date="{{ $report->created_at->format('Y-m-d') }}"
 >
 
-    <!-- IMAGE (dominant like Figma) -->
+    <!-- IMAGE (dominant like Figma) line 87-99 -->
     <div class="w-36 h-32 bg-gray-100 rounded overflow-hidden flex-shrink-0">
-        @if($report->image)
-            <img
-                src="{{ asset('storage/' . $report->image) }}"
-                class="w-full h-full object-cover cursor-pointer"
-                onclick="openImageModal('{{ asset('storage/' . $report->image) }}')"
-            >
-        @else
+        @if(reportImageUrl($report->image))
+    <img
+        src="{{ reportImageUrl($report->image) }}"
+        class="w-full h-full object-cover cursor-pointer"
+        onclick="openImageModal('{{ reportImageUrl($report->image) }}')"
+    >
+@else
+
             <div class="w-full h-full flex items-center justify-center text-xs text-gray-400">
                 No image
             </div>
@@ -201,7 +221,7 @@
     </div>
 </div>
 
-<!-- Image Modal -->
+<!-- Image Modal 204-210 -->
 <div id="imageModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50">
     <div class="bg-white p-4 rounded-lg shadow-lg max-w-[90%] max-h-[90%]">
         <img id="modalImage" src="" class="max-w-full max-h-[80vh] rounded" />
