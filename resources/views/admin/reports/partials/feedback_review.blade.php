@@ -1,21 +1,22 @@
 @php
     use Illuminate\Support\Str;
 
-    function reportMediaUrl($media)
-    {
-        if (!$media) {
+    if (!function_exists('reportMediaUrl')) {
+        function reportMediaUrl($media)
+        {
+            if (!$media) {
+                return null;
+            }
+            // DigitalOcean Spaces (full URL)
+            if (Str::startsWith($media, 'http')) {
+                return $media;
+            }
+            // Ignore old local storage paths in production
             return null;
         }
-
-        // DigitalOcean Spaces (full URL)
-        if (Str::startsWith($media, 'http')) {
-            return $media;
-        }
-
-        // Ignore old local storage paths in production
-        return null;
     }
 @endphp
+
 
 <div x-data="{ showImage: false, showVideo: false }" class="bg-white p-6 rounded-xl shadow space-y-8">
 
@@ -162,8 +163,15 @@
                 <button class="absolute top-2 right-3 text-gray-500 hover:text-black text-xl"
                     @click="showImage = false">&times;</button>
 
-                <img src="{{ asset('storage/' . $feedback->photo) }}"
-                    class="w-full max-h-[80vh] object-contain rounded-lg">
+                @php
+    $photoUrl = reportMediaUrl($feedback->photo);
+@endphp
+
+@if ($photoUrl)
+    <img src="{{ $photoUrl }}"
+         class="w-full max-h-[80vh] object-contain rounded-lg">
+@endif
+
             </div>
         </div>
     @endif
@@ -177,9 +185,16 @@
                 <button class="absolute top-2 right-3 text-gray-500 hover:text-black text-xl"
                     @click="showVideo = false">&times;</button>
 
-                <video controls autoplay class="w-full max-h-[80vh] rounded-lg">
-                    <source src="{{ asset('storage/' . $feedback->video) }}">
-                </video>
+                @php
+    $videoUrl = reportMediaUrl($feedback->video);
+@endphp
+
+@if ($videoUrl)
+    <video controls autoplay class="w-full max-h-[80vh] rounded-lg">
+        <source src="{{ $videoUrl }}">
+    </video>
+@endif
+
             </div>
         </div>
     @endif
