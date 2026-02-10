@@ -1,7 +1,27 @@
-<div x-data="{ showImageModal: false, showVideoModal: false }"
-     class="bg-white p-6 rounded-xl shadow space-y-6">
+@php
+    use Illuminate\Support\Str;
 
-    
+    function reportMediaUrl($media)
+    {
+        if (!$media) {
+            return null;
+        }
+
+        // DigitalOcean Spaces (full URL)
+        if (Str::startsWith($media, 'http')) {
+            return $media;
+        }
+
+        // Ignore old local storage paths in production
+        return null;
+    }
+@endphp
+
+
+
+<div x-data="{ showImageModal: false, showVideoModal: false }" class="bg-white p-6 rounded-xl shadow space-y-6">
+
+
 
     <!-- ================= TITLE ================= -->
     <div>
@@ -13,24 +33,23 @@
         </p>
     </div>
 
-    <!-- ================= MEDIA ================= -->
+    <!-- ================= MEDIA 17-26 =================  -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         @if ($report->image)
             <div class="bg-gray-50 p-3 rounded-lg border border-gray-200">
                 <h4 class="text-lg font-medium text-gray-700 mb-2">📷 Uploaded Image</h4>
-                <img src="{{ asset('storage/' . $report->image) }}"
-                     alt="Report Image"
-                     @click="showImageModal = true"
-                     class="w-full h-48 object-cover rounded border shadow cursor-pointer hover:scale-105 transition">
+                <img src="{{ reportMediaUrl($report->image) }}" alt="Report Image" @click="showImageModal = true"
+                    class="w-full h-48 object-cover rounded border shadow cursor-pointer hover:scale-105 transition">
+
             </div>
         @endif
-
+        <!-- ================= MEDIA 28-38 =================  -->
         @if ($report->video)
             <div class="bg-gray-50 p-3 rounded-lg border border-gray-200">
                 <h4 class="text-lg font-medium text-gray-700 mb-2">🎥 Uploaded Video</h4>
                 <video @click="showVideoModal = true"
-                       class="w-full h-48 rounded-lg border shadow cursor-pointer hover:scale-105 transition">
-                    <source src="{{ asset('storage/' . $report->video) }}">
+                    class="w-full h-48 rounded-lg border shadow cursor-pointer hover:scale-105 transition">
+                    <source src="{{ reportMediaUrl($report->video) }}">
                     Your browser does not support the video tag.
                 </video>
             </div>
@@ -71,32 +90,30 @@
         </div>
     @endif
 
-    <!-- ================= IMAGE MODAL ================= -->
+    <!-- ================= IMAGE MODAL75-88 ================= -->
     @if ($report->image)
-        <div x-show="showImageModal"
-             x-transition
-             class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50"
-             @click.self="showImageModal = false">
+        <div x-show="showImageModal" x-transition
+            class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50"
+            @click.self="showImageModal = false">
             <div class="bg-white p-4 rounded-lg shadow-lg max-w-3xl w-full relative">
                 <button @click="showImageModal = false"
-                        class="absolute top-3 right-3 text-gray-600 hover:text-gray-900 text-xl">✕</button>
-                <img src="{{ asset('storage/' . $report->image) }}"
-                     class="w-full max-h-[80vh] object-contain rounded">
+                    class="absolute top-3 right-3 text-gray-600 hover:text-gray-900 text-xl">✕</button>
+                <img src="{{ reportMediaUrl($report->image) }}" class="w-full max-h-[80vh] object-contain rounded">
+
             </div>
         </div>
     @endif
 
-    <!-- ================= VIDEO MODAL ================= -->
+    <!-- ================= VIDEO MODAL 90-104 ================= -->
     @if ($report->video)
-        <div x-show="showVideoModal"
-             x-transition
-             class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50"
-             @click.self="showVideoModal = false">
+        <div x-show="showVideoModal" x-transition
+            class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50"
+            @click.self="showVideoModal = false">
             <div class="bg-white p-4 rounded-lg shadow-lg max-w-3xl w-full relative">
                 <button @click="showVideoModal = false"
-                        class="absolute top-3 right-3 text-gray-600 hover:text-gray-900 text-xl">✕</button>
+                    class="absolute top-3 right-3 text-gray-600 hover:text-gray-900 text-xl">✕</button>
                 <video controls class="w-full max-h-[80vh] rounded">
-                    <source src="{{ asset('storage/' . $report->video) }}">
+                    <source src="{{ reportMediaUrl($report->video) }}">
                     Your browser does not support the video tag.
                 </video>
             </div>
@@ -108,34 +125,37 @@
 
         <!-- Status Badge -->
         <p class="mb-3">
-            <span class="inline-block px-3 py-1 rounded-full text-sm font-semibold
-                {{ $report->status == 'Pending' ? 'bg-yellow-100 text-yellow-800' :
-                   ($report->status == 'In Progress' ? 'bg-blue-100 text-blue-800' :
-                   ($report->status == 'Action' ? 'bg-purple-100 text-purple-800' :
-                   ($report->status == 'Cancel' ? 'bg-red-100 text-red-800' :
-                   'bg-green-100 text-green-800'))) }}">
+            <span
+                class="inline-block px-3 py-1 rounded-full text-sm font-semibold
+                {{ $report->status == 'Pending'
+                    ? 'bg-yellow-100 text-yellow-800'
+                    : ($report->status == 'In Progress'
+                        ? 'bg-blue-100 text-blue-800'
+                        : ($report->status == 'Action'
+                            ? 'bg-purple-100 text-purple-800'
+                            : ($report->status == 'Cancel'
+                                ? 'bg-red-100 text-red-800'
+                                : 'bg-green-100 text-green-800'))) }}">
                 {{ $report->status }}
             </span>
         </p>
 
         <!-- Update Status Form -->
         @if ($report->status !== 'Resolved')
-            <form action="{{ route('admin.reports.updateStatus', $report->id) }}"
-                  method="POST"
-                  class="flex flex-wrap items-center gap-3">
+            <form action="{{ route('admin.reports.updateStatus', $report->id) }}" method="POST"
+                class="flex flex-wrap items-center gap-3">
                 @csrf
                 @method('PUT')
 
-                <select name="status"
-                        class="border border-gray-300 rounded px-3 py-1">
+                <select name="status" class="border border-gray-300 rounded px-3 py-1">
                     <option value="Pending" {{ $report->status === 'Pending' ? 'selected' : '' }}>Pending</option>
-                    <option value="In Progress" {{ $report->status === 'In Progress' ? 'selected' : '' }}>In Progress</option>
+                    <option value="In Progress" {{ $report->status === 'In Progress' ? 'selected' : '' }}>In Progress
+                    </option>
                     <option value="Action" {{ $report->status === 'Action' ? 'selected' : '' }}>Action</option>
                     <option value="Cancel" {{ $report->status === 'Cancel' ? 'selected' : '' }}>Cancel</option>
                 </select>
 
-                <button type="submit"
-                        class="bg-blue-600 text-white px-4 py-1 rounded hover:bg-blue-700 transition">
+                <button type="submit" class="bg-blue-600 text-white px-4 py-1 rounded hover:bg-blue-700 transition">
                     Update
                 </button>
             </form>
