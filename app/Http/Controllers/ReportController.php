@@ -80,13 +80,13 @@ if ($request->hasFile('video')) {
         // Save report
         $report = Report::create($validated);
          // Notify user
-        $user = $report->user ?? User::find($report->user_id);
-        if ($user) {
-            $user->notify(new ReportStatusNotification(
-                $report,
-                "Your report ID {$report->id} for {$report->type} - {$report->subtype} has been received."
-            ));
-        }
+      //  $user = $report->user ?? User::find($report->user_id);
+        //if ($user) {
+          //  $user->notify(new ReportStatusNotification(
+            //    $report,
+              //  "Your report ID {$report->id} for {$report->type} - {$report->subtype} has been received."
+           // ));
+        //}
         // // Notify admins
         $admins = User::where('role', 'admin')->get();
         foreach ($admins as $admin) {
