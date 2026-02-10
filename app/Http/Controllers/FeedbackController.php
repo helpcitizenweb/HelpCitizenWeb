@@ -93,8 +93,8 @@ if ($request->hasFile('video')) {
             'feedback'      => $validated['feedback'],
 
             // Media
-            'photo'         => $photoPath,
-            'video'         => $videoPath,
+            'photo'     => $validated['photo'] ?? null,
+            'video'     => $validated['video'] ?? null,
 
             // Time tracking
             'feedback_date' => now()->toDateString(),

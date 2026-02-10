@@ -193,21 +193,17 @@
                 @foreach ($reports as $report)
                     <div class="rounded-lg overflow-hidden shadow-md bg-white border border-gray-200">
 
-                        <!-- remove -->
-                        <p class="text-xs text-red-500">{{ $report->image }}</p>
+
                         <!-- IMAGE + MODAL -->
                         <div x-data="{ showImage: false }">
 
                             <!-- CLICKABLE IMAGE -->
                             {{-- LINE 184–187 FIX --}}
-@if(reportImageUrl($report->image))
-    <a href="{{ reportImageUrl($report->image) }}" target="_blank">
-        <img
-            src="{{ reportImageUrl($report->image) }}"
-            class="w-full rounded"
-        >
-    </a>
-@endif
+                            @if (reportImageUrl($report->image))
+                                <a href="{{ reportImageUrl($report->image) }}" target="_blank">
+                                    <img src="{{ reportImageUrl($report->image) }}" class="w-full rounded">
+                                </a>
+                            @endif
 
                             <!-- FULL IMAGE MODAL -->
                             <div x-show="showImage" x-cloak
@@ -222,12 +218,9 @@
 
                                     <!-- IMAGE PREVIEW -->
                                     {{-- LINE 201–202 FIX --}}
-@if(reportImageUrl($report->image))
-    <img
-        src="{{ reportImageUrl($report->image) }}"
-        class="w-full rounded"
-    >
-@endif
+                                    @if (reportImageUrl($report->image))
+                                        <img src="{{ reportImageUrl($report->image) }}" class="w-full rounded">
+                                    @endif
                                 </div>
                             </div>
 
