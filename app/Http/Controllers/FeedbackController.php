@@ -8,6 +8,7 @@ use App\Notifications\ResidentRatedReportNotification;
 use App\Notifications\AdminRepliedToFeedbackNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class FeedbackController extends Controller
 {
@@ -51,9 +52,34 @@ class FeedbackController extends Controller
             'video'    => 'required|mimes:mp4,mov,avi|max:10240',
         ]);
 
-        // ✅ FILE STORAGE
-        $photoPath = $request->file('photo')->store('feedback/photos', 'public');
-        $videoPath = $request->file('video')->store('feedback/videos', 'public');
+        // ✅ FILE STORAGE line 55-56
+      //  $photoPath = $request->file('photo')->store('feedback/photos', 'public');
+      //  $videoPath = $request->file('video')->store('feedback/videos', 'public');
+      // Handle Photo Upload (DigitalOcean Spaces)
+if ($request->hasFile('photo')) {
+
+    $path = $request->file('photo')->storePublicly(
+        'reports',
+        'spaces'
+    );
+
+    $photoUrl = Storage::disk('spaces')->url($path);
+
+    $validated['photo'] = $photoUrl;
+}
+// Handle Video Upload (DigitalOcean Spaces)
+if ($request->hasFile('video')) {
+
+    $path = $request->file('video')->storePublicly(
+        'reports/videos',
+        'spaces'
+    );
+
+    $videoUrl = Storage::disk('spaces')->url($path);
+
+    $validated['video'] = $videoUrl;
+}
+
 
         // ✅ CREATE FEEDBACK (hasOne via report_id unique)
         Feedback::create([
