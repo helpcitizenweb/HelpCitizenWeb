@@ -175,7 +175,7 @@
 
    
 <!-- ACTION (PRIMARY BIG BUTTON) -->
-<div class="flex items-start justify-end self-start min-w-[160px]">
+<div class="flex flex-col items-end gap-3 min-w-[160px]">
     <a href="{{ route('admin.reports.viewreport', $report->id) }}"
        class="flex items-center gap-2 px-5 py-3
               bg-green-600 text-white text-sm font-semibold
@@ -201,6 +201,30 @@
 
         View Report
     </a>
+    @if(!$report->anonymous && $report->user)
+    <!-- View User -->
+    <a href="{{ route('admin.reports.viewuser', $report->user->id) }}"
+       class="flex items-center justify-center gap-2 px-5 py-3
+              bg-blue-600 text-white text-sm font-semibold
+              rounded-xl shadow-md
+              hover:bg-blue-700 transition
+              w-full">
+
+        <!-- User icon -->
+        <svg xmlns="http://www.w3.org/2000/svg"
+             class="w-5 h-5"
+             fill="none"
+             viewBox="0 0 24 24"
+             stroke="currentColor"
+             stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M5.121 17.804A9 9 0 1118.879 17.8M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+        </svg>
+
+        View User
+    </a>
+    @endif
+
 </div>
  <!-- ACTION (PRIMARY CIRCULAR BUTTON) -->
 

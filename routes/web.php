@@ -127,7 +127,8 @@ Route::post('/admin/reports/{report}/response/save',
 Route::put('/admin/reports/{report}/update-status',
     [App\Http\Controllers\ResponseController::class, 'updateStatus'])
     ->name('admin.reports.updateStatus');
-
+Route::get('/admin/view-user/{id}', [ProfileController::class, 'viewUser'])
+    ->name('admin.reports.viewuser');
 
 
         // Announcements

@@ -133,7 +133,6 @@
                 >
                     <option value="" disabled selected>Select a role</option>
                     <option value="admin">Admin</option>
-                    <option value="barangay_official">Barangay Official</option>
                     <option value="resident">Resident</option>
                 </select>
             </div>
