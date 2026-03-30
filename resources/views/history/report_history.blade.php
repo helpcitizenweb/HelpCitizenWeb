@@ -278,7 +278,7 @@
     <!-- FILTER SCRIPT -->
     <script>
         const allowedTypes = {
-            "Emergencies": ["Fire", "Flood", "Earthquake", "Medical", "Others"],
+            "Emergencies": ["Fire", "Flood", "Typhoon","Earthquake", "Medical", "Others"],
             "Accidents": ["Traffic", "Workplace", "Home", "Others"],
             "Complaints": ["Noise", "Garbage", "Harassment", "Others"],
             "Suggestions": ["Public Safety", "Infrastructure", "Services", "Others"],
