@@ -13,7 +13,7 @@
 <body class="font-poppins bg-gray-100">
 
     <!-- Navbar -->
-    <nav x-data="{ open: false }" class="bg-white border-b border-gray-200 shadow-sm"><!-- changed Navbar -->
+    <nav x-data="{ open: false }" class="bg-white border-b border-gray-200 shadow-sm"><!-- changed Navbaer -->
         <div class="container mx-auto px-4 py-4 flex justify-between items-center">
             <!-- Logo -->
             <a href="{{ route('home') }}" class="text-2xl font-bold text-indigo-600 hover:text-indigo-700 transition">

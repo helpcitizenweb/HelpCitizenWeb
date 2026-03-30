@@ -10,7 +10,7 @@
                     </a>
                 </div>
 
-                <!-- Navigation Links -->
+                <!-- Naviigation Links -->
                 <div class="hidden sm:flex items-center space-x-8 sm:ml-10">
 
     {{-- Dashboard --}}
