@@ -124,12 +124,15 @@
                 <p><strong>Hospital Address:</strong> {{ $response->hospital_address }}</p>
                 <p><strong>Transport:</strong> {{ $response->evacuation_transport }}</p>
                 <p><strong>Transport Units:</strong> {{ $response->evacuation_transport_unit }}</p>
+                <p><strong>PNP Station:</strong> {{ $response->pnp_station }}</p>
+                <p><strong>PNP Team:</strong> {{ $response->pnp_team_unit }}</p>
+                <p><strong>PNP Patrol Units:</strong> {{ $response->pnp_patrol_unit }}</p>
                 <p><strong>Water Rescue Unit:</strong> {{ $response->water_rescue_response_unit }}</p>
                 <p><strong>Rubber Boats:</strong> {{ $response->rubber_boat_units }}</p>
                 <p><strong>Lifeguards:</strong> {{ $response->lifeguard_rescue_personnel }}</p>
                 <p><strong>Search & Rescue:</strong> {{ $response->search_rescue_team }}</p>
                 <p><strong>Safety & Security:</strong> {{ $response->safety_and_security }}</p>
-                <p><strong>Relief Welfare:</strong> {{ $response->relief_welfare }}</p>
+              <!--  <p><strong>Relief Welfare:</strong> {{ $response->relief_welfare }}</p>-->
             @endif
 
             {{-- 🪨 EARTHQUAKE --}}
@@ -140,8 +143,11 @@
                 <p><strong>Evacuation Address:</strong> {{ $response->evacuation_address }}</p>
                 <p><strong>Vehicle Transport:</strong> {{ $response->evacuation_transport }}</p>
                 <p><strong>Transport Units:</strong> {{ $response->evacuation_transport_unit }}</p>
+
                 <p><strong>PNP Station:</strong> {{ $response->pnp_station }}</p>
                 <p><strong>PNP Team:</strong> {{ $response->pnp_team_unit }}</p>
+                <p><strong>PNP Patrol Units:</strong> {{ $response->pnp_patrol_unit }}</p>
+
                 <p><strong>Fire Department:</strong> {{ $response->fire_department }}</p>
                 <p><strong>Fire Team:</strong> {{ $response->fire_team }}</p>
                 <p><strong>Clearing Teams:</strong> {{ $response->clearing_teams }}</p>
@@ -157,6 +163,10 @@
                 <p><strong>Hospital Address:</strong> {{ $response->hospital_address }}</p>
                 <p><strong>First Aid Station:</strong> {{ $response->first_aid_station }}</p>
                 <p><strong>Ambulance Units:</strong> {{ $response->ambulance_units }}</p>
+
+                <p><strong>PNP Station:</strong> {{ $response->pnp_station }}</p>
+                <p><strong>PNP Team:</strong> {{ $response->pnp_team_unit }}</p>
+                <p><strong>PNP Patrol Units:</strong> {{ $response->pnp_patrol_unit }}</p>
             @endif
 
             {{-- 🚦 TRAFFIC --}}

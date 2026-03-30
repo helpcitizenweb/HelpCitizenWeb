@@ -320,6 +320,14 @@
     </div>
 
 
+     <!-- PNP Patrol Unitss -->
+    <div>
+        <label class="block text-sm font-medium text-gray-700">PNP Patrol Units</label>
+        <input type="number" name="pnp_patrol_unit"
+               value="{{ $response->pnp_patrol_unit }}"
+               class="w-full border rounded p-2">
+    </div>
+
 
     <!-- 🧺 RELIEF GOODS PROVIDER -->
     <div x-data="{

@@ -132,7 +132,7 @@ public function updateStatus(Request $request, Report $report)
             'relief_welfare'            => $pickCheckbox('relief_welfare'),
         ],
 
-        // 🌊 FLOOD & TYPHOON RESPONSE ---------------------------
+        // 🌊 FLOOD & TYPHOON RESPONSE ----------------------------
         'Flood_typhoon' => [
             'medical_response'          => $pick('medical_response'),
             'ambulance_units'           => $pickNum('ambulance_units'),
@@ -147,6 +147,12 @@ public function updateStatus(Request $request, Report $report)
             'evacuation_transport_unit' => $pickNum('evacuation_transport_unit'),
             'water_rescue_response_unit' => $pick('water_rescue_response_unit'),
             //'rubber_boat_units'          => $pickNum('rubber_boat_units'),
+
+            'pnp_station' => $pick('pnp_station'),
+            'pnp_team_unit'=> $pick('pnp_team_unit'),
+            'pnp_patrol_unit' => $pickNum('pnp_patrol_unit'),
+
+
             'lifeguard_rescue_personnel' => $pick('lifeguard_rescue_personnel'),
             'search_rescue_team'        => $pick('search_rescue_team'),
             'safety_and_security'       => $pick('safety_and_security'),
@@ -162,15 +168,18 @@ public function updateStatus(Request $request, Report $report)
                 'evacuation_address' => $pick('evacuation_address'),
                 'evacuation_transport' => $pick('evacuation_transport'),
                 'evacuation_transport_unit' => $pickNum('evacuation_transport_unit'),
+
                 'pnp_station' => $pick('pnp_station'),
-                'pnp_team_unit' => $pick('pnp_team_unit'),
+                'pnp_team_unit'=> $pick('pnp_team_unit'),
                 'pnp_patrol_unit' => $pickNum('pnp_patrol_unit'),
+
                 'relief_goods_provider' => $pick('relief_goods_provider'),
                 'fire_department' => $pick('fire_department'),
                 'fire_team' => $pick('fire_team'),
                 'fire_truck_units' => $pickNum('fire_truck_units'),
                 'search_rescue_team' => $pick('search_rescue_team'),
                 'clearing_teams' => $pick('clearing_teams'),
+
                 'power_utility_agency' => $pick('power_utility_agency'),
                 'structural_assessment_teams' => $pick('structural_assessment_teams'),
                 'relief_welfare' => $pickCheckbox('relief_welfare')
@@ -182,6 +191,9 @@ public function updateStatus(Request $request, Report $report)
                 'hospital_address' => $request->hospital_address,
                 'first_aid_station' => $pick('first_aid_station'),
                 'ambulance_units' => $pickNum('ambulance_units'),
+                'pnp_station' => $pick('pnp_station'),
+                'pnp_team_unit'=> $pick('pnp_team_unit'),
+                'pnp_patrol_unit' => $pickNum('pnp_patrol_unit'),
         ],
         // 🚓 TRAFFIC ---------------------------------------------
         'Traffic' => [

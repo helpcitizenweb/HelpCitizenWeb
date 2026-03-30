@@ -208,4 +208,88 @@
                class="w-full border rounded p-2"
                value="{{ old('ambulance_units', $response->ambulance_units ?? '') }}">
     </div>
+
+<!-- 🚓 PNP STATION -->
+    <div x-data="{
+        showOtherPNPStation:
+            '{{ $response->pnp_station }}' !== '' &&
+            '{{ $response->pnp_station }}' !== 'Moriones Tondo Police Station'
+    }">
+
+        <label class="block text-sm font-medium text-gray-700">PNP Station</label>
+
+        <select name="pnp_station"
+                class="w-full border rounded p-2"
+                x-on:change='showOtherPNPStation = ($event.target.value === "Other")'>
+
+            <option value="">-- Select Station --</option>
+            <option value="Moriones Tondo Police Station"
+                @selected($response->pnp_station == 'Moriones Tondo Police Station')}>
+                Moriones Tondo Police Station
+            </option>
+
+            <option value="Other"
+                @selected($response->pnp_station && $response->pnp_station !== 'Moriones Tondo Police Station')}>
+                Other
+            </option>
+
+        </select>
+
+        <input type="text"
+               name="pnp_station_other"
+               x-show="showOtherPNPStation"
+               class="w-full border rounded p-2 mt-2"
+               placeholder="Specify station"
+               value="{{ $response->pnp_station == 'Moriones Tondo Police Station' ? '' : $response->pnp_station }}">
+    </div>
+
+
+
+    <!-- 🚓 PNP TEAM -->
+    <div x-data="{
+        showOtherPNPTeam:
+            '{{ $response->pnp_team_unit }}' !== '' &&
+            !['Rapid Response Team','Barangay Patrol'].includes('{{ $response->pnp_team_unit }}')
+    }">
+
+        <label class="block text-sm font-medium text-gray-700">PNP Team</label>
+
+        <select name="pnp_team_unit"
+                class="w-full border rounded p-2"
+                x-on:change='showOtherPNPTeam = ($event.target.value === "Other")'>
+
+            <option value="">-- Select Team --</option>
+
+            @foreach (['Rapid Response Team','Barangay Patrol'] as $opt)
+                <option value="{{ $opt }}" @selected($response->pnp_team_unit == $opt)>
+                    {{ $opt }}
+                </option>
+            @endforeach
+
+            <option value="Other"
+                @selected(
+                    $response->pnp_team_unit &&
+                    !in_array($response->pnp_team_unit, ['Rapid Response Team','Barangay Patrol'])
+                )>Other</option>
+
+        </select>
+
+        <input type="text"
+               name="pnp_team_unit_other"
+               x-show="showOtherPNPTeam"
+               class="w-full border rounded p-2 mt-2"
+               placeholder="Specify team"
+               value="{{ in_array($response->pnp_team_unit, ['Rapid Response Team','Barangay Patrol']) ? '' : $response->pnp_team_unit }}">
+    </div>
+
+
+     <!-- PNP Patrol Unitss -->
+    <div>
+        <label class="block text-sm font-medium text-gray-700">PNP Patrol Units</label>
+        <input type="number" name="pnp_patrol_unit"
+               value="{{ $response->pnp_patrol_unit }}"
+               class="w-full border rounded p-2">
+    </div>
+
+
 </div>

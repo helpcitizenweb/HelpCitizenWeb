@@ -274,14 +274,6 @@
                ]) ? '' : $response->pnp_station }}">
     </div>
 
-    <!-- PNP Patrol Units -->
-    <div>
-        <label class="block text-sm font-medium text-gray-700">PNP Patrol Units</label>
-        <input type="number" name="pnp_patrol_unit"
-               value="{{ $response->pnp_patrol_unit }}"
-               class="w-full border rounded p-2">
-    </div>
-
     <!-- PNP Team -->
     <div x-data="{ showOtherEqPNPTeam: '{{ $response->pnp_team_unit }}' !== '' &&
         !['Rapid Response Team','Barangay Patrol','NONE']
@@ -317,6 +309,14 @@
                value="{{ in_array($response->pnp_team_unit, [
                     'Rapid Response Team','Barangay Patrol','NONE'
                ]) ? '' : $response->pnp_team_unit }}">
+    </div>
+
+    <!-- PNP Patrol Units -->
+    <div>
+        <label class="block text-sm font-medium text-gray-700">PNP Patrol Units</label>
+        <input type="number" name="pnp_patrol_unit"
+               value="{{ $response->pnp_patrol_unit }}"
+               class="w-full border rounded p-2">
     </div>
 
     <!-- Relief Goods Provider -->
