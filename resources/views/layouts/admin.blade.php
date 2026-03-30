@@ -25,7 +25,7 @@
     @include('layouts.navigation')
 
     <!-- CONTENT AREA (NO SIDEBAR ANYMORE) -->
-    <div class="px-6 pt-6">
+    <div class="px-6 mt-6 pt-6">
         <main>
             @yield('content')
         </main>

@@ -1,4 +1,4 @@
-<nav x-data="{ open: false }" class="bg-white border-b border-gray-100">
+<nav x-data="{ open: false }" class="fixed top-0 left-0 w-full z-50 bg-white border-b border-gray-100 shadow-sm">
     <!-- Primary Navigation Menu -->
     <div class="w-full px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16 items-center">
@@ -147,7 +147,7 @@
 
             <!-- Hamburger Menu -->
             <div class="-mr-2 flex items-center sm:hidden">
-                <button @click="open = ! open"
+                <button @click="open = true"
                     class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out">
                     <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
                         <path :class="{ 'hidden': open, 'inline-flex': !open }" class="inline-flex"
@@ -162,36 +162,87 @@
     </div>
 
     <!-- Responsive Navigation Menu -->
-    <div :class="{ 'block': open, 'hidden': !open }" class="sm:hidden">
-        <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                {{ __('Dashboard') }}
-            </x-responsive-nav-link>
+    <!-- Mobile Sidebar (Admin) -->
+<div x-show="open" class="fixed inset-0 z-50 sm:hidden">
+
+    <!-- Overlay -->
+    <div class="absolute inset-0 bg-black bg-opacity-50"
+         x-transition.opacity
+         @click="open = false"></div>
+
+    <!-- Sidebar -->
+    <div x-show="open"
+         x-transition:enter="transform transition ease-in-out duration-300"
+         x-transition:enter-start="translate-x-full"
+         x-transition:enter-end="translate-x-0"
+         x-transition:leave="transform transition ease-in-out duration-300"
+         x-transition:leave-start="translate-x-0"
+         x-transition:leave-end="translate-x-full"
+         class="absolute right-0 top-0 h-full w-72 bg-white shadow-lg p-6 overflow-y-auto">
+
+        <!-- Close Button -->
+        <div class="flex justify-between items-center mb-4">
+            <span class="font-bold text-lg">Menu</span>
+            <button @click="open = false" class="text-gray-500">✖</button>
         </div>
 
-        <!-- Responsive Settings Options -->
-        <div class="pt-4 pb-1 border-t border-gray-200">
-            <div class="px-4">
-                <div class="font-medium text-base text-gray-800">{{ Auth::user()->name }}</div>
-                <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
-            </div>
+         <!-- NOTIFICATIONS -->
+        <div x-data="{ notifOpen: false }">
 
-            <div class="mt-3 space-y-1">
-                <x-responsive-nav-link :href="route('profile.edit')">
-                    {{ __('Profile') }}
-                </x-responsive-nav-link>
+            <button @click="notifOpen = !notifOpen"
+                class="flex justify-between w-full py-2 font-semibold">
 
-                <!-- Authentication -->
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
+                <span>🔔 Notifications</span>
+                <span x-text="notifOpen ? '▲' : '▼'"></span>
+            </button>
 
-                    <x-responsive-nav-link :href="route('logout')"
-                        onclick="event.preventDefault();
-                                        this.closest('form').submit();">
-                        {{ __('Log Out') }}
-                    </x-responsive-nav-link>
-                </form>
+            <div x-show="notifOpen" class="mt-2">
+
+                @php
+                    $unreadCount = Auth::check() ? Auth::user()->unreadNotifications()->count() : 0;
+                @endphp
+
+                @if(Auth::check() && Auth::user()->notifications->count())
+                    @foreach(Auth::user()->notifications as $notification)
+                        <a href="{{ $notification->data['url'] ?? '#' }}"
+                           @click="open=false"
+                           class="block py-2 text-sm border-b
+                           {{ $notification->read_at ? 'text-gray-600' : 'font-bold text-gray-800' }}">
+                            {{ $notification->data['message'] ?? 'New Notification' }}
+                        </a>
+                    @endforeach
+                @else
+                    <p class="text-sm text-gray-500">No notifications</p>
+                @endif
+
             </div>
         </div>
+
+        <hr class="my-4">
+
+        <!-- NAV LINKS -->
+        <a @click="open=false" href="{{ route('admin.dashboard') }}" class="block py-2 font-semibold">Dashboard</a>
+        <a @click="open=false" href="{{ route('admin.users') }}" class="block py-2 font-semibold">Manage Users</a>
+        <a @click="open=false" href="{{ route('admin.reports') }}" class="block py-2 font-semibold">Manage Reports</a>
+        <a @click="open=false" href="{{ route('admin.announcements.index') }}" class="block py-2 font-semibold">Announcements</a>
+        <a @click="open=false" href="{{ route('admin.services.index') }}" class="block py-2 font-semibold">Services</a>
+        <hr class="my-4">
+        <!-- PROFILE -->
+        <div class="text-gray-600 mb-2">
+            {{ Auth::user()->name }}
+        </div>
+
+        <a @click="open=false" href="{{ route('profile.edit') }}" class="block py-2">
+            Profile
+        </a>
+
+        <form method="POST" action="{{ route('logout') }}">
+            @csrf
+            <button class="w-full text-left py-2 text-red-600">
+                Log Out
+            </button>
+        </form>
+
     </div>
+</div>
 </nav>
