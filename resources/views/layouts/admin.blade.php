@@ -17,6 +17,7 @@
 
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest" defer></script>
+    @include('partials.google-analytics')
 </head>
 
 <body class="bg-gray-100">

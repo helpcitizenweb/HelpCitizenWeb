@@ -7,6 +7,7 @@
     <title>HelpCitizen - Community Response System</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    @include('partials.google-analytics')
 
 </head>
 
