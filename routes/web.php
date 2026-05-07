@@ -55,6 +55,18 @@ Route::middleware(['auth'])->group(function () {
         return view('home');
     })->name('dashboard');
 
+//chart
+  //  Route::get('/admin/chart/{type}', function ($type) {
+    //    if (in_array($type, ['pie', 'bar', 'line'])) {
+      //      return view("admin.charts.$type");
+        //}
+        //abort(404);
+    //});
+    Route::get('/admin/chart/{type}', [AdminDashboardController::class, 'getChart']);
+    Route::get('/admin/chart-view/{type}', function ($type) {
+    return view("admin.charts.$type");
+});
+
     // Shared Profile (Fallback route if needed)
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     // 📌 Report History & Processing Available to ALL logged-in users

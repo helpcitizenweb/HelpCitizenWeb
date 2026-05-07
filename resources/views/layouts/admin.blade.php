@@ -15,6 +15,8 @@
     <!-- Tailwind & App CSS -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!--recently added f0r charts-->
+
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest" defer></script>
     @include('partials.google-analytics')
