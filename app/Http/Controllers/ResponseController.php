@@ -256,8 +256,8 @@ public function updateStatus(Request $request, Report $report)
     // -------------------------------------------
     $response->dispatch_unit  = $validated['dispatch_unit'];
     $response->overseer       = $validated['overseer'];
-    $response->contact_person = $validated['contact_person'];
-    $response->contact_number = $validated['contact_number'];
+    //$response->contact_person = $validated['contact_person'];
+    //$response->contact_number = $validated['contact_number'];
 
     // -------------------------------------------
     // APPLY DISPATCH-SPECIFIC FIELDS
