@@ -31,62 +31,62 @@
     </div>
 
 
+ <!--start-->
+  <!-- Medical Response -->
+   <div x-data="{ 
+    showOtherMedResponse:
+        '{{ $response->medical_response }}' !== '' &&
+        ![
+            'Philippine Red Cross',
+            'MDRRMO Ambulance Team',
+            'City EMS Response Unit',
+            'Barangay Health Emergency Team',
+            'Tondo Health Center Response Team',
+            'Fugoso Health Center Response Team'
+        ].includes('{{ $response->medical_response }}')
+}">
 
-   <!-- Medical Response -->
-    <div x-data="{
-        showOtherMedResponse:
-            '{{ $response->medical_response }}' !== '' &&
-            ![
-                'Philippine Red Cross',
-                'Tondo Medical Center',
-                'Metropolitan Medical Center',
-                'Mary Johnston Hospital',
-                'Tondo Foreshore Health Center',
-                'Fugoso Health Center'
-            ].includes('{{ $response->medical_response }}')
-    }">
+    <label class="block text-sm font-medium text-gray-700">Coordinated On-Site Medical Response Team</label>
 
-        <label class="block text-sm font-medium text-gray-700">Coordinated On-Site Medical team</label>
+    <select name="medical_response" class="w-full border rounded p-2"
+            x-on:change="showOtherMedResponse = ($event.target.value === 'Other')">
 
-        <select name="medical_response" class="w-full border rounded p-2"
-                x-on:change="showOtherMedResponse = ($event.target.value === 'Other')">
+        <option value="">-- Select Responding Medical Team --</option>
 
-            <option value="">-- Select Responding Medical team --</option>
+        @foreach ([
+            'Philippine Red Cross',
+            'MDRRMO Ambulance Team',
+            'City EMS Response Unit',
+            'Barangay Health Emergency Team',
+            'Tondo Health Center Response Team',
+            'Fugoso Health Center Response Team'
+        ] as $opt)
+            <option value="{{ $opt }}" @selected($response->medical_response == $opt)>{{ $opt }}</option>
+        @endforeach
 
-            @foreach ([
-                'Philippine Red Cross',
-                'Tondo Medical Center',
-                'Metropolitan Medical Center',
-                'Mary Johnston Hospital',
-                'Tondo Foreshore Health Center',
-                'Fugoso Health Center'
-            ] as $opt)
-                <option value="{{ $opt }}" @selected($response->medical_response == $opt)>{{ $opt }}</option>
-            @endforeach
+        <option value="Other"
+                @selected(!in_array($response->medical_response, [
+                    'Philippine Red Cross',
+                    'MDRRMO Ambulance Team',
+                    'City EMS Response Unit',
+                    'Barangay Health Emergency Team',
+                    'Tondo Health Center Response Team',
+                    'Fugoso Health Center Response Team'
+                ]) && $response->medical_response)>
+            Other
+        </option>
 
-            <option value="Other"
-                    @selected(!in_array($response->medical_response, [
-                        'Philippine Red Cross',
-                        'Tondo Medical Center',
-                        'Metropolitan Medical Center',
-                        'Mary Johnston Hospital',
-                        'Tondo Foreshore Health Center',
-                        'Fugoso Health Center'
-                    ]) && $response->medical_response)>
-                Other
-            </option>
+    </select>
 
-        </select>
-
-        <input type="text" name="medical_response_other"
-               x-show="showOtherMedResponse"
-               class="w-full border rounded p-2 mt-2"
-               placeholder="Specify response team"
-               value="{{ in_array($response->medical_response, [
-                    'Philippine Red Cross','Tondo Medical Center','Metropolitan Medical Center',
-                    'Mary Johnston Hospital','Tondo Foreshore Health Center','Fugoso Health Center'
-               ]) ? '' : $response->medical_response }}">
-    </div>
+    <input type="text" name="medical_response_other"
+           x-show="showOtherMedResponse"
+           class="w-full border rounded p-2 mt-2"
+           placeholder="Specify response team"
+           value="{{ in_array($response->medical_response, [
+                'Philippine Red Cross','MDRRMO Ambulance Team','City EMS Response Unit',
+                'Barangay Health Emergency Team','Tondo Health Center Response Team','Fugoso Health Center Response Team'
+           ]) ? '' : $response->medical_response }}">
+</div>
 
 
 
@@ -98,11 +98,9 @@
             'Tondo Medical Center',
             'Mary Johnston Hospital',
             'Metropolitan Medical Center',
-            'Seaman’s Hospital Manila',
             'Justice Jose Abad Santos General Hospital',
-            'San Lazaro Hospital',
-            'Chinese General Hospital',
             'Jose Reyes Memorial Medical Center',
+            'San Lazaro Hospital',
             'NONE'
         ].includes('{{ $response->designated_hospitals }}')
 }">
@@ -119,11 +117,9 @@
             'Tondo Medical Center',
             'Mary Johnston Hospital',
             'Metropolitan Medical Center',
-            'Seaman’s Hospital Manila',
             'Justice Jose Abad Santos General Hospital',
-            'San Lazaro Hospital',
-            'Chinese General Hospital',
             'Jose Reyes Memorial Medical Center',
+            'San Lazaro Hospital',
             'NONE'
         ] as $opt)
             <option value="{{ $opt }}" @selected($response->designated_hospitals == $opt)>
@@ -138,11 +134,9 @@
                         'Tondo Medical Center',
                         'Mary Johnston Hospital',
                         'Metropolitan Medical Center',
-                        'Seaman’s Hospital Manila',
                         'Justice Jose Abad Santos General Hospital',
-                        'San Lazaro Hospital',
-                        'Chinese General Hospital',
                         'Jose Reyes Memorial Medical Center',
+                        'San Lazaro Hospital',
                         'NONE'
                     ])
                 )>
@@ -160,14 +154,14 @@
                 'Tondo Medical Center',
                 'Mary Johnston Hospital',
                 'Metropolitan Medical Center',
-                'Seaman’s Hospital Manila',
                 'Justice Jose Abad Santos General Hospital',
-                'San Lazaro Hospital',
-                'Chinese General Hospital',
                 'Jose Reyes Memorial Medical Center',
+                'San Lazaro Hospital',
                 'NONE'
            ]) ? '' : $response->designated_hospitals }}">
 </div>
+
+<!-- end -->
 
     {{-- Hospital Address  --}}
     <div>
