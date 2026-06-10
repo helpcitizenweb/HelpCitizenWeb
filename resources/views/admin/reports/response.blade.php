@@ -41,35 +41,33 @@
 
             <!-- Overseer -->
             <div>
-                <label class="block text-sm font-medium text-gray-700">Overseer</label>
+                <label class="block text-sm font-medium text-gray-700">Assigned Coordinator</label>
                 <select name="overseer" class="w-full border rounded p-2">
-                    <option value="">-- Select Overseer --</option>
+                    <option value="">-- Select Assigned Coordinator --</option>
 
                     <option value="Barangay Kapitan">Barangay Kapitan</option>
-                    <option value="Barangay Kagawad">Barangay Kagawad</option>
-                    <option value="Barangay Tanod">Barangay Tanod</option>
-                    <option value="Barangay Secretary">Barangay Secretary</option>
-                    <option value="Barangay Administrator">Barangay Administrator</option>
+                    <option value="DRRM Officer">DRRM Officer</option>
+                    <option value="Peace && order officer">Peace && order officer</option>
+                    <option value="Environmental/Sanitation Officerr">Environmental/Sanitation Officer</option>
                     <option value="Barangay Health Worker (BHW)">Barangay Health Worker (BHW)</option>
-                    <option value="Barangay Rescue Team Leader">Barangay Rescue Team Leader</option>
-                    <option value="BDRRM Officer">BDRRM Officer</option>
-                    <option value="Fire Officer">Fire Officer</option>
+                    <option value="Barrangay Secretary">Barrangay Secretary</option>
+
                 </select>
             </div>
 
-            <!-- Contact Person -->
+            <!-- Contact Person 
             <div>
                 <label class="block text-sm font-medium text-gray-700">Contact Person</label>
                 <input type="text" name="contact_person" class="w-full border rounded p-2">
-            </div>
+            </div>-->
 
-            <!-- Contact Number -->
+            <!-- Contact Number 
             <div>
                 <label class="block text-sm font-medium text-gray-700">Contact Number</label>
                 <input type="text" name="contact_number" maxlength="11"
                        oninput="this.value = this.value.replace(/[^0-9]/g, '')"
                        class="w-full border rounded p-2">
-            </div>
+            </div> -->
 
             <!-- Dynamic forms -->
             <template x-if="dispatchUnit === 'Fire'">

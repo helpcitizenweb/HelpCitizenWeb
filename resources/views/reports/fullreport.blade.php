@@ -88,9 +88,9 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
                 
                 <p><strong>Response category:</strong> {{ $response->dispatch_unit }}</p>
-                <p><strong>Contact Person:</strong> {{ $response->contact_person }}</p>
-                <p><strong>Overseer:</strong> {{ $response->overseer }}</p>
-                <p><strong>Contact Number:</strong> {{ $response->contact_number }}</p>
+               <!-- <p><strong>Contact Person:</strong> {{ $response->contact_person }}</p>-->
+                <p><strong>Assigened Coordinator:</strong> {{ $response->overseer }}</p>
+                <!-- <p><strong>Contact Number:</strong> {{ $response->contact_number }}</p> -->
                 <p><strong>Response Submitted: </strong>{{ optional($response->response_datetime)->format('F d, Y • h:i A') ?? '—' }}</p>
             </div>
 
@@ -99,20 +99,20 @@
             {{-- 🔥 FIRE --}}
             @if ($response->dispatch_unit === 'Fire')
                 <h4 class="text-lg font-semibold text-red-600">🔥 Fire Response</h4>
-                <p><strong>Evacuation Address:</strong> {{ $response->evacuation_address }}</p>
-                <p><strong>Responding Medical Authority:</strong> {{ $response->medical_response }}</p>
-                <p><strong>Designated Hospitals:</strong> {{ $response->designated_hospitals }}</p>
-                <p><strong>Hospital Address:</strong> {{ $response->hospital_address }}</p>
-                <p><strong>Vehicle Transport:</strong> {{ $response->evacuation_transport }}</p>
+                <p><strong>Evacuation Site:</strong> {{ $response->evacuation_address }}</p>
+                <p><strong>Medical Assistance:</strong> {{ $response->medical_response }}</p>
+                <p><strong>Referred Hospital:</strong> {{ $response->designated_hospitals }}</p>
+                <p><strong>Hospital Location:</strong> {{ $response->hospital_address }}</p>
+                <p><strong>Transport assistance:</strong> {{ $response->evacuation_transport }}</p>
                 <p><strong>Transport Units:</strong> {{ $response->evacuation_transport_unit }}</p>
-                <p><strong>PNP Station:</strong> {{ $response->pnp_station }}</p>
-                <p><strong>PNP Team:</strong> {{ $response->pnp_team_unit }}</p>
+                <p><strong>Police Coordination:</strong> {{ $response->pnp_station }}</p>
+                <p><strong>Security Assistance:</strong> {{ $response->pnp_team_unit }}</p>
                 <p><strong>PNP Patrol Units:</strong> {{ $response->pnp_patrol_unit }}</p>
-                <p><strong>Relief Goods Provider:</strong> {{ $response->relief_goods_provider }}</p>
-                <p><strong>Fire Department:</strong> {{ $response->fire_department }}</p>
-                <p><strong>Fire Team:</strong> {{ $response->fire_team }}</p>
+                <p><strong>Relief Assitance:</strong> {{ $response->relief_goods_provider }}</p>
+                <p><strong>Fire Department Coordination:</strong> {{ $response->fire_department }}</p>
+                <p><strong>Fire Response Support:</strong> {{ $response->fire_team }}</p>
                 <p><strong>Fire Truck Units:</strong> {{ $response->fire_truck_units }}</p>
-                <p><strong>Search & Rescue Team:</strong> {{ $response->search_rescue_team }}</p>
+                <p><strong>Search & Rescue Support:</strong> {{ $response->search_rescue_team }}</p>
             @endif
 
             {{-- 🌊 FLOOD --}}
@@ -128,7 +128,7 @@
                 <p><strong>PNP Team:</strong> {{ $response->pnp_team_unit }}</p>
                 <p><strong>PNP Patrol Units:</strong> {{ $response->pnp_patrol_unit }}</p>
                 <p><strong>Water Rescue Unit:</strong> {{ $response->water_rescue_response_unit }}</p>
-                <p><strong>Rubber Boats:</strong> {{ $response->rubber_boat_units }}</p>
+               <!--  <p><strong>Rubber Boats:</strong> {{ $response->rubber_boat_units }}</p>-->
                 <p><strong>Lifeguards:</strong> {{ $response->lifeguard_rescue_personnel }}</p>
                 <p><strong>Search & Rescue:</strong> {{ $response->search_rescue_team }}</p>
                 <p><strong>Safety & Security:</strong> {{ $response->safety_and_security }}</p>
@@ -166,7 +166,7 @@
 
                 <p><strong>PNP Station:</strong> {{ $response->pnp_station }}</p>
                 <p><strong>PNP Team:</strong> {{ $response->pnp_team_unit }}</p>
-                <p><strong>PNP Patrol Units:</strong> {{ $response->pnp_patrol_unit }}</p>
+             <!--   <p><strong>PNP Patrol Units:</strong> {{ $response->pnp_patrol_unit }}</p>-->
             @endif
 
             {{-- 🚦 TRAFFIC --}}

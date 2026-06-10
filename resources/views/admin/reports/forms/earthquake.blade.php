@@ -45,6 +45,43 @@
                ]) ? '' : $response->evacuation_address }}">
     </div>
 
+    <!-- Relief Goods Provider -->
+    <div x-data="{ showOtherEqRelief: '{{ $response->relief_goods_provider }}' !== '' &&
+        !['DSWD','Barangay 41','City Social Welfare Office']
+        .includes('{{ $response->relief_goods_provider }}') }">
+
+        <label class="block text-sm font-medium text-gray-700">Relief Goods Provider</label>
+
+        <select name="relief_goods_provider" class="w-full border rounded p-2"
+                x-on:change="showOtherEqRelief = ($event.target.value === 'Other')">
+
+            <option value="">-- Select Provider --</option>
+
+            @foreach ([
+                'DSWD',
+                'Barangay 41',
+                'City Social Welfare Office'
+            ] as $opt)
+                <option value="{{ $opt }}" @selected($response->relief_goods_provider == $opt)>
+                    {{ $opt }}
+                </option>
+            @endforeach
+
+            <option value="Other" @selected(!in_array($response->relief_goods_provider, [
+                'DSWD','Barangay 41','City Social Welfare Office'
+            ]) && $response->relief_goods_provider)>
+                Other
+            </option>
+        </select>
+
+        <input type="text" name="relief_goods_provider_other" x-show="showOtherEqRelief"
+               class="w-full border rounded p-2 mt-2"
+               placeholder="Specify provider"
+               value="{{ in_array($response->relief_goods_provider, [
+                    'DSWD','Barangay 41','City Social Welfare Office'
+               ]) ? '' : $response->relief_goods_provider }}">
+    </div>
+
     <!-- Medical Response -->
     <div x-data="{
         showOtherMedResponse:
@@ -59,7 +96,7 @@
             ].includes('{{ $response->medical_response }}')
     }">
 
-        <label class="block text-sm font-medium text-gray-700">Responding Medical Authority</label>
+        <label class="block text-sm font-medium text-gray-700">Coordinated On-Site Medical team</label>
 
         <select name="medical_response" class="w-full border rounded p-2"
                 x-on:change="showOtherMedResponse = ($event.target.value === 'Other')">
@@ -120,7 +157,7 @@
         ].includes('{{ $response->designated_hospitals }}')
 }">
 
-    <label class="block text-sm font-medium text-gray-700">Designated Hospital</label>
+    <label class="block text-sm font-medium text-gray-700">Coordinated Receiving Hospital</label>
 
     <select name="designated_hospitals"
             class="w-full border rounded p-2"
@@ -197,7 +234,7 @@
           'Rescue Vehicle','Evacuation Truck','NONE']
         .includes('{{ $response->evacuation_transport }}') }">
 
-        <label class="block text-sm font-medium text-gray-700">Vehicle Transport</label>
+        <label class="block text-sm font-medium text-gray-700">Transport Units</label>
 
         <select name="evacuation_transport" class="w-full border rounded p-2"
                 x-on:change="showOtherEqTrans = ($event.target.value === 'Other')">
@@ -246,7 +283,7 @@
     <div x-data="{ showOtherEqPNP: '{{ $response->pnp_station }}' !== '' &&
         !['Moriones Tondo Police Station','NONE'].includes('{{ $response->pnp_station }}') }">
 
-        <label class="block text-sm font-medium text-gray-700">PNP Station</label>
+        <label class="block text-sm font-medium text-gray-700">PNP Coordination:</label>
 
         <select name="pnp_station" class="w-full border rounded p-2"
                 x-on:change="showOtherEqPNP = ($event.target.value === 'Other')">
@@ -279,7 +316,7 @@
         !['Rapid Response Team','Barangay Patrol','NONE']
         .includes('{{ $response->pnp_team_unit }}') }">
 
-        <label class="block text-sm font-medium text-gray-700">PNP Team</label>
+        <label class="block text-sm font-medium text-gray-700">Coordinated PNP Team:</label>
 
         <select name="pnp_team_unit" class="w-full border rounded p-2"
                 x-on:change="showOtherEqPNPTeam = ($event.target.value === 'Other')">
@@ -313,55 +350,20 @@
 
     <!-- PNP Patrol Units -->
     <div>
-        <label class="block text-sm font-medium text-gray-700">PNP Patrol Units</label>
+        <label class="block text-sm font-medium text-gray-700">Reported Patrol support</label>
         <input type="number" name="pnp_patrol_unit"
                value="{{ $response->pnp_patrol_unit }}"
                class="w-full border rounded p-2">
     </div>
 
-    <!-- Relief Goods Provider -->
-    <div x-data="{ showOtherEqRelief: '{{ $response->relief_goods_provider }}' !== '' &&
-        !['DSWD','Barangay 41','City Social Welfare Office']
-        .includes('{{ $response->relief_goods_provider }}') }">
-
-        <label class="block text-sm font-medium text-gray-700">Relief Goods Provider</label>
-
-        <select name="relief_goods_provider" class="w-full border rounded p-2"
-                x-on:change="showOtherEqRelief = ($event.target.value === 'Other')">
-
-            <option value="">-- Select Provider --</option>
-
-            @foreach ([
-                'DSWD',
-                'Barangay 41',
-                'City Social Welfare Office'
-            ] as $opt)
-                <option value="{{ $opt }}" @selected($response->relief_goods_provider == $opt)>
-                    {{ $opt }}
-                </option>
-            @endforeach
-
-            <option value="Other" @selected(!in_array($response->relief_goods_provider, [
-                'DSWD','Barangay 41','City Social Welfare Office'
-            ]) && $response->relief_goods_provider)>
-                Other
-            </option>
-        </select>
-
-        <input type="text" name="relief_goods_provider_other" x-show="showOtherEqRelief"
-               class="w-full border rounded p-2 mt-2"
-               placeholder="Specify provider"
-               value="{{ in_array($response->relief_goods_provider, [
-                    'DSWD','Barangay 41','City Social Welfare Office'
-               ]) ? '' : $response->relief_goods_provider }}">
-    </div>
+    
 
     <!-- Fire Department -->
     <div x-data="{ showOtherEqFireDep: '{{ $response->fire_department }}' !== '' &&
         !['BFP','COMMEL MANILA','Special Rescue Force']
         .includes('{{ $response->fire_department }}') }">
 
-        <label class="block text-sm font-medium text-gray-700">Fire Department</label>
+        <label class="block text-sm font-medium text-gray-700">Coordinated Fire Department:</label>
 
         <select name="fire_department" class="w-full border rounded p-2"
                 x-on:change="showOtherEqFireDep = ($event.target.value === 'Other')">
@@ -398,7 +400,7 @@
         !['Engine Crew','Rescue Team']
         .includes('{{ $response->fire_team }}') }">
 
-        <label class="block text-sm font-medium text-gray-700">Fire Team</label>
+        <label class="block text-sm font-medium text-gray-700">Coordinated Fire Team</label>
 
         <select name="fire_team" class="w-full border rounded p-2"
                 x-on:change="showOtherEqFireTeam = ($event.target.value === 'Other')">
@@ -480,7 +482,7 @@
         !['Barangay Clearing Crew','City Engineering Office','DPWH Clearing Team','Volunteer Clearing Team']
         .includes('{{ $response->clearing_teams }}') }">
 
-        <label class="block text-sm font-medium text-gray-700">Clearing Team</label>
+        <label class="block text-sm font-medium text-gray-700">Coordinated Clearing Teams</label>
 
         <select name="clearing_teams" class="w-full border rounded p-2"
                 x-on:change="showOtherEqClear = ($event.target.value === 'Other')">
@@ -518,7 +520,7 @@
         !['Meralco','Electric Cooperative','Barangay Electrical Team']
         .includes('{{ $response->power_utility_agency }}') }">
 
-        <label class="block text-sm font-medium text-gray-700">Power Utility Agency</label>
+        <label class="block text-sm font-medium text-gray-700">Coordinated Power Utility Agency</label>
 
         <select name="power_utility_agency" class="w-full border rounded p-2"
                 x-on:change="showOtherEqPower = ($event.target.value === 'Other')">

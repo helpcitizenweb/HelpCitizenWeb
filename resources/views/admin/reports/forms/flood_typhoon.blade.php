@@ -8,7 +8,7 @@
 
     {{-- Evacuation Address --}}
     <div x-data="{ showOther: !['Barangay 41 Barangay Hall','Nearby School / Gym','Open Grounds','High Ground Area','Evacuation Center',''].includes('{{ $response->evacuation_address }}') }">
-        <label class="block text-sm font-medium text-gray-700">Evacuation Address</label>
+        <label class="block text-sm font-medium text-gray-700">Evacuation Site</label>
 
         <select name="evacuation_address" class="w-full border rounded p-2"
                 x-on:change="showOther = ($event.target.value === 'Other')">
@@ -46,7 +46,7 @@
             ].includes('{{ $response->medical_response }}')
     }">
 
-        <label class="block text-sm font-medium text-gray-700">Responding Medical Authority</label>
+        <label class="block text-sm font-medium text-gray-700">Coordinated On-Site Medical team</label>
 
         <select name="medical_response" class="w-full border rounded p-2"
                 x-on:change="showOtherMedResponse = ($event.target.value === 'Other')">
@@ -107,7 +107,7 @@
         ].includes('{{ $response->designated_hospitals }}')
 }">
 
-    <label class="block text-sm font-medium text-gray-700">Designated Hospital</label>
+    <label class="block text-sm font-medium text-gray-700">Coordinated Receiving Hospital</label>
 
     <select name="designated_hospitals"
             class="w-full border rounded p-2"
@@ -178,7 +178,7 @@
 
     {{-- Evacuation Transport --}}
     <div x-data="{ showOther: !['Barangay Service Vehicle','Ambulance','Police Vehicle','Fire Truck','Rescue Boat','Evacuation Truck','NONE',''].includes('{{ $response->evacuation_transport }}') }">
-        <label class="block text-sm font-medium text-gray-700">Vehicle Transport</label>
+        <label class="block text-sm font-medium text-gray-700">Coordinated Transport Assistance:</label>
 
         <select name="evacuation_transport" class="w-full border rounded p-2"
                 x-on:change="showOther = ($event.target.value === 'Other')">
@@ -203,7 +203,7 @@
 
     {{-- Transport Units --}}
     <div>
-        <label class="block text-sm font-medium text-gray-700">Transport Units</label>
+        <label class="block text-sm font-medium text-gray-700">Coordintated Transport Units</label>
         <input type="number" name="evacuation_transport_unit"
                class="w-full border rounded p-2"
                value="{{ $response->evacuation_transport_unit }}">
@@ -216,7 +216,7 @@
             '{{ $response->pnp_station }}' !== 'Moriones Tondo Police Station'
     }">
 
-        <label class="block text-sm font-medium text-gray-700">PNP Station</label>
+        <label class="block text-sm font-medium text-gray-700">Coordinated PNP Station</label>
 
         <select name="pnp_station"
                 class="w-full border rounded p-2"
@@ -252,7 +252,7 @@
             !['Rapid Response Team','Barangay Patrol'].includes('{{ $response->pnp_team_unit }}')
     }">
 
-        <label class="block text-sm font-medium text-gray-700">PNP Team</label>
+        <label class="block text-sm font-medium text-gray-700">Coordinated PNP Team</label>
 
         <select name="pnp_team_unit"
                 class="w-full border rounded p-2"
@@ -290,12 +290,13 @@
                value="{{ $response->pnp_patrol_unit }}"
                class="w-full border rounded p-2">
     </div>
+    
 
 
 
     {{-- Water Rescue Response Unit --}}
     <div x-data="{ showOther: !['BFP Water Rescue','Philippine Coast Guard','Barangay Rescue Unit','MMDA Rescue','NONE',''].includes('{{ $response->water_rescue_response_unit }}') }">
-        <label class="block text-sm font-medium text-gray-700">Water Rescue Response Unit</label>
+        <label class="block text-sm font-medium text-gray-700">Coordinated Water Rescue Unit</label>
 
         <select name="water_rescue_response_unit" class="w-full border rounded p-2"
                 x-on:change="showOther = ($event.target.value === 'Other')">
@@ -322,7 +323,7 @@
 
     {{-- Lifeguard Rescue Personnel --}}
     <div x-data="{ showOther: !['Barangay Lifeguard Team','MMDA Lifeguard Team','Volunteer Lifeguard Team','NONE',''].includes('{{ $response->lifeguard_rescue_personnel }}') }">
-        <label class="block text-sm font-medium text-gray-700">Lifeguard Rescue Personnel</label>
+        <label class="block text-sm font-medium text-gray-700">Coordinated Lifeguards support</label>
 
         <select name="lifeguard_rescue_personnel" class="w-full border rounded p-2"
                 x-on:change="showOther = ($event.target.value === 'Other')">
@@ -346,7 +347,7 @@
 
     {{-- Search & Rescue Team --}}
     <div x-data="{ showOther: !['BFP Rescue','Philippine Coast Guard Rescue','Barangay Search & Rescue','Volunteer Rescue Group','NONE',''].includes('{{ $response->search_rescue_team }}') }">
-        <label class="block text-sm font-medium text-gray-700">Search & Rescue Team</label>
+        <label class="block text-sm font-medium text-gray-700">Coordinated Search & Rescue Team</label>
 
         <select name="search_rescue_team" class="w-full border rounded p-2"
                 x-on:change="showOther = ($event.target.value === 'Other')">

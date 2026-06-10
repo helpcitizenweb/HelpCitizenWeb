@@ -20,7 +20,7 @@
             ].includes('{{ $response->medical_response }}')
     }">
 
-        <label class="block text-sm font-medium text-gray-700">Responding Medical Authority</label>
+        <label class="block text-sm font-medium text-gray-700">Coordinated On-Site Medical team</label>
 
         <select name="medical_response" class="w-full border rounded p-2"
                 x-on:change="showOtherMedResponse = ($event.target.value === 'Other')">
@@ -81,7 +81,7 @@
         ].includes('{{ $response->designated_hospitals }}')
 }">
 
-    <label class="block text-sm font-medium text-gray-700">Designated Hospital</label>
+    <label class="block text-sm font-medium text-gray-700">Coordinated Receiving Hospital</label>
 
     <select name="designated_hospitals"
             class="w-full border rounded p-2"
@@ -283,13 +283,13 @@
     </div>
 
 
-     <!-- PNP Patrol Unitss -->
+     <!-- PNP Patrol Unitss 
     <div>
         <label class="block text-sm font-medium text-gray-700">PNP Patrol Units</label>
         <input type="number" name="pnp_patrol_unit"
                value="{{ $response->pnp_patrol_unit }}"
                class="w-full border rounded p-2">
-    </div>
+    </div>-->
 
 
 </div>

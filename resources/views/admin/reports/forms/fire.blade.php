@@ -14,7 +14,7 @@
         !['Barangay 41 Barangay Hall','Nearby School / Gym','Open Grounds','High Ground Area','Evacuation Center']
         .includes('{{ $response->evacuation_address }}') }">
 
-        <label class="block text-sm font-medium text-gray-700">Evacuation Address</label>
+        <label class="block text-sm font-medium text-gray-700">Evacuation Site</label>
 
         <select name="evacuation_address" class="w-full border rounded p-2"
                 x-on:change="showOtherEqEvac = ($event.target.value === 'Other')">
@@ -62,7 +62,7 @@
             ].includes('{{ $response->medical_response }}')
     }">
 
-        <label class="block text-sm font-medium text-gray-700">Responding Medical Authority</label>
+        <label class="block text-sm font-medium text-gray-700">Coordinated On-Site Medical team</label>
 
         <select name="medical_response" class="w-full border rounded p-2"
                 x-on:change="showOtherMedResponse = ($event.target.value === 'Other')">
@@ -123,7 +123,7 @@
         ].includes('{{ $response->designated_hospitals }}')
 }">
 
-    <label class="block text-sm font-medium text-gray-700">Designated Hospital</label>
+    <label class="block text-sm font-medium text-gray-700">Coordinated Receiving Hospital</label>
 
     <select name="designated_hospitals"
             class="w-full border rounded p-2"
@@ -204,7 +204,7 @@
             ].includes('{{ $response->evacuation_transport }}')
     }">
 
-        <label class="block text-sm font-medium text-gray-700">Vehicle Transport</label>
+        <label class="block text-sm font-medium text-gray-700">Coordinated Transport Assistance</label>
 
         <select name="evacuation_transport"
                 class="w-full border rounded p-2"
@@ -237,7 +237,7 @@
 
     <!-- 🚐 TRANSPORT UNITS -->
     <div>
-        <label class="block text-sm font-medium text-gray-700">Transport Units</label>
+        <label class="block text-sm font-medium text-gray-700">Coordintated Transport Units</label>
         <input type="number"
                name="evacuation_transport_unit"
                value="{{ $response->evacuation_transport_unit }}"
@@ -253,7 +253,7 @@
             '{{ $response->pnp_station }}' !== 'Moriones Tondo Police Station'
     }">
 
-        <label class="block text-sm font-medium text-gray-700">PNP Station</label>
+        <label class="block text-sm font-medium text-gray-700">Coordinated PNP Station</label>
 
         <select name="pnp_station"
                 class="w-full border rounded p-2"
@@ -289,7 +289,7 @@
             !['Rapid Response Team','Barangay Patrol'].includes('{{ $response->pnp_team_unit }}')
     }">
 
-        <label class="block text-sm font-medium text-gray-700">PNP Team</label>
+        <label class="block text-sm font-medium text-gray-700">Coordinated Police team</label>
 
         <select name="pnp_team_unit"
                 class="w-full border rounded p-2"
@@ -375,7 +375,7 @@
             !['BFP','COMMEL MANILA','Special Rescue Force'].includes('{{ $response->fire_department }}')
     }">
 
-        <label class="block text-sm font-medium text-gray-700">Fire Department</label>
+        <label class="block text-sm font-medium text-gray-700">Coordinated Fire Department</label>
 
         <select name="fire_department"
                 class="w-full border rounded p-2"
@@ -413,7 +413,7 @@
             !['Engine Crew','Rescue Team','Support Crew','Ladder Team','HazMat Team'].includes('{{ $response->fire_team }}')
     }">
 
-        <label class="block text-sm font-medium text-gray-700">Fire Team</label>
+        <label class="block text-sm font-medium text-gray-700">Coordinated Fire Team</label>
 
         <select name="fire_team"
                 class="w-full border rounded p-2"
@@ -449,7 +449,7 @@
 
     <!-- 🚒 FIRE TRUCK UNITS -->
     <div>
-        <label class="block text-sm font-medium text-gray-700">Fire Truck Units</label>
+        <label class="block text-sm font-medium text-gray-700">Coordinated Fire trucks</label>
         <input type="number"
                name="fire_truck_units"
                value="{{ $response->fire_truck_units }}"
@@ -465,7 +465,7 @@
             !['Special Rescue Force','BFP Rescue','Barangay Tanod Response'].includes('{{ $response->search_rescue_team }}')
     }">
 
-        <label class="block text-sm font-medium text-gray-700">Search & Rescue Team</label>
+        <label class="block text-sm font-medium text-gray-700">Coordinated Fire rescue team</label>
 
         <select name="search_rescue_team"
                 class="w-full border rounded p-2"
