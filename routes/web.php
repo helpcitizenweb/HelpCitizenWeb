@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AdminDashboardController;
@@ -51,6 +52,44 @@ Route::post('/notifications/mark-all-read', function () {
 
 // Authenticated users
 Route::middleware(['auth'])->group(function () {
+     // Push notification subscription
+    Route::post('/push-subscriptions', function (Request $request) {
+        $user = Auth::user();
+
+        $user->updatePushSubscription(
+            $request->endpoint,
+            $request->keys['p256dh'],
+            $request->keys['auth'],
+            $request->content_encoding ?? null
+        );
+
+        return response()->json([
+            'success' => true,
+        ]);
+    })->name('push.subscribe');
+
+// Check for new notifications without refreshing the page
+    Route::get('/notifications/poll', function () {
+        $user = Auth::user();
+
+        return response()->json([
+            'unread_count' => $user->unreadNotifications()->count(),
+
+            'notifications' => $user->notifications()
+                ->latest()
+                ->take(20)
+                ->get()
+                ->map(function ($notification) {
+                    return [
+                        'id' => $notification->id,
+                        'message' => $notification->data['message'] ?? 'New Notification',
+                        'url' => $notification->data['url'] ?? route('reports.index'),
+                        'read_at' => $notification->read_at,
+                    ];
+                }),
+        ]);
+    })->name('notifications.poll');
+
     Route::get('/dashboard', function () {
         return view('home');
     })->name('dashboard');
@@ -94,7 +133,6 @@ Route::post(
     '/admin/feedback/{feedback}/respond',
     [FeedbackController::class, 'adminRespond']
 )->name('admin.feedback.respond');
-
 
 /////////////////////////////////////////////////////////////
 
@@ -150,6 +188,7 @@ Route::get('/admin/view-user/{id}', [ProfileController::class, 'viewUser'])
         Route::get('/admin/announcements/{announcement}/edit', [AdminAnnouncementsController::class, 'edit'])->name('admin.announcements.edit');
         Route::put('/admin/announcements/{announcement}', [AdminAnnouncementsController::class, 'update'])->name('admin.announcements.update');
         Route::delete('/admin/announcements/{announcement}', [AdminAnnouncementsController::class, 'destroy'])->name('admin.announcements.destroy');
+        Route::get('/admin/announcements/view/{id}',[AdminAnnouncementsController::class, 'view'])->name('admin.announcements.view');
 
         // Services
         Route::get('/admin/services', [AdminServiceController::class, 'index'])->name('admin.services.index');

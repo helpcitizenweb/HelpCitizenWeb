@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 
 @section('content')
     @php
@@ -350,10 +350,10 @@
                 <!-- Back Button -->
                 <div class="mt-8">
 
-                    <a href="{{ route('resident.announcements') }}"
-               class="inline-block mt-4 px-4 py-2 bg-gray-700 text-white rounded-md hover:bg-gray-800 transition">
-                ← Back to Announcements
-            </a>
+                    <a href="{{ route('admin.announcements.index') }}"
+                        class="inline-flex items-center px-6 py-3 bg-gray-700 text-white rounded-lg hover:bg-gray-800 transition">
+                        ← Back to Announcements
+                    </a>
 
                 </div>
 
@@ -362,4 +362,8 @@
         </div>
 
     </div>
+
+
+    
 @endsection
+

@@ -42,7 +42,7 @@ class ReportController extends Controller
         $validated['anonymous'] = $request->boolean('anonymous');
 
 
-        // Handle Image Upload
+        // Handle Image Upload locally
    //if ($request->hasFile('image')) {
      //   $validated['image'] = $request->file('image')->store('reports', 'public');
     //}

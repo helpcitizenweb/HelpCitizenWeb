@@ -9,6 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     @include('partials.google-analytics')
 
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 
 <body class="font-poppins bg-gray-100">
@@ -56,15 +57,16 @@
                             $unreadCount = Auth::check() ? Auth::user()->unreadNotifications()->count() : 0;
                         @endphp
                         @if ($unreadCount > 0)
-                            <span
-                                class="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold rounded-full px-1.5">
+                            <span id="notification-count"
+                                class="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold rounded-full px-1.5"
+                                style="{{ $unreadCount > 0 ? '' : 'display: none;' }}">
                                 {{ $unreadCount }}
                             </span>
                         @endif
                     </button>
 
                     <!-- Dropdown -->
-                    <div x-show="open" @click.away="open = false" x-transition
+                    <div id="notification-dropdown" x-show="open" @click.away="open = false" x-transition
                         class="absolute right-0 mt-2 min-w-[20rem] bg-white border border-gray-200 rounded-lg shadow-lg z-50 max-h-80 overflow-y-auto">
 
                         @if (Auth::check() && Auth::user()->notifications->count())
@@ -210,9 +212,9 @@
 
                 <hr class="my-4">
 
-        
 
-                
+
+
 
                 <!-- Profile -->
                 @auth
@@ -241,11 +243,210 @@
 
 
     <!-- Main Content -->
-   <div class="container mx-auto px-4 py-8">
+    <div class="container mx-auto px-4 py-8">
         @yield('content')
     </div>
+    <!-- Used for pushpop notification -->
+    <script>
+        const vapidPublicKey = @json(config('webpush.vapid.public_key'));
 
+        function urlBase64ToUint8Array(base64String) {
+            const padding = '='.repeat((4 - base64String.length % 4) % 4);
+            const base64 = (base64String + padding)
+                .replace(/-/g, '+')
+                .replace(/_/g, '/');
+
+            const rawData = window.atob(base64);
+
+            return Uint8Array.from([...rawData].map(char => char.charCodeAt(0)));
+        }
+
+        if ('serviceWorker' in navigator && 'PushManager' in window) {
+
+            window.addEventListener('load', function() {
+
+                navigator.serviceWorker.register('/service-worker.js')
+                    .then(function(registration) {
+
+                        console.log(
+                            'HelpCitizen service worker registered:',
+                            registration.scope
+                        );
+
+                        return Notification.requestPermission()
+                            .then(function(permission) {
+
+                                if (permission !== 'granted') {
+                                    console.log('Notification permission not granted.');
+                                    return null;
+                                }
+
+                                return registration.pushManager.subscribe({
+                                    userVisibleOnly: true,
+                                    applicationServerKey: urlBase64ToUint8Array(vapidPublicKey)
+                                });
+                            });
+                    })
+                    .then(function(subscription) {
+
+                        if (!subscription) {
+                            return;
+                        }
+
+                        const subscriptionData = subscription.toJSON();
+
+                        return fetch('/push-subscriptions', {
+                            method: 'POST',
+
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': document.querySelector(
+                                    'meta[name="csrf-token"]'
+                                ).getAttribute('content')
+                            },
+
+                            body: JSON.stringify({
+                                endpoint: subscriptionData.endpoint,
+
+                                keys: {
+                                    p256dh: subscriptionData.keys.p256dh,
+                                    auth: subscriptionData.keys.auth
+                                },
+
+                                content_encoding: 'aes128gcm'
+                            })
+                        });
+                    })
+                    .then(function(response) {
+
+                        if (!response) {
+                            return;
+                        }
+
+                        return response.json();
+
+                    })
+                    .then(function(data) {
+
+                        if (data) {
+                            console.log(
+                                'HelpCitizen push subscription:',
+                                data
+                            );
+                        }
+
+                    })
+                    .catch(function(error) {
+
+                        console.error(
+                            'HelpCitizen push setup failed:',
+                            error
+                        );
+
+                    });
+
+            });
+        }
+
+        // ============================================================
+        // HelpCitizen: Live Notification Bell Polling
+        // ============================================================
+
+        @if (Auth::check())
+
+            let lastNotificationState = null;
+
+            function updateNotificationBell() {
+                fetch('{{ route('notifications.poll') }}', {
+                        method: 'GET',
+                        headers: {
+                            'Accept': 'application/json',
+                            'X-Requested-With': 'XMLHttpRequest'
+                        }
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Notification polling failed.');
+                        }
+
+                        return response.json();
+                    })
+                    .then(data => {
+
+                        // -------------------------------
+                        // Update unread badge
+                        // -------------------------------
+
+                        const badge = document.getElementById('notification-count');
+
+                        if (badge) {
+                            badge.textContent = data.unread_count;
+
+                            if (data.unread_count > 0) {
+                                badge.style.display = 'inline-block';
+                            } else {
+                                badge.style.display = 'none';
+                            }
+                        }
+
+
+                        // -------------------------------
+                        // Update notification dropdown
+                        // -------------------------------
+
+                        const dropdown = document.getElementById('notification-dropdown');
+
+                        if (!dropdown) {
+                            return;
+                        }
+
+                        let html = `
+            <div class="flex justify-between items-center px-4 py-2">
+                <span class="text-sm font-semibold">Notifications</span>
+            </div>
+        `;
+
+                        if (data.notifications.length > 0) {
+
+                            data.notifications.forEach(notification => {
+
+                                const textClass = notification.read_at ?
+                                    'text-gray-600' :
+                                    'font-bold text-gray-800';
+
+                                html += `
+                    <a href="${notification.url}"
+                       class="block px-4 py-2 text-sm border-b hover:bg-gray-50 ${textClass}">
+                        ${notification.message}
+                    </a>
+                `;
+                            });
+
+                        } else {
+
+                            html += `
+                <div class="px-4 py-2 text-sm text-gray-500">
+                    No notifications
+                </div>
+            `;
+                        }
+
+                        dropdown.innerHTML = html;
+                    })
+                    .catch(error => {
+                        console.error('HelpCitizen notification polling error:', error);
+                    });
+            }
+
+
+            // Check immediately
+            updateNotificationBell();
+
+
+            // Then check every 5 seconds
+            setInterval(updateNotificationBell, 5000);
+        @endif
+    </script>
 </body>
 
 </html>
-
