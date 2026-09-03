@@ -1,3 +1,23 @@
+@php
+    use Illuminate\Support\Str;
+
+    if (!function_exists('announcementMediaUrl')) {
+        function announcementMediaUrl($media)
+        {
+            if (!$media) {
+                return null;
+            }
+
+            // DigitalOcean Spaces (full URL)
+            if (Str::startsWith($media, 'http')) {
+                return $media;
+            }
+
+            // Ignore old local storage paths in production
+            return null;
+        }
+    }
+@endphp
 @extends('layouts.admin')
 
 @section('content')
@@ -45,18 +65,22 @@
         Announcement Image
     </label>
 
-    @if ($announcement->image)
-        <div class="mb-4">
-            <p class="text-sm text-gray-500 mb-2">
-                Current Image
-            </p>
+    @php
+    $imageUrl = announcementMediaUrl($announcement->image);
+@endphp
 
-            <img
-                src="{{ asset('storage/' . $announcement->image) }}"
-                alt="Current Announcement Image"
-                class="w-full max-w-md h-56 object-cover rounded-lg border shadow-sm">
-        </div>
-    @endif
+@if ($imageUrl)
+    <div class="mb-4">
+        <p class="text-sm text-gray-500 mb-2">
+            Current Image
+        </p>
+
+        <img
+            src="{{ $imageUrl }}"
+            alt="Current Announcement Image"
+            class="w-full max-w-md h-56 object-cover rounded-lg border shadow-sm">
+    </div>
+@endif
 
     <input
         type="file"

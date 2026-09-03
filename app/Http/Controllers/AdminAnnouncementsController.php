@@ -122,44 +122,86 @@ foreach ($residents as $resident) {
     }
 
     public function update(Request $request, Announcement $announcement)
-    {
-       $request->validate([
-'title' => 'required|string|max:255',
-'content' => 'required|string',
+{
+    $request->validate([
+        'title' => 'required|string|max:255',
+        'content' => 'required|string',
 
-    'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+        'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
 
-    'disaster_type' => 'nullable|string|max:255',
-    'alert_level' => 'nullable|string|max:255',
-    'affected_area' => 'nullable|string|max:255',
+        'disaster_type' => 'nullable|string|max:255',
+        'alert_level' => 'nullable|string|max:255',
+        'affected_area' => 'nullable|string|max:255',
 
-    'instructions' => 'nullable|string',
+        'instructions' => 'nullable|string',
 
-    'evacuation_center' => 'nullable|string|max:255',
+        'evacuation_center' => 'nullable|string|max:255',
 
-    'medical_facility_name' => 'nullable|string|max:255',
-    'medical_facility_contact' => 'nullable|string|max:255',
+        'medical_facility_name' => 'nullable|string|max:255',
+        'medical_facility_contact' => 'nullable|string|max:255',
 
-    'security_coordination_note' => 'nullable|string',
+        'security_coordination_note' => 'nullable|string',
 
-    'start_datetime' => 'nullable|date',
-    'end_datetime' => 'nullable|date',
+        'start_datetime' => 'nullable|date',
+        'end_datetime' => 'nullable|date',
 
-    'status' => 'nullable|string|max:255',
+        'status' => 'nullable|string|max:255',
 
-    'is_urgent' => 'nullable',
+        'is_urgent' => 'nullable',
 
-    'issued_by' => 'nullable|string|max:255',
+        'issued_by' => 'nullable|string|max:255',
 
-    'reference_source' => 'nullable|string|max:255',
-]);
+        'reference_source' => 'nullable|string|max:255',
+    ]);
 
-$imagePath = $announcement->image; if ($request->hasFile('image')) { $imagePath = $request->file('image')->store( 'announcements', 'public' ); }
+    // Keep the existing image if no new image is uploaded
+    $imagePath = $announcement->image;
 
-        $announcement->update([ 'title' => $request->title, 'content' => $request->content, 'image' => $imagePath, 'disaster_type' => $request->disaster_type, 'alert_level' => $request->alert_level, 'affected_area' => $request->affected_area, 'instructions' => $request->instructions, 'evacuation_center' => $request->evacuation_center, 'medical_facility_name' => $request->medical_facility_name, 'medical_facility_contact' => $request->medical_facility_contact, 'security_coordination_note' => $request->security_coordination_note, 'start_datetime' => $request->start_datetime, 'end_datetime' => $request->end_datetime, 'status' => $request->status, 'is_urgent' => $request->has('is_urgent'), 'issued_by' => $request->issued_by, 'reference_source' => $request->reference_source, ]);
+    // Upload new image to DigitalOcean Spaces if provided
+    if ($request->hasFile('image')) {
 
-        return redirect()->route('admin.announcements.index')->with('success', 'Announcement updated successfully.');
+        $path = $request->file('image')->storePublicly(
+            'announcements',
+            'spaces'
+        );
+
+        $imagePath = Storage::disk('spaces')->url($path);
     }
+
+    $announcement->update([
+        'title' => $request->title,
+        'content' => $request->content,
+        'image' => $imagePath,
+
+        'disaster_type' => $request->disaster_type,
+        'alert_level' => $request->alert_level,
+        'affected_area' => $request->affected_area,
+
+        'instructions' => $request->instructions,
+
+        'evacuation_center' => $request->evacuation_center,
+
+        'medical_facility_name' => $request->medical_facility_name,
+        'medical_facility_contact' => $request->medical_facility_contact,
+
+        'security_coordination_note' => $request->security_coordination_note,
+
+        'start_datetime' => $request->start_datetime,
+        'end_datetime' => $request->end_datetime,
+
+        'status' => $request->status,
+
+        'is_urgent' => $request->has('is_urgent'),
+
+        'issued_by' => $request->issued_by,
+
+        'reference_source' => $request->reference_source,
+    ]);
+
+    return redirect()
+        ->route('admin.announcements.index')
+        ->with('success', 'Announcement updated successfully.');
+}
 
     public function destroy(Announcement $announcement)
     {

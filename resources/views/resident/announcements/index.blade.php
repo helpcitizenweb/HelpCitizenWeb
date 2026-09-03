@@ -1,3 +1,23 @@
+@php
+    use Illuminate\Support\Str;
+
+    if (!function_exists('announcementMediaUrl')) {
+        function announcementMediaUrl($media)
+        {
+            if (!$media) {
+                return null;
+            }
+
+            // DigitalOcean Spaces (full URL)
+            if (Str::startsWith($media, 'http')) {
+                return $media;
+            }
+
+            // Ignore old local storage paths in production
+            return null;
+        }
+    }
+@endphp
 @extends('layouts.app')
 
 @section('content')
@@ -13,8 +33,12 @@
                    class="block bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transform hover:scale-[1.02] transition duration-300">
 
                     <!-- Subtle Fallback Banner -->
-                    @if($announcement->image)
-    <img src="{{ asset('storage/' . $announcement->image) }}"
+                   @php
+    $imageUrl = announcementMediaUrl($announcement->image);
+@endphp
+
+@if($imageUrl)
+    <img src="{{ $imageUrl }}"
          alt="{{ $announcement->title }}"
          class="w-full h-40 object-cover">
 @else

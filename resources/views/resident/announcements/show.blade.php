@@ -1,3 +1,23 @@
+@php
+    use Illuminate\Support\Str;
+
+    if (!function_exists('announcementMediaUrl')) {
+        function announcementMediaUrl($media)
+        {
+            if (!$media) {
+                return null;
+            }
+
+            // DigitalOcean Spaces (full URL)
+            if (Str::startsWith($media, 'http')) {
+                return $media;
+            }
+
+            // Ignore old local storage paths in production
+            return null;
+        }
+    }
+@endphp
 @extends('layouts.app')
 
 @section('content')
@@ -79,15 +99,17 @@
 <div x-data="{ showImage: false }">
 
     <!-- HERO IMAGE -->
-    @if ($announcement->image)
+    @php
+    $imageUrl = announcementMediaUrl($announcement->image);
+@endphp
 
-        <img
-            src="{{ asset('storage/' . $announcement->image) }}"
-            alt="{{ $announcement->title }}"
-            @click="showImage = true"
-            class="w-full h-48 object-cover cursor-pointer hover:brightness-95 transition">
-
-    @else
+@if ($imageUrl)
+    <img
+        src="{{ $imageUrl }}"
+        alt="{{ $announcement->title }}"
+        @click="showImage = true"
+        class="w-full h-48 object-cover cursor-pointer hover:brightness-95 transition">
+@else
 
         <div class="h-48 bg-blue-100 flex items-center justify-center">
             <span class="text-6xl">📢</span>
@@ -126,9 +148,9 @@
                 <div class="flex justify-center">
 
                     <img
-                        src="{{ asset('storage/' . $announcement->image) }}"
-                        alt="{{ $announcement->title }}"
-                        class="max-w-full max-h-[70vh] object-contain rounded-lg border">
+    src="{{ $imageUrl }}"
+    alt="{{ $announcement->title }}"
+    class="max-w-full max-h-[70vh] object-contain rounded-lg border">
 
                 </div>
 
