@@ -1,5 +1,22 @@
-@extends('layouts.admin')
+@php
+    use Illuminate\Support\Str;
 
+    function announcementMediaUrl($media)
+    {
+        if (!$media) {
+            return null;
+        }
+
+        // DigitalOcean Spaces (full URL)
+        if (Str::startsWith($media, 'http')) {
+            return $media;
+        }
+
+        // Ignore old local storage paths in production
+        return null;
+    }
+@endphp
+@extends('layouts.admin')
 @section('content')
     <div class="max-w-5xl mx-auto mt-8 bg-white p-8 rounded-2xl shadow-md">
 
@@ -40,32 +57,29 @@
         Announcement Image
     </label>
 
-    <input
-        type="file"
-        id="image"
-        name="image"
-        accept="image/*"
-        class="w-full border border-gray-300 rounded-lg px-4 py-3">
+    <input type="file"
+           id="image"
+           name="image"
+           accept="image/*"
+           class="w-full border border-gray-300 rounded-lg px-4 py-3">
 
-    <!-- Preview -->
+    <!-- Image Preview -->
     <div id="imagePreviewContainer" class="hidden mt-4">
 
-        <img
-            id="imagePreview"
-            src="#"
-            alt="Image Preview"
-            class="hidden w-full max-w-md h-56 object-cover rounded-lg border shadow-sm">
+        <img id="imagePreview"
+             src="#"
+             alt="Image Preview"
+             class="w-full max-w-md h-56 object-cover rounded-lg border shadow-sm">
 
         <!-- Remove Button -->
-        <button
-            type="button"
-            id="removeImageBtn"
-            class="hidden mt-3 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition">
+        <button type="button"
+                id="removeImageBtn"
+                class="mt-3 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition">
             🗑 Remove Image
         </button>
 
     </div>
-</div>
+</div> <!-- image end  -->
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">
                             Description
@@ -536,44 +550,44 @@ if (this.value === 'Other') {
 
             // Image Preview
             const imageInput = document.getElementById('image');
-const imagePreview = document.getElementById('imagePreview');
-const imagePreviewContainer = document.getElementById('imagePreviewContainer');
-const removeImageBtn = document.getElementById('removeImageBtn');
+            const imagePreview = document.getElementById('imagePreview');
+            const imagePreviewContainer = document.getElementById('imagePreviewContainer');
+            const removeImageBtn = document.getElementById('removeImageBtn');
 
-imageInput.addEventListener('change', function () {
+            imageInput.addEventListener('change', function() {
 
-    const file = this.files[0];
+                const file = this.files[0];
 
-    if (file) {
+                if (file) {
 
-        const reader = new FileReader();
+                    const reader = new FileReader();
 
-        reader.onload = function (e) {
+                    reader.onload = function(e) {
 
-            imagePreview.src = e.target.result;
-            imagePreview.classList.remove('hidden');
-            imagePreviewContainer.classList.remove('hidden');
-            removeImageBtn.classList.remove('hidden');
+                        imagePreview.src = e.target.result;
+                        imagePreview.classList.remove('hidden');
+                        imagePreviewContainer.classList.remove('hidden');
+                        removeImageBtn.classList.remove('hidden');
 
-        };
+                    };
 
-        reader.readAsDataURL(file);
+                    reader.readAsDataURL(file);
 
-    }
+                }
 
-});
+            });
 
-removeImageBtn.addEventListener('click', function () {
+            removeImageBtn.addEventListener('click', function() {
 
-    imageInput.value = '';
+                imageInput.value = '';
 
-    imagePreview.src = '#';
+                imagePreview.src = '#';
 
-    imagePreview.classList.add('hidden');
-    imagePreviewContainer.classList.add('hidden');
-    removeImageBtn.classList.add('hidden');
+                imagePreview.classList.add('hidden');
+                imagePreviewContainer.classList.add('hidden');
+                removeImageBtn.classList.add('hidden');
 
-});
+            });
 
         });
     </script>

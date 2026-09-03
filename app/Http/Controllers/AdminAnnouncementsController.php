@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Announcement;
 use App\Models\User;
 use App\Notifications\AnnouncementNotification;
+use Illuminate\Support\Facades\Storage;
 
 class AdminAnnouncementsController extends Controller
 {
@@ -57,10 +58,12 @@ $imagePath = null;
 
 if ($request->hasFile('image')) {
 
-    $imagePath = $request->file('image')->store(
+    $path = $request->file('image')->storePublicly(
         'announcements',
-        'public'
+        'spaces'
     );
+
+    $imagePath = Storage::disk('spaces')->url($path);
 }
 
         // Store the announcement
