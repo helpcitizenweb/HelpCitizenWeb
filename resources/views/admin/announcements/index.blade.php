@@ -1,3 +1,23 @@
+@php
+    use Illuminate\Support\Str;
+
+    if (!function_exists('announcementMediaUrl')) {
+        function announcementMediaUrl($media)
+        {
+            if (!$media) {
+                return null;
+            }
+
+            // DigitalOcean Spaces (full URL)
+            if (Str::startsWith($media, 'http')) {
+                return $media;
+            }
+
+            // Ignore old local storage paths in production
+            return null;
+        }
+    }
+@endphp
 @extends('layouts.admin')
 
 @section('content')
@@ -269,16 +289,23 @@
                             data-alert="{{ strtolower($announcement->alert_level) }}"
                             data-status="{{ strtolower($announcement->status) }}">
 
+<!--IMage needed to be shown-->
                             {{-- Announcement Image --}}
-                            @if ($announcement->image)
-                                <img src="{{ asset('storage/' . $announcement->image) }}" alt="{{ $announcement->title }}"
-                                    class="w-full h-40 object-cover">
-                            @else
-                                <div class="w-full h-52 bg-gray-100 flex items-center justify-center">
-                                    <span class="text-6xl">📢</span>
-                                </div>
-                            @endif
+                            <!-- Announcement Image -->
+@php
+    $imageUrl = announcementMediaUrl($announcement->image);
+@endphp
 
+@if ($imageUrl)
+    <img src="{{ $imageUrl }}"
+         alt="{{ $announcement->title }}"
+         class="w-full h-40 object-cover">
+@else
+    <div class="w-full h-40 bg-gray-100 flex items-center justify-center">
+        <span class="text-6xl">📢</span>
+    </div>
+@endif
+<!--IMage needed to be shown-->
                             <div class="p-4">
 
                                 {{-- Title --}}
