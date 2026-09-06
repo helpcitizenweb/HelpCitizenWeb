@@ -189,13 +189,24 @@
             <!-- NOTIFICATIONS -->
             <div x-data="{ notifOpen: false }">
 
-                <button @click="notifOpen = !notifOpen" class="flex justify-between w-full py-2 font-semibold">
+                <button @click="notifOpen = !notifOpen"
+    class="flex justify-between items-center w-full py-2 font-semibold">
 
-                    <span>🔔 Notifications</span>
-                    <span x-text="notifOpen ? '▲' : '▼'"></span>
-                </button>
+    <span class="flex items-center gap-2">
+        🔔 Notifications
 
-                <div x-show="notifOpen" class="mt-2">
+        <span
+            id="mobile-admin-notification-count"
+            class="hidden bg-red-500 text-white text-xs font-bold rounded-full px-1.5 min-w-[20px] text-center">
+        </span>
+    </span>
+
+    <span x-text="notifOpen ? '▲' : '▼'"></span>
+</button>
+
+                <div id="mobile-admin-notification-dropdown"
+     x-show="notifOpen"
+     class="mt-2">
 
                     @php
                         $unreadCount = Auth::check() ? Auth::user()->unreadNotifications()->count() : 0;
@@ -281,7 +292,7 @@
 
                 if (!badge) {
                     // Create the badge if there wasn't one
-                    // when the page initially loaded.
+                    // when the page initially loaded.s
                     const button = document.querySelector(
                         '[x-data="{ open: false }"] button.relative'
                     );
@@ -367,6 +378,116 @@
 
     // Then check every 5 seconds
     setInterval(updateNotificationBell, 5000);
+
+        // ============================================================
+    // HelpCitizen Admin: Mobile Notification Polling
+    // ============================================================
+
+    function updateMobileAdminNotificationBell() {
+
+        fetch('{{ route('notifications.poll') }}', {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(response => {
+
+            if (!response.ok) {
+                throw new Error('Mobile admin notification polling failed.');
+            }
+
+            return response.json();
+
+        })
+        .then(data => {
+
+            // ------------------------------------------------
+            // Update mobile admin unread badge
+            // ------------------------------------------------
+
+            const badge = document.getElementById(
+                'mobile-admin-notification-count'
+            );
+
+            if (badge) {
+
+                if (data.unread_count > 0) {
+
+                    badge.textContent = data.unread_count;
+                    badge.classList.remove('hidden');
+
+                } else {
+
+                    badge.textContent = '';
+                    badge.classList.add('hidden');
+
+                }
+            }
+
+
+            // ------------------------------------------------
+            // Update mobile admin notification list
+            // ------------------------------------------------
+
+            const dropdown = document.getElementById(
+                'mobile-admin-notification-dropdown'
+            );
+
+            if (!dropdown) {
+                return;
+            }
+
+            let html = '';
+
+            if (data.notifications && data.notifications.length > 0) {
+
+                data.notifications.forEach(notification => {
+
+                    const textClass = notification.read_at
+                        ? 'text-gray-600'
+                        : 'font-bold text-gray-800';
+
+                    html += `
+                        <a href="${notification.url || '#'}"
+                           @click="open=false"
+                           class="block py-2 text-sm border-b ${textClass}">
+                            ${notification.message || 'New Notification'}
+                        </a>
+                    `;
+                });
+
+            } else {
+
+                html = `
+                    <p class="text-sm text-gray-500">
+                        No notifications
+                    </p>
+                `;
+            }
+
+            dropdown.innerHTML = html;
+
+        })
+        .catch(error => {
+
+            console.error(
+                'HelpCitizen mobile admin notification error:',
+                error
+            );
+
+        });
+    }
+
+
+    // Check mobile admin notifications immediately
+    updateMobileAdminNotificationBell();
+
+
+    // Then check every 5 seconds
+    setInterval(updateMobileAdminNotificationBell, 5000);
+
 </script>
 @endif
 </nav>
