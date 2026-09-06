@@ -46,13 +46,19 @@ self.addEventListener('notificationclick', function (event) {
         }).then(function (clientList) {
 
             // If HelpCitizen is already open, focus it and navigate to the notification URL
-            for (const client of clientList) {
-                if ('focus' in client) {
-                    return client.focus().then(function () {
-                        return client.navigate(url);
-                    });
-                }
-            }
+            console.log('🔥 OPEN CLIENTS:', clientList);
+
+for (const client of clientList) {
+    console.log('🔥 CLIENT URL:', client.url);
+}
+
+for (const client of clientList) {
+    if ('focus' in client) {
+        return client.focus().then(function () {
+            return client.navigate(url);
+        });
+    }
+}
 
             // Otherwise open the notification URL
             if (clients.openWindow) {
