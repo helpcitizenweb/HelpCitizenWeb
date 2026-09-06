@@ -28,3 +28,36 @@ self.addEventListener('push', function (event) {
             })
     );
 });
+
+
+// 🔔 Handle clicking the Windows/Chrome notification
+self.addEventListener('notificationclick', function (event) {
+
+    console.log('🔥 NOTIFICATION CLICKED');
+
+    event.notification.close();
+
+    const url = event.notification.data?.url || '/';
+
+    event.waitUntil(
+        clients.matchAll({
+            type: 'window',
+            includeUncontrolled: true
+        }).then(function (clientList) {
+
+            // If HelpCitizen is already open, focus it and navigate to the notification URL
+            for (const client of clientList) {
+                if ('focus' in client) {
+                    return client.focus().then(function () {
+                        return client.navigate(url);
+                    });
+                }
+            }
+
+            // Otherwise open the notification URL
+            if (clients.openWindow) {
+                return clients.openWindow(url);
+            }
+        })
+    );
+});
