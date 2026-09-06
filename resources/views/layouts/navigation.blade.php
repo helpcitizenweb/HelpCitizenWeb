@@ -248,4 +248,125 @@
 
         </div>
     </div>
+
+    @if (Auth::check())
+<script>
+    // ============================================================
+    // HelpCitizen Admin: Live Notification Bell Polling
+    // ============================================================
+
+    function updateNotificationBell() {
+        fetch('{{ route('notifications.poll') }}', {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Notification polling failed.');
+            }
+
+            return response.json();
+        })
+        .then(data => {
+
+            // ------------------------------------------------
+            // Update unread badge
+            // ------------------------------------------------
+            let badge = document.getElementById('notification-count');
+
+            if (data.unread_count > 0) {
+
+                if (!badge) {
+                    // Create the badge if there wasn't one
+                    // when the page initially loaded.
+                    const button = document.querySelector(
+                        '[x-data="{ open: false }"] button.relative'
+                    );
+
+                    if (button) {
+                        badge = document.createElement('span');
+
+                        badge.id = 'notification-count';
+                        badge.className =
+                            'absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold rounded-full px-1.5';
+
+                        button.appendChild(badge);
+                    }
+                }
+
+                if (badge) {
+                    badge.textContent = data.unread_count;
+                    badge.style.display = 'inline-block';
+                }
+
+            } else if (badge) {
+                badge.textContent = '';
+                badge.style.display = 'none';
+            }
+
+
+            // ------------------------------------------------
+            // Update notification dropdown
+            // ------------------------------------------------
+            const dropdown =
+                document.getElementById('notification-dropdown');
+
+            if (!dropdown) {
+                return;
+            }
+
+            let html = `
+                <div class="flex justify-between items-center px-4 py-2 border-b">
+                    <span class="text-sm font-semibold">
+                        Notifications
+                    </span>
+                </div>
+            `;
+
+            if (data.notifications && data.notifications.length > 0) {
+
+                data.notifications.forEach(notification => {
+
+                    const textClass = notification.read_at
+                        ? 'text-gray-600'
+                        : 'font-bold text-gray-800';
+
+                    html += `
+                        <a href="${notification.url || '#'}"
+                           class="block px-4 py-2 text-sm border-b hover:bg-gray-50 transition ${textClass}">
+                            ${notification.message || 'New Notification'}
+                        </a>
+                    `;
+                });
+
+            } else {
+
+                html += `
+                    <div class="px-4 py-2 text-sm text-gray-500">
+                        No notifications
+                    </div>
+                `;
+            }
+
+            dropdown.innerHTML = html;
+        })
+        .catch(error => {
+            console.error(
+                'HelpCitizen admin notification polling error:',
+                error
+            );
+        });
+    }
+
+
+    // Check immediately when the page loads
+    updateNotificationBell();
+
+    // Then check every 5 seconds
+    setInterval(updateNotificationBell, 5000);
+</script>
+@endif
 </nav>
