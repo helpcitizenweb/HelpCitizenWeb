@@ -89,17 +89,18 @@ if ($request->hasFile('video')) {
         //}
         // // Notify admins
         $admins = User::where('role', 'admin')->get();
-        foreach ($admins as $admin) {
-            $reporterIdentity = $report->anonymous
-    ? 'Anonymous'
-    : ($user->email ?? 'Unknown User');
 
-$admin->notify(new ReportStatusNotification(
-    $report,
-    "A new report (ID {$report->id}) has been submitted by {$reporterIdentity}."
-));
+foreach ($admins as $admin) {
 
-        }
+    $reporterIdentity = $report->anonymous
+        ? 'Anonymous'
+        : (Auth::user()->email ?? 'Unknown User');
+
+    $admin->notify(new ReportStatusNotification(
+        $report,
+        "A new report (ID {$report->id}) has been submitted by {$reporterIdentity}."
+    ));
+}
 
         return redirect()
             //->route('reports.index')
