@@ -447,15 +447,12 @@
             }
 
 
-            // Check immediately
+                       // Check immediately
             updateNotificationBell();
 
 
             // Then check every 5 seconds
             setInterval(updateNotificationBell, 5000);
-        @endif
-
-                    setInterval(updateNotificationBell, 5000);
 
 
             // ============================================================
@@ -568,7 +565,6 @@
             setInterval(updateMobileNotificationBell, 5000);
 
         @endif
-    </script>
     </script>
     
 </body>
