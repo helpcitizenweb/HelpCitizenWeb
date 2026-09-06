@@ -170,17 +170,25 @@
 
                     <!-- Header -->
                     <button @click="notifOpen = !notifOpen"
-                        class="flex items-center justify-between w-full py-2 text-gray-800 font-semibold">
+    class="flex items-center justify-between w-full py-2 text-gray-800 font-semibold">
 
-                        <span class="flex items-center gap-2">
-                            🔔 Notifications
-                        </span>
+    <span class="flex items-center gap-2 relative">
+        🔔 Notifications
 
-                        <span x-text="notifOpen ? '▲' : '▼'" class="text-xs"></span>
-                    </button>
+        <span
+            id="mobile-notification-count"
+            class="hidden bg-red-500 text-white text-xs font-bold rounded-full px-1.5 min-w-[20px] text-center">
+        </span>
+    </span>
+
+    <span x-text="notifOpen ? '▲' : '▼'" class="text-xs"></span>
+</button>
 
                     <!-- Content -->
-                    <div x-show="notifOpen" x-transition class="mt-2">
+                    <div id="mobile-notification-dropdown"
+     x-show="notifOpen"
+     x-transition
+     class="mt-2">
 
                         @if (Auth::check() && Auth::user()->notifications->count())
                             @foreach (Auth::user()->notifications as $notification)
@@ -446,7 +454,123 @@
             // Then check every 5 seconds
             setInterval(updateNotificationBell, 5000);
         @endif
+
+                    setInterval(updateNotificationBell, 5000);
+
+
+            // ============================================================
+            // HelpCitizen: Mobile Notification Bell Polling
+            // ============================================================
+
+            function updateMobileNotificationBell() {
+
+                fetch('{{ route('notifications.poll') }}', {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                })
+                .then(response => {
+
+                    if (!response.ok) {
+                        throw new Error('Mobile notification polling failed.');
+                    }
+
+                    return response.json();
+
+                })
+                .then(data => {
+
+                    // -------------------------------
+                    // Update mobile unread badge
+                    // -------------------------------
+
+                    const badge = document.getElementById(
+                        'mobile-notification-count'
+                    );
+
+                    if (badge) {
+
+                        if (data.unread_count > 0) {
+
+                            badge.textContent = data.unread_count;
+                            badge.classList.remove('hidden');
+
+                        } else {
+
+                            badge.textContent = '';
+                            badge.classList.add('hidden');
+
+                        }
+                    }
+
+
+                    // -------------------------------
+                    // Update mobile notification list
+                    // -------------------------------
+
+                    const dropdown = document.getElementById(
+                        'mobile-notification-dropdown'
+                    );
+
+                    if (!dropdown) {
+                        return;
+                    }
+
+                    let html = '';
+
+                    if (data.notifications && data.notifications.length > 0) {
+
+                        data.notifications.forEach(notification => {
+
+                            const textClass = notification.read_at
+                                ? 'text-gray-600'
+                                : 'font-bold text-gray-800';
+
+                            html += `
+                                <a href="${notification.url || '#'}"
+                                   class="block py-2 text-sm border-b ${textClass}">
+                                    ${notification.message || 'New Notification'}
+                                </a>
+                            `;
+
+                        });
+
+                    } else {
+
+                        html = `
+                            <p class="text-sm text-gray-500">
+                                No notifications
+                            </p>
+                        `;
+                    }
+
+                    dropdown.innerHTML = html;
+
+                })
+                .catch(error => {
+
+                    console.error(
+                        'HelpCitizen mobile notification polling error:',
+                        error
+                    );
+
+                });
+            }
+
+
+            // Check mobile notifications immediately
+            updateMobileNotificationBell();
+
+
+            // Then check every 5 seconds
+            setInterval(updateMobileNotificationBell, 5000);
+
+        @endif
     </script>
+    </script>
+    
 </body>
 
 </html>
