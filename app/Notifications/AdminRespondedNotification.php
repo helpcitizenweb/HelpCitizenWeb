@@ -5,6 +5,8 @@ namespace App\Notifications;
 use App\Models\Report;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
+use NotificationChannels\WebPush\WebPushChannel;
+use NotificationChannels\WebPush\WebPushMessage;
 
 class AdminRespondedNotification extends Notification
 {
@@ -19,7 +21,10 @@ class AdminRespondedNotification extends Notification
 
     public function via($notifiable)
     {
-        return ['database'];
+        return [
+            'database',
+            WebPushChannel::class,
+        ];
     }
 
     public function toDatabase($notifiable)
@@ -29,5 +34,16 @@ class AdminRespondedNotification extends Notification
             'message'   => "An admin has responded to your report (ID #{$this->report->id}).",
             'url'       => route('reports.full', $this->report->id),
         ];
+    }
+
+    public function toWebPush($notifiable, $notification)
+    {
+        return (new WebPushMessage)
+            ->title('HelpCitizen Report Update')
+            ->body("An admin has responded to your report (ID #{$this->report->id}).")
+            ->icon('/favicon.ico')
+            ->data([
+                'url' => route('reports.full', $this->report->id),
+            ]);
     }
 }
