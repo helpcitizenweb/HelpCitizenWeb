@@ -13,47 +13,52 @@
                 <!-- Naviigation Links -->
                 <div class="hidden sm:flex items-center space-x-8 sm:ml-10">
 
-    {{-- Dashboard --}}
-    <a href="{{ route('admin.dashboard') }}"
-        class="inline-flex items-center px-1 pt-3 pb-2 border-b-2 text-sm font-medium leading-5
-               {{ request()->routeIs('admin.dashboard') ? 'border-indigo-500 text-gray-900'
-                                                        : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }}">
-        Dashboard
-    </a>
+                    {{-- Dashboard --}}
+                    <a href="{{ route('admin.dashboard') }}"
+                        class="inline-flex items-center px-1 pt-3 pb-2 border-b-2 text-sm font-medium leading-5
+               {{ request()->routeIs('admin.dashboard')
+                   ? 'border-indigo-500 text-gray-900'
+                   : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }}">
+                        Dashboard
+                    </a>
 
-    {{-- Manage Users --}}
-    <a href="{{ route('admin.users') }}"
-        class="inline-flex items-center px-1 pt-3 pb-2 border-b-2 text-sm font-medium leading-5
-               {{ request()->routeIs('admin.users') ? 'border-indigo-500 text-gray-900'
-                                                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }}">
-        Manage Users
-    </a>
+                    {{-- Manage Users --}}
+                    <a href="{{ route('admin.users') }}"
+                        class="inline-flex items-center px-1 pt-3 pb-2 border-b-2 text-sm font-medium leading-5
+               {{ request()->routeIs('admin.users')
+                   ? 'border-indigo-500 text-gray-900'
+                   : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }}">
+                        Manage Users
+                    </a>
 
-    {{-- Manage Reports --}}
-    <a href="{{ route('admin.reports') }}"
-        class="inline-flex items-center px-1 pt-3 pb-2 border-b-2 text-sm font-medium leading-5
-               {{ request()->routeIs('admin.reports') ? 'border-indigo-500 text-gray-900'
-                                                      : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }}">
-        Manage Reports
-    </a>
+                    {{-- Manage Reports --}}
+                    <a href="{{ route('admin.reports') }}"
+                        class="inline-flex items-center px-1 pt-3 pb-2 border-b-2 text-sm font-medium leading-5
+               {{ request()->routeIs('admin.reports')
+                   ? 'border-indigo-500 text-gray-900'
+                   : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }}">
+                        Manage Reports
+                    </a>
 
-    {{-- Announcements --}}
-    <a href="{{ route('admin.announcements.index') }}"
-        class="inline-flex items-center px-1 pt-3 pb-2 border-b-2 text-sm font-medium leading-5
-               {{ request()->routeIs('admin.announcements.index') ? 'border-indigo-500 text-gray-900'
-                                                                   : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }}">
-        Announcements
-    </a>
+                    {{-- Announcements --}}
+                    <a href="{{ route('admin.announcements.index') }}"
+                        class="inline-flex items-center px-1 pt-3 pb-2 border-b-2 text-sm font-medium leading-5
+               {{ request()->routeIs('admin.announcements.index')
+                   ? 'border-indigo-500 text-gray-900'
+                   : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }}">
+                        Announcements
+                    </a>
 
-    {{-- Services --}}
-    <a href="{{ route('admin.services.index') }}"
-        class="inline-flex items-center px-1 pt-3 pb-2 border-b-2 text-sm font-medium leading-5
-               {{ request()->routeIs('admin.services.index') ? 'border-indigo-500 text-gray-900'
-                                                             : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }}">
-        Services
-    </a>
+                    {{-- Services --}}
+                    <a href="{{ route('admin.services.index') }}"
+                        class="inline-flex items-center px-1 pt-3 pb-2 border-b-2 text-sm font-medium leading-5
+               {{ request()->routeIs('admin.services.index')
+                   ? 'border-indigo-500 text-gray-900'
+                   : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }}">
+                        Services
+                    </a>
 
-</div>
+                </div>
 
             </div>
 
@@ -78,7 +83,7 @@
                             $unreadCount = Auth::check() ? Auth::user()->unreadNotifications()->count() : 0;
                         @endphp
                         @if ($unreadCount > 0)
-                            <span
+                            <span id="notification-count"
                                 class="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold rounded-full px-1.5">
                                 {{ $unreadCount }}
                             </span>
@@ -86,7 +91,7 @@
                     </button>
 
                     <!-- Dropdown -->
-                    <div x-show="open" @click.away="open = false"
+                    <div id="notification-dropdown" x-show="open" @click.away="open = false"
                         class="absolute right-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg z-50 w-80 max-h-80 overflow-y-auto">
 
                         @if (Auth::check() && Auth::user()->notifications->count())
@@ -96,7 +101,7 @@
 
                             @foreach (Auth::user()->notifications as $notification)
                                 @php
-                                   $url = $notification->data['url'] ?? '#';
+                                    $url = $notification->data['url'] ?? '#';
                                 @endphp
                                 <a href="{{ $url }}"
                                     class="block px-4 py-2 text-sm border-b hover:bg-gray-50 transition 
@@ -163,86 +168,84 @@
 
     <!-- Responsive Navigation Menu -->
     <!-- Mobile Sidebar (Admin) -->
-<div x-show="open" class="fixed inset-0 z-50 sm:hidden">
+    <div x-show="open" class="fixed inset-0 z-50 sm:hidden">
 
-    <!-- Overlay -->
-    <div class="absolute inset-0 bg-black bg-opacity-50"
-         x-transition.opacity
-         @click="open = false"></div>
+        <!-- Overlay -->
+        <div class="absolute inset-0 bg-black bg-opacity-50" x-transition.opacity @click="open = false"></div>
 
-    <!-- Sidebar -->
-    <div x-show="open"
-         x-transition:enter="transform transition ease-in-out duration-300"
-         x-transition:enter-start="translate-x-full"
-         x-transition:enter-end="translate-x-0"
-         x-transition:leave="transform transition ease-in-out duration-300"
-         x-transition:leave-start="translate-x-0"
-         x-transition:leave-end="translate-x-full"
-         class="absolute right-0 top-0 h-full w-72 bg-white shadow-lg p-6 overflow-y-auto">
+        <!-- Sidebar -->
+        <div x-show="open" x-transition:enter="transform transition ease-in-out duration-300"
+            x-transition:enter-start="translate-x-full" x-transition:enter-end="translate-x-0"
+            x-transition:leave="transform transition ease-in-out duration-300" x-transition:leave-start="translate-x-0"
+            x-transition:leave-end="translate-x-full"
+            class="absolute right-0 top-0 h-full w-72 bg-white shadow-lg p-6 overflow-y-auto">
 
-        <!-- Close Button -->
-        <div class="flex justify-between items-center mb-4">
-            <span class="font-bold text-lg">Menu</span>
-            <button @click="open = false" class="text-gray-500">✖</button>
-        </div>
-
-         <!-- NOTIFICATIONS -->
-        <div x-data="{ notifOpen: false }">
-
-            <button @click="notifOpen = !notifOpen"
-                class="flex justify-between w-full py-2 font-semibold">
-
-                <span>🔔 Notifications</span>
-                <span x-text="notifOpen ? '▲' : '▼'"></span>
-            </button>
-
-            <div x-show="notifOpen" class="mt-2">
-
-                @php
-                    $unreadCount = Auth::check() ? Auth::user()->unreadNotifications()->count() : 0;
-                @endphp
-
-                @if(Auth::check() && Auth::user()->notifications->count())
-                    @foreach(Auth::user()->notifications as $notification)
-                        <a href="{{ $notification->data['url'] ?? '#' }}"
-                           @click="open=false"
-                           class="block py-2 text-sm border-b
-                           {{ $notification->read_at ? 'text-gray-600' : 'font-bold text-gray-800' }}">
-                            {{ $notification->data['message'] ?? 'New Notification' }}
-                        </a>
-                    @endforeach
-                @else
-                    <p class="text-sm text-gray-500">No notifications</p>
-                @endif
-
+            <!-- Close Button -->
+            <div class="flex justify-between items-center mb-4">
+                <span class="font-bold text-lg">Menu</span>
+                <button @click="open = false" class="text-gray-500">✖</button>
             </div>
+
+            <!-- NOTIFICATIONS -->
+            <div x-data="{ notifOpen: false }">
+
+                <button @click="notifOpen = !notifOpen" class="flex justify-between w-full py-2 font-semibold">
+
+                    <span>🔔 Notifications</span>
+                    <span x-text="notifOpen ? '▲' : '▼'"></span>
+                </button>
+
+                <div x-show="notifOpen" class="mt-2">
+
+                    @php
+                        $unreadCount = Auth::check() ? Auth::user()->unreadNotifications()->count() : 0;
+                    @endphp
+
+                    @if (Auth::check() && Auth::user()->notifications->count())
+                        @foreach (Auth::user()->notifications as $notification)
+                            <a href="{{ $notification->data['url'] ?? '#' }}" @click="open=false"
+                                class="block py-2 text-sm border-b
+                           {{ $notification->read_at ? 'text-gray-600' : 'font-bold text-gray-800' }}">
+                                {{ $notification->data['message'] ?? 'New Notification' }}
+                            </a>
+                        @endforeach
+                    @else
+                        <p class="text-sm text-gray-500">No notifications</p>
+                    @endif
+
+                </div>
+            </div>
+
+            <hr class="my-4">
+
+            <!-- NAV LINKS -->
+            <a @click="open=false" href="{{ route('admin.dashboard') }}"
+                class="block py-2 font-semibold">Dashboard</a>
+            <a @click="open=false" href="{{ route('admin.users') }}" class="block py-2 font-semibold">Manage
+                Users</a>
+            <a @click="open=false" href="{{ route('admin.reports') }}" class="block py-2 font-semibold">Manage
+                Reports</a>
+            <a @click="open=false" href="{{ route('admin.announcements.index') }}"
+                class="block py-2 font-semibold">Announcements</a>
+            <a @click="open=false" href="{{ route('admin.services.index') }}"
+                class="block py-2 font-semibold">Services</a>
+            <hr class="my-4">
+            <!-- PROFILE -->
+            <div class="text-gray-600 mb-2">
+                {{ Auth::user()->name }}
+            </div>
+
+            <a @click="open=false" href="{{ route('profile.edit') }}" class="block py-2">
+                Profile
+            </a>
+
+            <form method="POST" action="{{ route('logout') }}">
+                @csrf
+                <button class="w-full text-left py-2 text-red-600">
+                    Log Out
+                </button>
+            </form>
+
         </div>
-
-        <hr class="my-4">
-
-        <!-- NAV LINKS -->
-        <a @click="open=false" href="{{ route('admin.dashboard') }}" class="block py-2 font-semibold">Dashboard</a>
-        <a @click="open=false" href="{{ route('admin.users') }}" class="block py-2 font-semibold">Manage Users</a>
-        <a @click="open=false" href="{{ route('admin.reports') }}" class="block py-2 font-semibold">Manage Reports</a>
-        <a @click="open=false" href="{{ route('admin.announcements.index') }}" class="block py-2 font-semibold">Announcements</a>
-        <a @click="open=false" href="{{ route('admin.services.index') }}" class="block py-2 font-semibold">Services</a>
-        <hr class="my-4">
-        <!-- PROFILE -->
-        <div class="text-gray-600 mb-2">
-            {{ Auth::user()->name }}
-        </div>
-
-        <a @click="open=false" href="{{ route('profile.edit') }}" class="block py-2">
-            Profile
-        </a>
-
-        <form method="POST" action="{{ route('logout') }}">
-            @csrf
-            <button class="w-full text-left py-2 text-red-600">
-                Log Out
-            </button>
-        </form>
-
     </div>
-</div>
 </nav>
