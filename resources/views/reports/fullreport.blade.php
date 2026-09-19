@@ -97,118 +97,703 @@
             <hr class="my-4">
 
             {{-- 🔥 FIRE --}}
-            @if ($response->dispatch_unit === 'Fire')
-                <h4 class="text-lg font-semibold text-red-600">🔥 Fire Response</h4>
-                <p><strong>Evacuation Site:</strong> {{ $response->evacuation_address }}</p>
-                <p><strong>Medical Assistance:</strong> {{ $response->medical_response }}</p>
-                <p><strong>Referred Hospital:</strong> {{ $response->designated_hospitals }}</p>
-                <p><strong>Hospital Location:</strong> {{ $response->hospital_address }}</p>
-                <p><strong>Transport assistance:</strong> {{ $response->evacuation_transport }}</p>
-                <p><strong>Transport Units:</strong> {{ $response->evacuation_transport_unit }}</p>
-                <p><strong>Police Coordination:</strong> {{ $response->pnp_station }}</p>
-                <p><strong>Security Assistance:</strong> {{ $response->pnp_team_unit }}</p>
-                <p><strong>PNP Patrol Units:</strong> {{ $response->pnp_patrol_unit }}</p>
-                <p><strong>Relief Assitance:</strong> {{ $response->relief_goods_provider }}</p>
-                <p><strong>Fire Department Coordination:</strong> {{ $response->fire_department }}</p>
-                <p><strong>Fire Response Support:</strong> {{ $response->fire_team }}</p>
-                <p><strong>Fire Truck Units:</strong> {{ $response->fire_truck_units }}</p>
-                <p><strong>Search & Rescue Support:</strong> {{ $response->search_rescue_team }}</p>
-            @endif
+            {{-- 🔥 FIRE --}}
+@if ($response->dispatch_unit === 'Fire')
+    <div class="p-4 bg-red-50 rounded-lg shadow-sm space-y-2">
+
+        <h4 class="text-base font-semibold text-red-600 mb-1">
+            🔥 Recorded Fire Coordination
+        </h4>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+
+            <div class="bg-white rounded-lg p-3 shadow-sm">
+                <p class="text-base font-bold text-gray-700">Evacuation Site</p>
+                <p class="text-sm font-semibold text-gray-900">
+                    {{ $response->evacuation_address ?? '—' }}
+                </p>
+
+                <hr class="border-gray-100 my-2">
+
+                <p class="text-base font-bold text-gray-700">Transport Assistance</p>
+                <p class="text-sm text-gray-700">
+                    {{ $response->evacuation_transport ?? '—' }}
+                </p>
+
+                <p class="text-base font-bold text-gray-700 mt-2">Transport Units</p>
+                <p class="text-sm text-gray-700">
+                    {{ $response->evacuation_transport_unit ?? '—' }}
+                </p>
+            </div>
+
+            <div class="bg-white rounded-lg p-3 shadow-sm">
+                <p class="text-base font-bold text-gray-700">Receiving Hospital</p>
+                <p class="text-sm font-semibold text-gray-900">
+                    {{ $response->designated_hospitals ?? '—' }}
+                </p>
+
+                <p class="text-base font-bold text-gray-700 mt-2">Hospital Address</p>
+                <p class="text-sm text-gray-700">
+                    {{ $response->hospital_address ?? '—' }}
+                </p>
+
+                <hr class="border-gray-100 my-2">
+
+                <p class="text-base font-bold text-gray-700">Medical Assistance</p>
+                <p class="text-sm font-semibold text-gray-800">
+                    {{ $response->medical_response ?? '—' }}
+                </p>
+            </div>
+
+            <div class="bg-white rounded-lg p-3 shadow-sm">
+                <p class="text-base font-bold text-gray-700">PNP Station</p>
+                <p class="text-sm font-semibold text-gray-900">
+                    {{ $response->pnp_station ?? '—' }}
+                </p>
+
+                <hr class="border-gray-100 my-2">
+
+                <p class="text-base font-bold text-gray-700">PNP Team</p>
+                <p class="text-sm font-medium text-gray-800">
+                    {{ $response->pnp_team_unit ?? '—' }}
+                </p>
+
+                <p class="text-base font-bold text-gray-700 mt-2">Patrol Support</p>
+                <p class="text-sm text-gray-700">
+                    {{ $response->pnp_patrol_unit ?? '—' }}
+                </p>
+            </div>
+
+            <div class="bg-white rounded-lg p-3 shadow-sm">
+                <p class="text-base font-bold text-gray-700">Fire Department</p>
+                <p class="text-sm font-semibold text-gray-900">
+                    {{ $response->fire_department ?? '—' }}
+                </p>
+
+                <hr class="border-gray-100 my-2">
+
+                <p class="text-base font-bold text-gray-700">Fire Team</p>
+                <p class="text-sm font-medium text-gray-800">
+                    {{ $response->fire_team ?? '—' }}
+                </p>
+
+                <p class="text-base font-bold text-gray-700 mt-2">Fire Truck Units</p>
+                <p class="text-sm text-gray-700">
+                    {{ $response->fire_truck_units ?? '—' }}
+                </p>
+
+                <p class="text-base font-bold text-gray-700 mt-2">Search & Rescue Support</p>
+                <p class="text-sm font-semibold text-gray-900">
+                    {{ $response->search_rescue_team ?? '—' }}
+                </p>
+            </div>
+
+            <div class="bg-white rounded-lg p-3 shadow-sm md:col-span-2">
+                <p class="text-base font-bold text-gray-700">Relief Assistance</p>
+                <p class="text-sm font-semibold text-gray-900">
+                    {{ $response->relief_goods_provider ?? '—' }}
+                </p>
+            </div>
+
+        </div>
+    </div>
+@endif
 
             {{-- 🌊 FLOOD --}}
-            @if ($response->dispatch_unit === 'Flood_typhoon')
-                <h4 class="text-lg font-semibold text-blue-600">🌊 Flood Response</h4>
-                <p><strong>Evacuation Address:</strong> {{ $response->evacuation_address }}</p>
-                <p><strong>Responding Medical Authority:</strong> {{ $response->medical_response }}</p>
-                <p><strong>Designated Hospitals:</strong> {{ $response->designated_hospitals }}</p>
-                <p><strong>Hospital Address:</strong> {{ $response->hospital_address }}</p>
-                <p><strong>Transport:</strong> {{ $response->evacuation_transport }}</p>
-                <p><strong>Transport Units:</strong> {{ $response->evacuation_transport_unit }}</p>
-                <p><strong>PNP Station:</strong> {{ $response->pnp_station }}</p>
-                <p><strong>PNP Team:</strong> {{ $response->pnp_team_unit }}</p>
-                <p><strong>PNP Patrol Units:</strong> {{ $response->pnp_patrol_unit }}</p>
-                <p><strong>Water Rescue Unit:</strong> {{ $response->water_rescue_response_unit }}</p>
-               <!--  <p><strong>Rubber Boats:</strong> {{ $response->rubber_boat_units }}</p>-->
-                <p><strong>Lifeguards:</strong> {{ $response->lifeguard_rescue_personnel }}</p>
-                <p><strong>Search & Rescue:</strong> {{ $response->search_rescue_team }}</p>
-                <p><strong>Safety & Security:</strong> {{ $response->safety_and_security }}</p>
-              <!--  <p><strong>Relief Welfare:</strong> {{ $response->relief_welfare }}</p>-->
-            @endif
+            {{-- 🌊 FLOOD / TYPHOON --}}
+@if ($response->dispatch_unit === 'Flood_typhoon')
+    <div class="p-4 bg-blue-50 rounded-lg shadow-sm space-y-2">
+
+        <h4 class="text-base font-semibold text-blue-600 mb-1">
+            🌊 Recorded Flood/Typhoon Coordination
+        </h4>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+
+            <div class="bg-white rounded-lg p-3 shadow-sm">
+                <p class="text-base font-bold text-gray-700">Evacuation Site</p>
+                <p class="text-sm font-semibold text-gray-900">
+                    {{ $response->evacuation_address ?? '—' }}
+                </p>
+
+                <hr class="border-gray-100 my-2">
+
+                <p class="text-base font-bold text-gray-700">Transport Assistance</p>
+                <p class="text-sm text-gray-700">
+                    {{ $response->evacuation_transport ?? '—' }}
+                </p>
+
+                <p class="text-base font-bold text-gray-700 mt-2">Transport Units</p>
+                <p class="text-sm text-gray-700">
+                    {{ $response->evacuation_transport_unit ?? '—' }}
+                </p>
+            </div>
+
+            <div class="bg-white rounded-lg p-3 shadow-sm">
+                <p class="text-base font-bold text-gray-700">Receiving Hospital</p>
+                <p class="text-sm font-semibold text-gray-900">
+                    {{ $response->designated_hospitals ?? '—' }}
+                </p>
+
+                <p class="text-base font-bold text-gray-700 mt-2">Hospital Address</p>
+                <p class="text-sm text-gray-700">
+                    {{ $response->hospital_address ?? '—' }}
+                </p>
+
+                <hr class="border-gray-100 my-2">
+
+                <p class="text-base font-bold text-gray-700">Medical Assistance</p>
+                <p class="text-sm font-semibold text-gray-800">
+                    {{ $response->medical_response ?? '—' }}
+                </p>
+            </div>
+
+            <div class="bg-white rounded-lg p-3 shadow-sm">
+                <p class="text-base font-bold text-gray-700">PNP Station</p>
+                <p class="text-sm font-semibold text-gray-900">
+                    {{ $response->pnp_station ?? '—' }}
+                </p>
+
+                <hr class="border-gray-100 my-2">
+
+                <p class="text-base font-bold text-gray-700">PNP Team</p>
+                <p class="text-sm font-medium text-gray-800">
+                    {{ $response->pnp_team_unit ?? '—' }}
+                </p>
+
+                <p class="text-base font-bold text-gray-700 mt-2">Patrol Support</p>
+                <p class="text-sm text-gray-700">
+                    {{ $response->pnp_patrol_unit ?? '—' }}
+                </p>
+            </div>
+
+            <div class="bg-white rounded-lg p-3 shadow-sm">
+                <p class="text-base font-bold text-gray-700">Water Rescue Unit</p>
+                <p class="text-sm font-semibold text-gray-900">
+                    {{ $response->water_rescue_response_unit ?? '—' }}
+                </p>
+
+                <hr class="border-gray-100 my-2">
+
+                <p class="text-base font-bold text-gray-700">Lifeguard Support</p>
+                <p class="text-sm text-gray-700">
+                    {{ $response->lifeguard_rescue_personnel ?? '—' }}
+                </p>
+
+                <p class="text-base font-bold text-gray-700 mt-2">Search & Rescue</p>
+                <p class="text-sm font-semibold text-gray-900">
+                    {{ $response->search_rescue_team ?? '—' }}
+                </p>
+
+                <p class="text-base font-bold text-gray-700 mt-2">Safety & Security</p>
+                <p class="text-sm text-gray-700">
+                    {{ $response->safety_and_security ?? '—' }}
+                </p>
+            </div>
+
+        </div>
+    </div>
+@endif
 
             {{-- 🪨 EARTHQUAKE --}}
-            @if ($response->dispatch_unit === 'Earthquake')
-                <h4 class="text-lg font-semibold text-yellow-600">🪨 Earthquake Response</h4>
-                <p><strong>Designated Hospitals:</strong> {{ $response->designated_hospitals }}</p>
-                <p><strong>Hospital Address:</strong> {{ $response->hospital_address }}</p>
-                <p><strong>Evacuation Address:</strong> {{ $response->evacuation_address }}</p>
-                <p><strong>Vehicle Transport:</strong> {{ $response->evacuation_transport }}</p>
-                <p><strong>Transport Units:</strong> {{ $response->evacuation_transport_unit }}</p>
+           {{-- 🪨 EARTHQUAKE --}}
+@if ($response->dispatch_unit === 'Earthquake')
+    <div class="p-4 bg-yellow-50 rounded-lg shadow-sm space-y-2">
 
-                <p><strong>PNP Station:</strong> {{ $response->pnp_station }}</p>
-                <p><strong>PNP Team:</strong> {{ $response->pnp_team_unit }}</p>
-                <p><strong>PNP Patrol Units:</strong> {{ $response->pnp_patrol_unit }}</p>
+        <h4 class="text-base font-semibold text-yellow-600 mb-1">
+            🪨 Recorded Earthquake Coordination
+        </h4>
 
-                <p><strong>Fire Department:</strong> {{ $response->fire_department }}</p>
-                <p><strong>Fire Team:</strong> {{ $response->fire_team }}</p>
-                <p><strong>Clearing Teams:</strong> {{ $response->clearing_teams }}</p>
-                <p><strong>Power Utility Agency:</strong> {{ $response->power_utility_agency }}</p>
-                <p><strong>Structural Assessment:</strong> {{ $response->structural_assessment_teams }}</p>
-            @endif
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+
+            <div class="bg-white rounded-lg p-3 shadow-sm">
+                <p class="text-base font-bold text-gray-700">Receiving Hospital</p>
+                <p class="text-sm font-semibold text-gray-900">
+                    {{ $response->designated_hospitals ?? '—' }}
+                </p>
+
+                <p class="text-base font-bold text-gray-700 mt-2">Hospital Address</p>
+                <p class="text-sm text-gray-700">
+                    {{ $response->hospital_address ?? '—' }}
+                </p>
+
+                <hr class="border-gray-100 my-2">
+
+                <p class="text-base font-bold text-gray-700">Medical Assistance</p>
+                <p class="text-sm font-semibold text-gray-800">
+                    {{ $response->medical_response ?? '—' }}
+                </p>
+            </div>
+
+            <div class="bg-white rounded-lg p-3 shadow-sm">
+                <p class="text-base font-bold text-gray-700">Evacuation Site</p>
+                <p class="text-sm font-semibold text-gray-900">
+                    {{ $response->evacuation_address ?? '—' }}
+                </p>
+
+                <hr class="border-gray-100 my-2">
+
+                <p class="text-base font-bold text-gray-700">Transport Assistance</p>
+                <p class="text-sm text-gray-700">
+                    {{ $response->evacuation_transport ?? '—' }}
+                </p>
+
+                <p class="text-base font-bold text-gray-700 mt-2">Transport Units</p>
+                <p class="text-sm text-gray-700">
+                    {{ $response->evacuation_transport_unit ?? '—' }}
+                </p>
+            </div>
+
+            <div class="bg-white rounded-lg p-3 shadow-sm">
+                <p class="text-base font-bold text-gray-700">PNP Station</p>
+                <p class="text-sm font-semibold text-gray-900">
+                    {{ $response->pnp_station ?? '—' }}
+                </p>
+
+                <hr class="border-gray-100 my-2">
+
+                <p class="text-base font-bold text-gray-700">PNP Team</p>
+                <p class="text-sm font-medium text-gray-800">
+                    {{ $response->pnp_team_unit ?? '—' }}
+                </p>
+
+                <p class="text-base font-bold text-gray-700 mt-2">Patrol Support</p>
+                <p class="text-sm text-gray-700">
+                    {{ $response->pnp_patrol_unit ?? '—' }}
+                </p>
+            </div>
+
+            <div class="bg-white rounded-lg p-3 shadow-sm">
+                <p class="text-base font-bold text-gray-700">Fire Department</p>
+                <p class="text-sm font-semibold text-gray-900">
+                    {{ $response->fire_department ?? '—' }}
+                </p>
+
+                <p class="text-base font-bold text-gray-700 mt-2">Fire Team</p>
+                <p class="text-sm text-gray-800">
+                    {{ $response->fire_team ?? '—' }}
+                </p>
+
+                <hr class="border-gray-100 my-2">
+
+                <p class="text-base font-bold text-gray-700">Clearing Teams</p>
+                <p class="text-sm text-gray-700">
+                    {{ $response->clearing_teams ?? '—' }}
+                </p>
+
+                <p class="text-base font-bold text-gray-700 mt-2">Power Utility Agency</p>
+                <p class="text-sm text-gray-700">
+                    {{ $response->power_utility_agency ?? '—' }}
+                </p>
+
+                <p class="text-base font-bold text-gray-700 mt-2">Structural Assessment</p>
+                <p class="text-sm text-gray-700">
+                    {{ $response->structural_assessment_teams ?? '—' }}
+                </p>
+            </div>
+
+        </div>
+    </div>
+@endif
 
             {{-- 🩺 MEDICAL --}}
-            @if ($response->dispatch_unit === 'Medical')
-                <h4 class="text-lg font-semibold text-green-600">🩺 Responding Medical Authority</h4>
-                <p><strong>Responding Medical Authority:</strong> {{ $response->medical_response }}</p>
-                <p><strong>Designated Hospitals:</strong> {{ $response->designated_hospitals }}</p>
-                <p><strong>Hospital Address:</strong> {{ $response->hospital_address }}</p>
-                <p><strong>First Aid Station:</strong> {{ $response->first_aid_station }}</p>
-                <p><strong>Ambulance Units:</strong> {{ $response->ambulance_units }}</p>
+@if ($response->dispatch_unit === 'Medical')
 
-                <p><strong>PNP Station:</strong> {{ $response->pnp_station }}</p>
-                <p><strong>PNP Team:</strong> {{ $response->pnp_team_unit }}</p>
-             <!--   <p><strong>PNP Patrol Units:</strong> {{ $response->pnp_patrol_unit }}</p>-->
-            @endif
+    <div class="bg-green-50 rounded-lg p-4 shadow-sm">
+
+        <!-- Header -->
+        <h4 class="text-base font-semibold text-green-600 mb-1">
+            🩺 Recorded Medical Coordination
+        </h4>
+        <p class="text-xs text-gray-500 mb-3">
+            Encoded medical and support information based on the reported situation.
+        </p>
+
+        <!-- Grid Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+
+            <!-- Medical / Hospital -->
+            <div class="bg-white rounded-lg p-3 shadow-sm space-y-2">
+
+                <p class="text-base font-bold text-gray-700">
+                    Medical Authority
+                </p>
+                <p class="text-sm font-semibold text-gray-900">
+                    {{ $response->medical_response ?? '—' }}
+                </p>
+
+                <hr class="border-gray-100">
+
+                <p class="text-base font-bold text-gray-700">
+                    Designated Hospital
+                </p>
+                <p class="text-sm font-semibold text-gray-900">
+                    {{ $response->designated_hospitals ?? '—' }}
+                </p>
+
+                <p class="text-base font-bold text-gray-700">
+                    Hospital Address
+                </p>
+                <p class="text-sm text-gray-700">
+                    {{ $response->hospital_address ?? '—' }}
+                </p>
+
+            </div>
+
+            <!-- First Aid / Ambulance -->
+            <div class="bg-white rounded-lg p-3 shadow-sm space-y-2">
+
+                <p class="text-base font-bold text-gray-700">
+                    First Aid Station
+                </p>
+                <p class="text-sm font-semibold text-gray-900">
+                    {{ $response->first_aid_station ?? '—' }}
+                </p>
+
+                <hr class="border-gray-100">
+
+                <p class="text-base font-bold text-gray-700">
+                    Ambulance Units (reported)
+                </p>
+                <p class="text-sm text-gray-700">
+                    {{ $response->ambulance_units ?? '—' }}
+                </p>
+
+            </div>
+
+            <!-- Security -->
+            <div class="bg-white rounded-lg p-3 shadow-sm md:col-span-2 space-y-2">
+
+                <p class="text-base font-bold text-gray-700">
+                    PNP Station
+                </p>
+                <p class="text-sm font-semibold text-gray-900">
+                    {{ $response->pnp_station ?? '—' }}
+                </p>
+
+                <hr class="border-gray-100">
+
+                <p class="text-base font-bold text-gray-700">
+                    PNP Team (notified)
+                </p>
+                <p class="text-sm font-medium text-gray-800">
+                    {{ $response->pnp_team_unit ?? '—' }}
+                </p>
+
+                {{-- Patrol Units intentionally omitted from the resident display --}}
+                <!--
+                <p class="text-base font-bold text-gray-700">
+                    PNP Patrol Units
+                </p>
+                <p class="text-sm text-gray-700">
+                    {{ $response->pnp_patrol_unit ?? '—' }}
+                </p>
+                -->
+
+            </div>
+
+        </div>
+
+    </div>
+
+@endif
 
             {{-- 🚦 TRAFFIC --}}
-            @if ($response->dispatch_unit === 'Traffic')
-                <h4 class="text-lg font-semibold text-orange-600">🚦 Traffic Response</h4>
-                <p><strong>Responding Medical Authority:</strong> {{ $response->medical_response }}</p>
-                <p><strong>Hospitals:</strong> {{ $response->designated_hospitals }}</p>
-                <p><strong>Hospital Address:</strong> {{ $response->hospital_address }}</p>
-                <p><strong>Ambulance Units:</strong> {{ $response->ambulance_units }}</p>
-                <p><strong>Road Clearance Team:</strong> {{ $response->road_clearance_team }}</p>
-                <p><strong>Traffic Diversion Sites:</strong> {{ $response->traffic_diversion_sites }}</p>
-                <p><strong>PNP Station:</strong> {{ $response->pnp_station }}</p>
-                <p><strong>PNP Team:</strong> {{ $response->pnp_team_unit }}</p>
-                <p><strong>PNP Patrol Units:</strong> {{ $response->pnp_patrol_unit }}</p>
-            @endif
+@if ($response->dispatch_unit === 'Traffic')
+
+    <div class="bg-orange-50 rounded-lg p-4 shadow-sm">
+
+        <!-- Header -->
+        <h4 class="text-base font-semibold text-orange-600 mb-1">
+            🚦 Recorded Traffic Coordination
+        </h4>
+        <p class="text-xs text-gray-500 mb-3">
+            Encoded traffic, medical, and support information based on the reported situation.
+        </p>
+
+        <!-- Grid Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+
+            <!-- Medical / Hospital -->
+            <div class="bg-white rounded-lg p-3 shadow-sm space-y-2">
+
+                <p class="text-base font-bold text-gray-700">
+                    Medical Authority
+                </p>
+                <p class="text-sm font-semibold text-gray-900">
+                    {{ $response->medical_response ?? '—' }}
+                </p>
+
+                <hr class="border-gray-100">
+
+                <p class="text-base font-bold text-gray-700">
+                    Designated Hospital
+                </p>
+                <p class="text-sm font-semibold text-gray-900">
+                    {{ $response->designated_hospitals ?? '—' }}
+                </p>
+
+                <p class="text-base font-bold text-gray-700">
+                    Hospital Address
+                </p>
+                <p class="text-sm text-gray-700">
+                    {{ $response->hospital_address ?? '—' }}
+                </p>
+
+                <p class="text-base font-bold text-gray-700">
+                    Ambulance Units (reported)
+                </p>
+                <p class="text-sm text-gray-700">
+                    {{ $response->ambulance_units ?? '—' }}
+                </p>
+
+            </div>
+
+            <!-- Road / Traffic -->
+            <div class="bg-white rounded-lg p-3 shadow-sm space-y-2">
+
+                <p class="text-base font-bold text-gray-700">
+                    Road Clearance Team
+                </p>
+                <p class="text-sm font-semibold text-gray-900">
+                    {{ $response->road_clearance_team ?? '—' }}
+                </p>
+
+                <hr class="border-gray-100">
+
+                <p class="text-base font-bold text-gray-700">
+                    Traffic Diversion Sites
+                </p>
+                <p class="text-sm text-gray-700">
+                    {{ $response->traffic_diversion_sites ?? '—' }}
+                </p>
+
+            </div>
+
+            <!-- Security -->
+            <div class="bg-white rounded-lg p-3 shadow-sm md:col-span-2 space-y-2">
+
+                <p class="text-base font-bold text-gray-700">
+                    PNP Station
+                </p>
+                <p class="text-sm font-semibold text-gray-900">
+                    {{ $response->pnp_station ?? '—' }}
+                </p>
+
+                <hr class="border-gray-100">
+
+                <p class="text-base font-bold text-gray-700">
+                    PNP Team (notified)
+                </p>
+                <p class="text-sm font-medium text-gray-800">
+                    {{ $response->pnp_team_unit ?? '—' }}
+                </p>
+
+                <p class="text-base font-bold text-gray-700">
+                    PNP Patrol Units (reported)
+                </p>
+                <p class="text-sm text-gray-700">
+                    {{ $response->pnp_patrol_unit ?? '—' }}
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+@endif
 
             {{-- 🏠 WORKPLACE / HOME --}}
-            @if ($response->dispatch_unit === 'Workplace_Home')
-                <h4 class="text-lg font-semibold text-blue-700">🏠 Workplace / Home Response</h4>
-                <p><strong>Responding Medical Authority:</strong> {{ $response->medical_response }}</p>
-                <p><strong>Hospitals:</strong> {{ $response->designated_hospitals }}</p>
-                <p><strong>Hospital Address:</strong> {{ $response->hospital_address }}</p>
-                <p><strong>Ambulance Units:</strong> {{ $response->ambulance_units }}</p>
-                <p><strong>First Aid:</strong> {{ $response->first_aid_station }}</p>
-                <p><strong>PNP Station:</strong> {{ $response->pnp_station }}</p>
-                <p><strong>PNP Team:</strong> {{ $response->pnp_team_unit }}</p>
-                <p><strong>PNP Patrol Units:</strong> {{ $response->pnp_patrol_unit }}</p>
-            @endif
+@if ($response->dispatch_unit === 'Workplace_Home')
+
+    <div class="bg-blue-50 rounded-lg p-4 shadow-sm">
+
+        <!-- Header -->
+        <h4 class="text-base font-semibold text-blue-700 mb-1">
+            🏠 Recorded Workplace / Home Coordination
+        </h4>
+        <p class="text-xs text-gray-500 mb-3">
+            Encoded medical and support information based on the reported situation.
+        </p>
+
+        <!-- Grid Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+
+            <!-- Medical / Hospital -->
+            <div class="bg-white rounded-lg p-3 shadow-sm space-y-2">
+
+                <p class="text-base font-bold text-gray-700">
+                    Medical Authority
+                </p>
+                <p class="text-sm font-semibold text-gray-900">
+                    {{ $response->medical_response ?? '—' }}
+                </p>
+
+                <hr class="border-gray-100">
+
+                <p class="text-base font-bold text-gray-700">
+                    Designated Hospital
+                </p>
+                <p class="text-sm font-semibold text-gray-900">
+                    {{ $response->designated_hospitals ?? '—' }}
+                </p>
+
+                <p class="text-base font-bold text-gray-700">
+                    Hospital Address
+                </p>
+                <p class="text-sm text-gray-700">
+                    {{ $response->hospital_address ?? '—' }}
+                </p>
+
+            </div>
+
+            <!-- First Aid / Ambulance -->
+            <div class="bg-white rounded-lg p-3 shadow-sm space-y-2">
+
+                <p class="text-base font-bold text-gray-700">
+                    First Aid Station
+                </p>
+                <p class="text-sm font-semibold text-gray-900">
+                    {{ $response->first_aid_station ?? '—' }}
+                </p>
+
+                <hr class="border-gray-100">
+
+                <p class="text-base font-bold text-gray-700">
+                    Ambulance Units (reported)
+                </p>
+                <p class="text-sm text-gray-700">
+                    {{ $response->ambulance_units ?? '—' }}
+                </p>
+
+            </div>
+
+            <!-- Security -->
+            <div class="bg-white rounded-lg p-3 shadow-sm md:col-span-2 space-y-2">
+
+                <p class="text-base font-bold text-gray-700">
+                    PNP Station
+                </p>
+                <p class="text-sm font-semibold text-gray-900">
+                    {{ $response->pnp_station ?? '—' }}
+                </p>
+
+                <hr class="border-gray-100">
+
+                <p class="text-base font-bold text-gray-700">
+                    PNP Team (notified)
+                </p>
+                <p class="text-sm font-medium text-gray-800">
+                    {{ $response->pnp_team_unit ?? '—' }}
+                </p>
+
+                <p class="text-base font-bold text-gray-700">
+                    PNP Patrol Units (reported)
+                </p>
+                <p class="text-sm text-gray-700">
+                    {{ $response->pnp_patrol_unit ?? '—' }}
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+@endif
 
             {{-- 🗣 COMPLAINTS --}}
-            @if (in_array($response->dispatch_unit, ['Harassment','Noise','Garbage']))
-                <h4 class="text-lg font-semibold text-purple-600">🗣 Complaint Details</h4>
-                <p><strong>Responding Team:</strong> {{ $response->responding_team_complaints }}</p>
-                <p><strong>Actions:</strong> {{ $response->complaints_actions }}</p>
-            @endif
+@if (in_array($response->dispatch_unit, ['Harassment', 'Noise', 'Garbage']))
+
+    <div class="bg-purple-50 rounded-lg p-4 shadow-sm">
+
+        <!-- Header -->
+        <h4 class="text-base font-semibold text-purple-600 mb-1">
+            🗣 Recorded Complaint Coordination
+        </h4>
+        <p class="text-xs text-gray-500 mb-3">
+            Encoded administrative response based on the submitted complaint.
+        </p>
+
+        <!-- Complaint Details -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+
+            <!-- Responding Team -->
+            <div class="bg-white rounded-lg p-3 shadow-sm space-y-2">
+
+                <p class="text-base font-bold text-gray-700">
+                    Responding Team
+                </p>
+                <p class="text-sm font-semibold text-gray-900">
+                    {{ $response->responding_team_complaints ?? '—' }}
+                </p>
+
+            </div>
+
+            <!-- Actions -->
+            <div class="bg-white rounded-lg p-3 shadow-sm space-y-2">
+
+                <p class="text-base font-bold text-gray-700">
+                    Administrative Actions
+                </p>
+                <p class="text-sm text-gray-700">
+                    {{ $response->complaints_actions ?? '—' }}
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+@endif
 
             {{-- 🛠 SERVICES --}}
-            @if ($response->dispatch_unit === 'Services')
-                <h4 class="text-lg font-semibold text-green-700">🛠 Service Request</h4>
-                <p><strong>Inspection Date:</strong> {{ $response->inspection_date }}</p>
-                <p><strong>Recommended Action:</strong> {{ $response->recommended_action }}</p>
-            @endif
+@if ($response->dispatch_unit === 'Services')
+
+    <div class="bg-green-50 rounded-lg p-4 shadow-sm">
+
+        <!-- Header -->
+        <h4 class="text-base font-semibold text-green-700 mb-1">
+            🛠 Recorded Service Request Details
+        </h4>
+        <p class="text-xs text-gray-500 mb-3">
+            Encoded service-related action based on the submitted request.
+        </p>
+
+        <!-- Service Details -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+
+            <!-- Inspection -->
+            <div class="bg-white rounded-lg p-3 shadow-sm space-y-2">
+
+                <p class="text-base font-bold text-gray-700">
+                    Inspection Date
+                </p>
+                <p class="text-sm font-semibold text-gray-900">
+                    {{ $response->inspection_date ?? '—' }}
+                </p>
+
+            </div>
+
+            <!-- Recommended Action -->
+            <div class="bg-white rounded-lg p-3 shadow-sm space-y-2">
+
+                <p class="text-base font-bold text-gray-700">
+                    Recommended Action
+                </p>
+                <p class="text-sm text-gray-700">
+                    {{ $response->recommended_action ?? '—' }}
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+@endif
         @endif
     </div>
 
